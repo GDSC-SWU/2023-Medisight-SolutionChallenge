@@ -1,0 +1,99 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Grain {
+  id                BigInt  @id @default(autoincrement())
+  itemSeq           String  @db.VarChar(300)
+  itemName          String? @db.VarChar(300)
+  entpSeq           String? @db.VarChar(300)
+  entpName          String? @db.VarChar(300)
+  chart             String? @db.VarChar(300)
+  itemImage         String? @db.VarChar(300)
+  printFront        String? @db.VarChar(300)
+  printBack         String? @db.VarChar(300)
+  drugShape         String? @db.VarChar(300)
+  colorClass1       String? @db.VarChar(300)
+  colorClass2       String? @db.VarChar(300)
+  lineFront         String? @db.VarChar(300)
+  lineBack          String? @db.VarChar(300)
+  lengLong          String? @db.VarChar(300)
+  lengShort         String? @db.VarChar(300)
+  thick             String? @db.VarChar(300)
+  imgRegistTS       String? @db.VarChar(300)
+  classNo           String? @db.VarChar(300)
+  className         String? @db.VarChar(300)
+  etcOtcName        String? @db.VarChar(300)
+  itemPermitDate    String? @db.VarChar(300)
+  formCodeName      String? @db.VarChar(300)
+  markCodeFrontAnal String? @db.VarChar(300)
+  markCodeBackAnal  String? @db.VarChar(300)
+  markCodeFrontImg  String? @db.VarChar(300)
+  markCodeBackImg   String? @db.VarChar(300)
+  itemEngName       String? @db.VarChar(300)
+  changeDate        String? @db.VarChar(300)
+  markCodeFront     String? @db.VarChar(300)
+  markCodeBack      String? @db.VarChar(300)
+  ediCode           String? @db.VarChar(300)
+}
+
+model Permission {
+  id               BigInt  @id @default(autoincrement())
+  itemSeq          String  @db.VarChar(300)
+  itemName         String? @db.Text
+  entpName         String? @db.Text
+  itemPermitDate   String? @db.Text
+  cnsgnManuf       String? @db.Text
+  etcOtcCode       String? @db.Text
+  chart            String? @db.Text
+  barCode          String? @db.Text
+  materialName     String? @db.Text
+  eeDocId          String? @db.Text
+  udDocId          String? @db.Text
+  nbDocId          String? @db.Text
+  insertFile       String? @db.Text
+  storageMethod    String? @db.Text
+  validTerm        String? @db.Text
+  reexamTarget     String? @db.Text
+  reexamDate       String? @db.Text
+  packUnit         String? @db.Text
+  ediCode          String? @db.Text
+  docText          String? @db.Text
+  permitKindName   String? @db.Text
+  entpNo           String? @db.Text
+  makeMaterialFlag String? @db.Text
+  newdrugClassName String? @db.Text
+  indutyType       String? @db.Text
+  cancelDate       String? @db.Text
+  cancelName       String? @db.Text
+  changeDate       String? @db.Text
+  narcoticKindCode String? @db.Text
+  gbnName          String? @db.Text
+  totalContent     String? @db.Text
+  eeDocData        String? @db.LongText
+  udDocData        String? @db.LongText
+  nbDocData        String? @db.LongText
+  pnDocData        String? @db.LongText
+  mainItemIngr     String? @db.Text
+  ingrName         String? @db.Text
+  atcCode          String? @db.Text
+  itemEngName      String? @db.Text
+  entpEngName      String? @db.Text
+  mainIngrEng      String? @db.Text
+}
+
+model household {
+  id          BigInt  @id @default(autoincrement())
+  prdlstNm    String? @db.VarChar(300)
+  bsshNm      String? @db.VarChar(300)
+  vldPrdYmd   String? @db.VarChar(300)
+  strgMthCont String? @db.VarChar(300)
+}
