@@ -6,6 +6,8 @@ app.use(express.json());
 const dotenv = require("dotenv");
 dotenv.config();
 
+const database = require("./util/Database");
+
 const Search = require("./routes/Search");
 
 app.use("/search", Search);
