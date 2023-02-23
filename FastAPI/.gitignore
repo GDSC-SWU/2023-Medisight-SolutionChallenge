@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+files/
+*.jpg
+
+privateKey.json
