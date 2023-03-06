@@ -13,8 +13,6 @@ class _TipSubPageState extends State<TipSubPage> {
           body: CustomScrollView(slivers: [
         SliverAppBar(
           //title: Text("Tip Sub Page"),
-          leading:
-              IconButton(onPressed: () {}, icon: const Icon(Icons.arrow_back)),
           expandedHeight: 200,
           pinned: true,
           flexibleSpace: FlexibleSpaceBar(

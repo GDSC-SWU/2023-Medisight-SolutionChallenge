@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medisight/page/tip_sub.dart';
 import 'package:medisight/screen/store_medi.dart';
 
 class InfoScreen extends StatelessWidget {
@@ -33,7 +34,12 @@ class InfoScreen extends StatelessWidget {
                 "의약품 보관하기",
                 style: TextStyle(fontSize: 20),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const TipSubPage()),
+                );
+              },
             ),
             const SizedBox(height: 30), // 여백
             // 의약품 복용 버튼
