@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'shoot_ocr.dart';
 import 'shoot_medi.dart';
 
 class CameraScreen extends StatelessWidget {
@@ -44,7 +45,7 @@ class CameraScreen extends StatelessWidget {
               },
             ),
             const SizedBox(width: 31), // 여백
-            // 처방전 촬영 버튼
+            // 유효기간 촬영 버튼
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.black,
@@ -55,13 +56,13 @@ class CameraScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10)),
               ),
               child: const Text(
-                "처방전 촬영",
+                "유효기간 촬영",
                 style: TextStyle(fontSize: 20),
               ),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const ShootMedi()),
+                  MaterialPageRoute(builder: (_) => const Shootocr()),
                 );
               },
             ),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'info_screen.dart';
-import 'camera_screen.dart';
-import 'search_screen.dart';
-import 'map_screen.dart';
-import 'medi_screen.dart';
+import 'package:medisight/screen/info_screen.dart';
+import 'package:medisight/screen/camera_screen.dart';
+import 'package:medisight/screen/search_screen.dart';
+import 'package:medisight/screen/map_screen.dart';
+import 'package:medisight/screen/medi_screen.dart';
+import 'package:medisight/screen/alarm_observer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+  final uid = 'CIqdCgvCJjpAPHb0QBks';
 
   @override
   Widget build(BuildContext context) {
@@ -136,7 +138,10 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const MediScreen()),
+                      MaterialPageRoute(
+                          builder: (_) => AlarmObserver(
+                              uid: uid, child: MediScreen(uid: uid) // 임의코드
+                              )),
                     );
                   },
                 ),
