@@ -4,7 +4,7 @@ import 'package:medisight/provider/google_sign_in.dart';
 import 'package:provider/provider.dart';
 
 class LoggedInWidget extends StatelessWidget {
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  // final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
