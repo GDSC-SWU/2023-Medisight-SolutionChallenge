@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medisight/provider/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import '../main.dart';
+import 'disease_select.dart';
 
 class MypageScreen extends StatefulWidget {
   const MypageScreen({super.key});
@@ -8,15 +13,19 @@ class MypageScreen extends StatefulWidget {
 }
 
 class MypageScreenState extends State<MypageScreen> {
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
   var mypageList = [
     '기저질환 설정',
-    '언어 변경',
+    '테마 설정',
     '튜토리얼',
     '로그아웃',
   ];
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -41,32 +50,25 @@ class MypageScreenState extends State<MypageScreen> {
             child: Row(
               children: [
                 const SizedBox(width: 25),
-                SizedBox(
-                  width: 120,
-                  height: 120,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100), //모서리를 둥글게
-                    child: Image.asset(
-                      'assets/images/img_background.png',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: NetworkImage(user.photoURL!),
                 ),
                 const SizedBox(width: 25),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "사용자 이름",
-                      style: TextStyle(
+                    Text(
+                      user.displayName!,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const Text(
-                      "test@gmail.com",
-                      style: TextStyle(
+                    Text(
+                      user.email!,
+                      style: const TextStyle(
                         fontSize: 13,
                         color: Colors.grey,
                       ),
@@ -123,6 +125,13 @@ class MypageScreenState extends State<MypageScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        if (index == 0) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const DiseaseSelect()),
+                          );
+                        }
                         if (index == 3) {
                           showDialog(
                             context: context,
@@ -131,8 +140,19 @@ class MypageScreenState extends State<MypageScreen> {
                               content: const Text('정말 로그아웃을 하시겠습니까?'),
                               actions: [
                                 ElevatedButton(
-                                  onPressed: () => Navigator.of(context)
-                                      .pop(), // ***로그아웃 기능으로 변경***
+                                  onPressed: () {
+                                    final provider =
+                                        Provider.of<GoogleSignInProvider>(
+                                            context,
+                                            listen: false);
+                                    provider.logout();
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => const MyApp()),
+                                      (route) => false,
+                                    );
+                                  },
                                   child: const Text('확인'),
                                 ),
                                 ElevatedButton(
@@ -165,13 +185,9 @@ class MypageScreenState extends State<MypageScreen> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 20),
-                              child: Image.asset(
-                                'assets/images/img_back_key.png',
-                                width: 30,
-                                height: 30,
-                              ),
+                            const Padding(
+                              padding: EdgeInsets.only(right: 20),
+                              child: Icon(Icons.arrow_right),
                             ),
                           ],
                         ),
