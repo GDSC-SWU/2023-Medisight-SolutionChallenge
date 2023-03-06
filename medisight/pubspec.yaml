@@ -54,6 +54,7 @@ dependencies:
   flutter_beep: ^1.0.0
   flutter_vibrate: ^1.3.0
   wakelock: ^0.6.2
+  cloud_firestore: ^4.4.3
 
 dev_dependencies:
   flutter_test:
@@ -78,7 +79,6 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/img_android.png
     - assets/images/img_back_key.png
     - assets/images/img_background.png
   #   - images/a_dot_burr.jpeg
