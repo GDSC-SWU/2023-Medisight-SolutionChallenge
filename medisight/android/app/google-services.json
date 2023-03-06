@@ -14,7 +14,23 @@
       },
       "oauth_client": [
         {
-          "client_id": "388496028603-81t2cemeh02911aj9k8cfan0h1h4cgqh.apps.googleusercontent.com",
+          "client_id": "388496028603-c8a8enfq13lrvlpkfec2hmecq9rkj6pe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.medisight",
+            "certificate_hash": "c6ff9d106fdff63632358fb937058e7ee62f2409"
+          }
+        },
+        {
+          "client_id": "388496028603-rs7vhcfb68rptt9e70b1c2tb9827eo8j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.medisight",
+            "certificate_hash": "d49775ff71f69776d11df4218efbbd9738b1fb5d"
+          }
+        },
+        {
+          "client_id": "388496028603-6u2ae0rg7l8enc415acvf09s7bddpsmn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +43,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "388496028603-81t2cemeh02911aj9k8cfan0h1h4cgqh.apps.googleusercontent.com",
+              "client_id": "388496028603-6u2ae0rg7l8enc415acvf09s7bddpsmn.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "388496028603-r6ivmvqrolqepvcdpl3sa9d080er9ttc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.medisight"
+              }
             }
           ]
         }
