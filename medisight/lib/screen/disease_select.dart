@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'disease_private.dart';
+import 'package:medisight/screen/mypage_screen.dart';
 
 class DiseaseSelect extends StatefulWidget {
   const DiseaseSelect({super.key});
@@ -214,7 +214,7 @@ class DiseaseSelectState extends State<DiseaseSelect> {
 
                   Navigator.pop(
                     context,
-                    MaterialPageRoute(builder: (_) => const DiseasePrivate()),
+                    MaterialPageRoute(builder: (_) => const MypageScreen()),
                   );
                 },
               ),
