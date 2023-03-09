@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "388496028603-6b9962k07fcdj1duq06pf0ecfc7fcrgp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.medisight",
+            "certificate_hash": "533e654079e3149a048c9f550ff1a8026c1fdb01"
+          }
+        },
+        {
           "client_id": "388496028603-c8a8enfq13lrvlpkfec2hmecq9rkj6pe.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
