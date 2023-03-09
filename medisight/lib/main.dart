@@ -6,10 +6,32 @@ import 'package:medisight/provider/google_sign_in.dart';
 import 'package:medisight/widget/logged_in_widget.dart';
 import 'package:provider/provider.dart';
 
-Future main() async {
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'package:medisight/provider/permission_provider.dart';
+import 'package:medisight/service/alarm_polling_worker.dart';
+import 'package:medisight/provider/alarm_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  await AndroidAlarmManager.initialize();
+
+  final AlarmState alarmState = AlarmState();
+  final SharedPreferences preference = await SharedPreferences.getInstance();
+
+  // 앱 진입시 알람 탐색을 시작해야 한다.
+  AlarmPollingWorker().createPollingWorker(alarmState);
+
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => alarmState),
+      ChangeNotifierProvider(
+        create: (context) => PermissionProvider(preference),
+      ),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -42,16 +64,13 @@ import 'package:medisight/widget/logged_in_widget.dart';
 import 'package:provider/provider.dart';
 import 'screen/home_screen.dart';
 import 'screen/mypage_screen.dart';
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
@@ -66,15 +85,12 @@ class MyApp extends StatelessWidget {
         ),
       );
 }
-
 /*
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   _MyAppState createState() => _MyAppState();
 }
-
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
@@ -87,12 +103,10 @@ class _MyAppState extends State<MyApp> {
       //BottomNavi(selectedIndex: 0),
     );
   }
-
   @override
   void initState() {
     super.initState();
   }
-
   @override
   dispose() async {
     super.dispose();
