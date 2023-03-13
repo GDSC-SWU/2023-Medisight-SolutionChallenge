@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'info_screen.dart';
 import 'camera_screen.dart';
@@ -10,6 +11,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser!;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -136,7 +139,8 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const MediScreen()),
+                      MaterialPageRoute(
+                          builder: (_) => MediScreen(uid: user.uid)),
                     );
                   },
                 ),
