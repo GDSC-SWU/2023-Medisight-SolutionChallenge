@@ -67,6 +67,9 @@ dependencies:
   flutter_ringtone_player: ^3.2.0
   permission_handler: ^10.2.0
 
+  # REST API
+  http: ^0.13.5
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
