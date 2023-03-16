@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_qr_bar_scanner/qr_bar_scanner_camera.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:medisight/page/search_result.dart';
 import 'package:wakelock/wakelock.dart';
 import 'test_screen.dart';
 
@@ -53,11 +54,13 @@ class ShootMediState extends State<ShootMedi> {
       if (code != _qrInfo) {
         FlutterBeep.beep(); // 비프음
         if (_canVibrate) Vibrate.feedback(FeedbackType.heavy); // 진동
+
         Navigator.pop(context);
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => TestScreen(code)),
-        );
+            context,
+            MaterialPageRoute(
+              builder: (_) => SearchResultPage(code),
+            ));
       }
       _camState = false;
       _qrInfo = code;
