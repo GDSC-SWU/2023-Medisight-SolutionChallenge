@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:medisight/screen/mypage_screen.dart';
 
+import 'bottom_navi.dart';
+
 class DiseaseSelect extends StatefulWidget {
   const DiseaseSelect({super.key});
 
@@ -17,28 +19,51 @@ class DiseaseSelectState extends State<DiseaseSelect> {
 
   List<String> myDisease = []; // firestore의 내 질환을 화면에 출력하기 위한 리스트
   String myDiseaseStr = "";
-  List<String> diseaseList = ['천식', '고혈압', '유제품 알러지', '갑상선 기능 저하']; // 질병 리스트
+  List<String> diseaseList = [
+    '천식',
+    '아토피',
+    '비염',
+    '혈압',
+    '과민증',
+    '암',
+    '편두통',
+    '당뇨',
+    '간질환',
+    '심혈관질환'
+  ]; // 질병 리스트
   bool isFirst = true;
   Map<String, bool> diseaseProducts = {
     // 사용자가 새로 구성한 정보
     '천식': false,
-    '고혈압': false,
-    '유제품 알러지': false,
-    '갑상선 기능 저하': false,
+    '아토피': false,
+    '비염': false,
+    '혈압': false,
+    '과민증': false,
+    '암': false,
+    '편두통': false,
+    '당뇨': false,
+    '간질환': false,
+    '심혈관질환': false,
   };
   Map<String, bool> diseaseProductsOrigin = {
     // firestore에 저장되어 있는 정보
     '천식': false,
-    '고혈압': false,
-    '유제품 알러지': false,
-    '갑상선 기능 저하': false,
+    '아토피': false,
+    '비염': false,
+    '혈압': false,
+    '과민증': false,
+    '암': false,
+    '편두통': false,
+    '당뇨': false,
+    '간질환': false,
+    '심혈관질환': false,
   };
 
   @override
   Widget build(BuildContext context) {
     // 질환 선택 버튼
     final List<Map> myProducts =
-        List.generate(4, (index) => {"id": index, "name": diseaseList[index]})
+        List.generate(10, (index) => {"id": index, "name": diseaseList[index]})
             .toList();
 
     return Scaffold(
@@ -211,11 +236,7 @@ class DiseaseSelectState extends State<DiseaseSelect> {
                           .delete();
                     }
                   }
-
-                  Navigator.pop(
-                    context,
-                    MaterialPageRoute(builder: (_) => const MypageScreen()),
-                  );
+                  _getRoute(user);
                 },
               ),
               SizedBox(width: 30),
@@ -224,5 +245,31 @@ class DiseaseSelectState extends State<DiseaseSelect> {
         ],
       ),
     );
+  }
+
+  Future<void> _getRoute(User user) async {
+    final documentSnapshot =
+        await FirebaseFirestore.instance.collection('user').doc(user.uid).get();
+    bool subfield = documentSnapshot.data()?.containsKey('firstTuto') ?? false;
+
+    if (subfield) {
+      // 앱을 처음 사용한 경우가 아닐 때
+      return Navigator.pop(
+        context,
+        MaterialPageRoute(builder: (_) => const MypageScreen()),
+      );
+    } else {
+      // 앱을 처음 사용한 경우일 때
+      await FirebaseFirestore.instance
+          .collection('user')
+          .doc(user.uid)
+          .set({'firstTuto': false});
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const BottomNavi(selectedIndex: 0)),
+        (route) => false,
+      );
+    }
   }
 }
