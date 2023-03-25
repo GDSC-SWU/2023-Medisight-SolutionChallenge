@@ -64,6 +64,74 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:388496028603:android:e9fa31366975648b5e0a9e",
+        "android_client_info": {
+          "package_name": "com.gdscswu.medisight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "388496028603-ju8v1vdhi81d1g9isifvthsq3q2ek6af.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gdscswu.medisight",
+            "certificate_hash": "c6ff9d106fdff63632358fb937058e7ee62f2409"
+          }
+        },
+        {
+          "client_id": "388496028603-mfmu80fdeieic7l35a9r0ur9esuov9hl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gdscswu.medisight",
+            "certificate_hash": "d49775ff71f69776d11df4218efbbd9738b1fb5d"
+          }
+        },
+        {
+          "client_id": "388496028603-pev4aa8ds8d2b1afhnionohgugk08q69.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gdscswu.medisight",
+            "certificate_hash": "81ca6ff0c379097f9bf98c65e74cc2352e9251a6"
+          }
+        },
+        {
+          "client_id": "388496028603-ut20i7fk1097376ejpaj9c4ggov2nqdm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gdscswu.medisight",
+            "certificate_hash": "533e654079e3149a048c9f550ff1a8026c1fdb01"
+          }
+        },
+        {
+          "client_id": "388496028603-6u2ae0rg7l8enc415acvf09s7bddpsmn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMtj72aeSq8B2w_DkiGEwZn8On9Zm4mrM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "388496028603-6u2ae0rg7l8enc415acvf09s7bddpsmn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "388496028603-r6ivmvqrolqepvcdpl3sa9d080er9ttc.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.medisight"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
