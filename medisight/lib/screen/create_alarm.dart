@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../provider/CustomCheckBoxGroup.dart';
 import 'package:medisight/service/alarm_scheduler.dart';
 import 'package:medisight/screen/medi_screen.dart';
@@ -17,6 +18,11 @@ class CreateAlarm extends StatefulWidget {
 }
 
 class _CreateAlarmState extends State<CreateAlarm> {
+  static const platform = MethodChannel('app.channel.medisight.data');
+  String dataTitle = 'No title';
+  int dataHour = -1;
+  int dataMinutes = -1;
+
   CollectionReference? product;
   bool _beepIsChecked = true;
   bool _vibIsChecked = true;
@@ -26,6 +32,7 @@ class _CreateAlarmState extends State<CreateAlarm> {
   @override
   void initState() {
     super.initState();
+    getSharedText();
     product = FirebaseFirestore.instance
         .collection('user')
         .doc(widget.uid)
@@ -50,6 +57,28 @@ class _CreateAlarmState extends State<CreateAlarm> {
     return id;
   }
 
+  Future<void> getSharedText() async {
+    var sharedTitle = await platform.invokeMethod('getsharedTitle');
+    var sharedHour = await platform.invokeMethod('getsharedHour');
+    var sharedMinutes = await platform.invokeMethod('getsharedMinutes');
+
+    if (sharedTitle != null) {
+      setState(() {
+        dataTitle = sharedTitle;
+      });
+    }
+    if (sharedHour != null) {
+      setState(() {
+        dataHour = sharedHour;
+      });
+    }
+    if (sharedMinutes != null) {
+      setState(() {
+        dataMinutes = sharedMinutes;
+      });
+    }
+  }
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
   final TextEditingController expirationController = TextEditingController();
@@ -57,18 +86,14 @@ class _CreateAlarmState extends State<CreateAlarm> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('dataTitle: $dataTitle');
+    debugPrint('dataHour: $dataHour');
+    debugPrint('dataMinutes: $dataMinutes');
+
     String value = "";
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "내 약품 추가",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0.0, // 앱 바가 떠있는 효과 제거
-      ),
+      appBar: AppBar(title: const Text("내 약품 추가")),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -77,13 +102,11 @@ class _CreateAlarmState extends State<CreateAlarm> {
               width: size.width,
               padding: const EdgeInsets.only(
                   left: 34, top: 30, right: 34, bottom: 13),
-              // padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 13),
               child: const Text(
                 '약품명',
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
-                  color: Color(0xff000000),
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.left,
@@ -136,7 +159,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
-                  color: Color(0xff000000),
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.left,
@@ -224,7 +246,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
-                  color: Color(0xff000000),
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.left,
@@ -300,7 +321,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
-                  color: Color(0xff000000),
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.left,
@@ -343,7 +363,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 16,
-                      color: Color(0xff000000),
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.left,
@@ -359,7 +378,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                         _beepIsChecked = value;
                       });
                     },
-                    activeColor: Colors.blue,
                   ),
                 ),
               ],
@@ -378,7 +396,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 16,
-                      color: Color(0xff000000),
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.left,
@@ -394,7 +411,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                         _vibIsChecked = value;
                       });
                     },
-                    activeColor: Colors.blue,
                   ),
                 ),
               ],
