@@ -340,7 +340,7 @@ class ButtonTextStyle {
   ///Selected color of Text
   final Color selectedColor;
 
-  ///Unselected color of Text
+  // ///Unselected color of Text
   final Color unSelectedColor;
 
   /// Color in [TextStyle] will be ignored

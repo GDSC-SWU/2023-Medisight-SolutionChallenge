@@ -70,15 +70,7 @@ class ShootMediState extends State<ShootMedi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "의약품 촬영: QR/Bar코드인식",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0.0, // 앱 바가 떠있는 효과 제거
-      ),
+      appBar: AppBar(title: const Text("의약품 촬영: QR/Bar코드인식")),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

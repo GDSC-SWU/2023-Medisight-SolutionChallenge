@@ -60,15 +60,7 @@ class _MediScreenState extends State<MediScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "내 약품",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0.0, // 앱 바가 떠있는 효과 제거
-      ),
+      appBar: AppBar(title: const Text("알람")),
       body: StreamBuilder(
         stream: product?.snapshots(),
         builder: (BuildContext context,
@@ -94,7 +86,6 @@ class _MediScreenState extends State<MediScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
         onPressed: () {
           Navigator.push(
               context,
@@ -162,17 +153,14 @@ class _AlarmCard extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       alarm['name']!,
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontFamily: 'avenir'),
+                      style:
+                          const TextStyle(fontSize: 20, fontFamily: 'avenir'),
                     ),
                   ],
                 ),
                 Switch(
                   value: alarm['enabled'],
                   onChanged: onTapSwitch,
-                  activeColor: Colors.blue,
                 ),
               ],
             ),
@@ -181,7 +169,7 @@ class _AlarmCard extends StatelessWidget {
             padding: const EdgeInsets.only(left: 12, right: 12),
             child: Text(
               date,
-              style: const TextStyle(color: Colors.black, fontFamily: 'avenir'),
+              style: const TextStyle(fontFamily: 'avenir'),
             ),
           ),
           Container(
@@ -192,14 +180,12 @@ class _AlarmCard extends StatelessWidget {
                 Text(
                   alarm['time'],
                   style: const TextStyle(
-                      color: Colors.black,
                       fontFamily: 'avenir',
                       fontSize: 24,
                       fontWeight: FontWeight.w700),
                 ),
                 IconButton(
                     icon: const Icon(Icons.delete),
-                    color: Colors.blue,
                     onPressed: () async {
                       _delete(alarm.id);
                     }),

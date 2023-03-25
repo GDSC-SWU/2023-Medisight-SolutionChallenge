@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:medisight/screen/home_screen.dart';
 import 'package:medisight/screen/mypage_screen.dart';
 
 import 'bottom_navi.dart';
@@ -67,15 +68,7 @@ class DiseaseSelectState extends State<DiseaseSelect> {
             .toList();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "질병 및 알러지 정보 추가",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0.0, // 앱 바가 떠있는 효과 제거
-      ),
+      appBar: AppBar(title: const Text("질병 및 알러지 정보 추가")),
       body: Column(
         children: [
           StreamBuilder(
@@ -110,44 +103,45 @@ class DiseaseSelectState extends State<DiseaseSelect> {
             },
           ),
           Flexible(
-            child: GridView.builder(
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 3 / 2,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20),
-              itemCount: myProducts.length,
-              itemBuilder: (BuildContext ctx, index) {
-                return ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    backgroundColor: Colors.blue,
-                    //버튼을 둥글게 처리
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      var disName = myProducts[index]["name"];
-                      if (!diseaseProducts[disName]!) {
-                        myDisease.add(disName);
-                        print(myDisease);
-                        diseaseProducts[disName] = true;
-                      } else {
-                        myDisease.remove(disName);
-                        print(myDisease);
-                        diseaseProducts[disName] = false;
-                      }
-                      isFirst = false;
-                    });
-                  },
-                  child: Text(
-                    myProducts[index]["name"],
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                );
-              },
+            child: Container(
+              padding: const EdgeInsets.only(
+                  left: 10, top: 20, right: 10, bottom: 0),
+              child: GridView.builder(
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 2 / 1,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10),
+                itemCount: myProducts.length,
+                itemBuilder: (BuildContext ctx, index) {
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        var disName = myProducts[index]["name"];
+                        if (!diseaseProducts[disName]!) {
+                          myDisease.add(disName);
+                          print(myDisease);
+                          diseaseProducts[disName] = true;
+                        } else {
+                          myDisease.remove(disName);
+                          print(myDisease);
+                          diseaseProducts[disName] = false;
+                        }
+                        isFirst = false;
+                      });
+                    },
+                    child: Text(
+                      myProducts[index]["name"],
+                      style: const TextStyle(fontSize: 18),
+                    ),
+                  );
+                },
+              ),
             ),
           ),
         ],
@@ -156,39 +150,41 @@ class DiseaseSelectState extends State<DiseaseSelect> {
   }
 
   Widget showScreen(String myDiseaseStr) {
+    Size size = MediaQuery.of(context).size;
     return Align(
       child: Column(
         children: [
           SizedBox(height: 10),
           Container(
-            width: 400,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50), //모서리를 둥글게
-              border: Border.all(color: Colors.black45, width: 3),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  top: 10, bottom: 10, left: 20, right: 20),
-              child: Text(
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-                myDiseaseStr,
-                style: const TextStyle(fontSize: 18),
-                textAlign: TextAlign.center,
+            padding:
+                const EdgeInsets.only(left: 10, top: 10, right: 10, bottom: 13),
+            child: Container(
+              width: 400,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50), //모서리를 둥글게
+                border: Border.all(color: Colors.black45, width: 3),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    top: 10, bottom: 10, left: 20, right: 20),
+                child: Text(
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 3,
+                  myDiseaseStr,
+                  style: const TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              // 초기화 버튼
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.blue,
-                  minimumSize: const Size(20, 10),
-                  //버튼을 둥글게 처리
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                  minimumSize: const Size(20, 30),
                 ),
                 child: const Text(
                   "초기화",
@@ -205,14 +201,11 @@ class DiseaseSelectState extends State<DiseaseSelect> {
                 },
               ),
               SizedBox(width: 10),
+
+              // 저장 버튼
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.blue,
-                  minimumSize: const Size(20, 10),
-                  //버튼을 둥글게 처리
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
+                  minimumSize: const Size(20, 30),
                 ),
                 child: const Text(
                   "저장",
@@ -239,9 +232,14 @@ class DiseaseSelectState extends State<DiseaseSelect> {
                   _getRoute(user);
                 },
               ),
-              SizedBox(width: 30),
+
+              //SizedBox(width: 30),
             ],
           ),
+          Container(
+              height: 1.0,
+              width: size.width,
+              color: Color.fromARGB(255, 197, 196, 196)),
         ],
       ),
     );

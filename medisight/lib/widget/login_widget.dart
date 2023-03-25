@@ -8,22 +8,18 @@ class LoginWidget extends StatelessWidget {
   Widget build(BuildContext context) => Padding(
       padding: EdgeInsets.all(32),
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Spacer(),
-        FlutterLogo(size: 120),
-        Spacer(),
+        Image.asset('assets/images/medisight_logo.png',
+            width: 350, height: 350),
         Align(
             alignment: Alignment.centerLeft,
             child: Text('로그인 페이지 입니다.',
-                style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.lightBlue.shade800))),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
         SizedBox(height: 8),
         Align(
             alignment: Alignment.centerLeft,
             child: Text(
-              'Login to your account to continue!',
-              style: TextStyle(fontSize: 16, color: Colors.black87),
+              '계정과 비밀번호 입력없이 구글 계정으로 로그인 하세요.',
+              style: TextStyle(fontSize: 16),
             )),
         Spacer(),
         ElevatedButton.icon(

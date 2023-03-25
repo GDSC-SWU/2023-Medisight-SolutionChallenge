@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medisight/provider/google_sign_in.dart';
+import 'package:medisight/screen/theme_screen.dart';
+import 'package:medisight/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import 'disease_select.dart';
+import 'tuto_screen.dart';
 
 class MypageScreen extends StatefulWidget {
   const MypageScreen({super.key});
@@ -27,24 +31,16 @@ class MypageScreenState extends State<MypageScreen> {
     final user = FirebaseAuth.instance.currentUser!;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "마이페이지",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0.0, // 앱 바가 떠있는 효과 제거
-      ),
+      appBar: AppBar(title: const Text("마이페이지")),
       body: Column(
         children: [
           Container(
             width: 500,
             height: 175,
             decoration: BoxDecoration(
-              border: Border.all(
-                color: Colors.grey,
-                width: 0.5,
+              border: Border(
+                bottom: BorderSide(
+                    width: 0.5, color: Color.fromARGB(255, 216, 216, 216)),
               ),
             ),
             child: Row(
@@ -115,7 +111,7 @@ class MypageScreenState extends State<MypageScreen> {
           const SizedBox(
             width: 500,
             height: 25,
-            child: ColoredBox(color: Colors.grey),
+            child: ColoredBox(color: Color.fromARGB(255, 216, 216, 216)),
           ),
           Expanded(
             child: ListView.builder(
@@ -131,8 +127,18 @@ class MypageScreenState extends State<MypageScreen> {
                             MaterialPageRoute(
                                 builder: (_) => const DiseaseSelect()),
                           );
-                        }
-                        if (index == 3) {
+                        } else if (index == 1) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => ThemeScreen()),
+                          );
+                        } else if (index == 2) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const TutoScreen()),
+                          );
+                        } else if (index == 3) {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
@@ -141,6 +147,11 @@ class MypageScreenState extends State<MypageScreen> {
                               actions: [
                                 ElevatedButton(
                                   onPressed: () {
+                                    final themeMode =
+                                        Provider.of<ThemeProvider>(context,
+                                                listen: false)
+                                            .themeMode;
+                                    debugPrint('테마: $themeMode');
                                     final provider =
                                         Provider.of<GoogleSignInProvider>(
                                             context,
@@ -149,7 +160,9 @@ class MypageScreenState extends State<MypageScreen> {
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (_) => const MyApp()),
+                                          builder: (_) => MyApp(
+                                                themeMode: themeMode,
+                                              )),
                                       (route) => false,
                                     );
                                   },
@@ -168,9 +181,8 @@ class MypageScreenState extends State<MypageScreen> {
                         width: 500,
                         height: 100,
                         decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.grey,
-                            width: 0.5,
+                          border: Border(
+                            bottom: BorderSide(width: 0.5, color: Colors.grey),
                           ),
                         ),
                         child: Row(

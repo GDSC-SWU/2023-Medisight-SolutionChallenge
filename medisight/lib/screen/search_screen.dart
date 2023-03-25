@@ -6,23 +6,7 @@ class SearchScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "검색",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0.0, // 앱 바가 떠있는 효과 제거
-        /*
-        leading: IconButton(
-          icon: Icon(Icons.cancel),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        */
-      ),
+      appBar: AppBar(title: const Text("검색")),
       body: Center(
         child: const Text("검색 화면"),
       ),

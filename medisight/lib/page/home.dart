@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:medisight/screen/disease_select.dart';
+import 'package:medisight/screen/tuto_screen.dart';
 import 'package:medisight/widget/login_widget.dart';
 import 'package:medisight/widget/logged_in_widget.dart';
 import 'package:medisight/screen/permission_request_screen.dart';
@@ -30,7 +30,7 @@ class HomePage extends StatelessWidget {
       return PermissionRequestScreen(
         child: AlarmObserver(
           uid: user.uid,
-          child: const DiseaseSelect(),
+          child: const TutoScreen(),
         ),
       );
     }
