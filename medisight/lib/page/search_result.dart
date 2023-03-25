@@ -1,8 +1,25 @@
+import 'dart:ui';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:medisight/page/search_result_content.dart';
+import 'package:http/http.dart' as http;
+import 'package:medisight/podo/search_result_category.dart';
+import 'dart:convert';
 // import 'package:medisight/page/search_result_content.dart';
 
-class SearchResultPage extends StatelessWidget {
+class SearchResultPage extends StatefulWidget {
+  String code;
+
+  SearchResultPage(this.code);
+
+  @override
+  _SearchResultPageState createState() => _SearchResultPageState();
+}
+
+class _SearchResultPageState extends State<SearchResultPage> {
   static const List<String> selections = [
     "기본 정보",
     "제품 모양",
@@ -13,9 +30,87 @@ class SearchResultPage extends StatelessWidget {
     "유효기간",
     "원료 및 성분"
   ];
-  final String? code; // 전처리 완료된 코드
+  String targetDiseaseStr = "";
 
-  const SearchResultPage(this.code);
+  void checkDisease() async {
+    final response = await http.get(Uri.parse(
+        "http://192.168.123.102:5001/search/precautions/${widget.code}"));
+    final user = FirebaseAuth.instance.currentUser!;
+    CollectionReference userProduct =
+        FirebaseFirestore.instance.collection("user");
+    CollectionReference _diseaseRef =
+        await userProduct.doc(user.uid).collection("disease");
+    QuerySnapshot querySnapshot = await _diseaseRef.get();
+
+    final diseaseList = querySnapshot.docs
+        .map((doc) => (doc.data()! as Map<String, dynamic>)['symptom'])
+        .toList();
+    print("firestore data: ${diseaseList}");
+    Map<String, dynamic> parsed = json.decode(response.body);
+    String? srcStr = Precautions.fromJson(parsed).nbDocData;
+
+    if (srcStr != null) {
+      diseaseList.forEach((e) {
+        if (srcStr.contains(e)) {
+          targetDiseaseStr += (e + " ,") as String;
+        }
+      });
+      if (targetDiseaseStr.length > 0)
+        targetDiseaseStr =
+            targetDiseaseStr.substring(0, targetDiseaseStr.length - 1);
+    }
+
+    if (targetDiseaseStr.length > 0) {
+      _showMyDialog();
+    }
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('기저질환 주의 알림',
+              style: TextStyle(fontWeight: FontWeight.bold)),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('해당 의약품은 설정하신 기저질환과 관련된 주의사항이 있습니다.'),
+                Text(targetDiseaseStr,
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+                Text('의약품 사용시 유의해주세요.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            Container(
+              width: double.infinity,
+              height: 50.0,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
+                child: Text("닫기", style: const TextStyle(fontSize: 20.0)),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    print("+++++++++++++++++++ CODE: " + widget.code + "+++++++++++++++++++");
+    checkDisease();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +123,8 @@ class SearchResultPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           children: selections.mapIndexed((i, selection) {
             return Container(
+              margin: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(3),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   fixedSize: const Size(double.infinity, 70),
@@ -35,25 +132,22 @@ class SearchResultPage extends StatelessWidget {
                 ),
                 onPressed: () {
                   print('button $i clicked.');
-                  /*
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) =>
-                            SearchResultContentPage(selection, code, i)),
+                        builder: (_) => SearchResultContentPage(
+                            title: selection, code: widget.code, idx: i)),
                   );
-                  */
                 },
                 child: Text(
                   selection,
-                  style: new TextStyle(
+                  style: const TextStyle(
                     fontSize: 20.0,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
               ),
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.all(3),
             );
           }).toList(),
         )
