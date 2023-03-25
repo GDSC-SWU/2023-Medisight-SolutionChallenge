@@ -37,7 +37,7 @@ async def guide_ocr(file: UploadFile = File(...)):
         file_object.write(file.file.read())
 
     try:
-        result = detect_hand(file_location)
+        result = detect_hand(file_location, file.filename)
         return {"result": result}
     except:
         return {"error": "오류가 발생했습니다."}
