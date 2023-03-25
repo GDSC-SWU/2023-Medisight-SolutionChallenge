@@ -1,6 +1,7 @@
 import uvicorn
 from fastapi import FastAPI, UploadFile, File
 from ML.ocr import detect_text
+from ML.positionguide import detect_hand
 import re
 
 app = FastAPI()
@@ -28,6 +29,19 @@ async def image_ocr(file: UploadFile = File(...)):
             return (date[0:2]+"년 "+date[2:4]+"월 "+date[4:]+"일")
     except:
         return
+
+@app.post("/guide/")
+async def guide_ocr(file: UploadFile = File(...)):
+    file_location = f"files/{file.filename}"
+    with open(file_location, "wb+") as file_object:
+        file_object.write(file.file.read())
+
+    try:
+        result = detect_hand(file_location)
+        return {"result": result}
+    except:
+        return {"error": "오류가 발생했습니다."}
+
 
 
 if __name__ == '__main__':
