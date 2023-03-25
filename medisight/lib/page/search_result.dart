@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
-import 'package:medisight/page/search_result_content.dart';
+// import 'package:medisight/page/search_result_content.dart';
 
 class SearchResultPage extends StatelessWidget {
   static const List<String> selections = [
@@ -35,12 +35,14 @@ class SearchResultPage extends StatelessWidget {
                 ),
                 onPressed: () {
                   print('button $i clicked.');
+                  /*
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (_) =>
                             SearchResultContentPage(selection, code, i)),
                   );
+                  */
                 },
                 child: Text(
                   selection,
