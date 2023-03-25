@@ -6,11 +6,11 @@ app.use(express.json());
 const dotenv = require("dotenv");
 dotenv.config();
 
-const database = require("./util/Database");
-
 const Search = require("./routes/Search");
+const Map = require("./routes/Map");
 
 app.use("/search", Search);
+app.use("/map", Map);
 
 const PORT = 5001;
 app.listen(PORT, () => {
