@@ -34,6 +34,30 @@ function getEarray(option) {
     });
 }
 
+// 의약품명으로 검색: id(itemSeq) 및 제품명 반환
+router.get('/code/:keyword', async (req, res) => {
+    var keyword = req.params.keyword;
+    try {
+        const result = await prisma.permission.findMany({
+            select: {
+                itemSeq: true,
+                itemName: true,
+                entpName: true,
+            },
+            where: {
+                itemName: {
+                    contains: keyword
+                }
+            }
+        });
+
+        res.send({'data': result});
+    } catch (err) {
+        res.status(500).send('Internal Server Error');
+        console.log(err);
+    }
+});
+
 // 기본 정보 가져오기
 router.get('/basicInfo/:itemSeq', async (req, res) => {
     var itemSeq = req.params.itemSeq;
