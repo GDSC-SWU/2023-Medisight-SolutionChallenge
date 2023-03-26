@@ -21,7 +21,7 @@ class Medicine {
 }
 
 class Services {
-  static const String url = 'http://172.18.23.35:5001/search/code/';
+  static const String url = 'http://34.64.96.217:5001/search/code/';
 
   static Future<List<Medicine>> getData(String keyword) async {
     try {
@@ -106,6 +106,10 @@ class SearchListPageState extends State<SearchListPage> {
               if (keyword.length > 1) {
                 _debouncer.run(() {
                   search();
+                });
+              } else {
+                setState(() {
+                  listData = [];
                 });
               }
             },
