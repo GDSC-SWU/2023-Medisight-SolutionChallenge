@@ -90,15 +90,7 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
     String value = "";
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "내 약품 수정",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0.0, // 앱 바가 떠있는 효과 제거
-      ),
+      appBar: AppBar(title: const Text("내 약품 수정")),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -112,7 +104,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
-                  color: Color(0xff000000),
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.left,
@@ -165,7 +156,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
-                  color: Color(0xff000000),
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.left,
@@ -245,7 +235,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
-                  color: Color(0xff000000),
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.left,
@@ -321,7 +310,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                 style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 16,
-                  color: Color(0xff000000),
                   fontWeight: FontWeight.w600,
                 ),
                 textAlign: TextAlign.left,
@@ -365,7 +353,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 16,
-                      color: Color(0xff000000),
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.left,
@@ -377,7 +364,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                     child: Switch(
                       value: _beepIsChecked,
                       onChanged: _switchBeep,
-                      activeColor: Colors.blue,
                     ))
               ],
             ),
@@ -395,7 +381,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                     style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontSize: 16,
-                      color: Color(0xff000000),
                       fontWeight: FontWeight.w600,
                     ),
                     textAlign: TextAlign.left,
@@ -407,7 +392,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                     child: Switch(
                       value: _vibIsChecked,
                       onChanged: _switchVib,
-                      activeColor: Colors.blue,
                     ))
               ],
             ),

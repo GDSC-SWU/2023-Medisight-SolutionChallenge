@@ -6,15 +6,8 @@ class MapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "지도",
-          style: TextStyle(color: Colors.black),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0.0, // 앱 바가 떠있는 효과 제거
-        /*
+      appBar: AppBar(title: const Text("지도")
+          /*
         leading: IconButton(
           icon: Icon(Icons.cancel),
           onPressed: () {
@@ -22,7 +15,7 @@ class MapScreen extends StatelessWidget {
           },
         ),
         */
-      ),
+          ),
       body: Center(
         child: const Text("지도 화면"),
       ),

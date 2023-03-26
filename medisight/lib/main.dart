@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:medisight/page/home.dart';
-import 'package:medisight/page/tip_sub.dart';
 import 'package:medisight/provider/google_sign_in.dart';
+import 'package:medisight/theme/theme.dart';
+import 'package:medisight/theme/theme_provider.dart';
 import 'package:medisight/widget/logged_in_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,17 @@ void main() async {
 
   final AlarmState alarmState = AlarmState();
   final SharedPreferences preference = await SharedPreferences.getInstance();
+  ThemeMode themeMode = ThemeMode.light;
+
+  // 저장된 테마모드 불러오기.
+  final String? savedThemeMode = preference.getString('themeMode');
+  if (savedThemeMode == null) {
+    themeMode = ThemeMode.light;
+  } else if (savedThemeMode == "light") {
+    themeMode = ThemeMode.light;
+  } else if (savedThemeMode == "dark") {
+    themeMode = ThemeMode.dark;
+  }
 
   // 앱 진입시 알람 탐색을 시작해야 한다.
   AlarmPollingWorker().createPollingWorker(alarmState);
@@ -30,26 +42,39 @@ void main() async {
         create: (context) => PermissionProvider(preference),
       ),
     ],
-    child: const MyApp(),
+    child: MyApp(themeMode: themeMode),
   ));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  final themeMode;
+  const MyApp({super.key, required this.themeMode});
   @override
-  Widget build(BuildContext context) => ChangeNotifierProvider(
-      create: (context) => GoogleSignInProvider(),
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Home Page',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: HomePage()));
+  _MyAppState createState() => _MyAppState();
 }
 
+class _MyAppState extends State<MyApp> {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => GoogleSignInProvider()),
+          ChangeNotifierProvider(
+              // 어플리케이션이 실행되면서 Provider를 적용할 때 불러온 테마모드를 ThemeProvider에 넘겨줍니다.
+              create: (_) => ThemeProvider(initThemeMode: widget.themeMode)),
+        ],
+        builder: (context, _) {
+          return MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Home Page',
+              theme: MyThemes.lightTheme,
+              darkTheme: MyThemes.darkTheme,
+              themeMode: Provider.of<ThemeProvider>(context).themeMode,
+              home: HomePage());
+        });
+  }
+}
 
 
 /*
