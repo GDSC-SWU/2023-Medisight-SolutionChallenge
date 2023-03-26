@@ -49,7 +49,7 @@ class BottomNaviState extends State<BottomNavi> {
   late List<GlobalKey<NavigatorState>> navigatorKeyList = [];
 
   void onItemTapped(int index) {
-    setState(() async {
+    setState(() {
       if (index == 0) {
         Navigator.pushAndRemoveUntil(
           context,
@@ -57,7 +57,7 @@ class BottomNaviState extends State<BottomNavi> {
           (route) => false,
         );
       } else if (index == 1) {
-        await LaunchApp.openApp(
+        LaunchApp.openApp(
             androidPackageName: 'com.google.android.apps.googleassistant');
       } else if (index == 2) {
         Navigator.pushAndRemoveUntil(
