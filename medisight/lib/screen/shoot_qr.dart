@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
+import 'package:medisight/page/search_result.dart';
 import 'package:medisight/screen/test_screen.dart';
 import 'package:http_parser/http_parser.dart';
 
@@ -175,7 +176,7 @@ class ShootQrState extends State<ShootQr> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => TestScreen(displayValue),
+                builder: (_) => SearchResultPage(displayValue),
               ),
             );
             break;
