@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medisight/screen/map_route_screen.dart';
 import 'info_screen.dart';
 import 'camera_screen.dart';
 import 'search_screen.dart';
@@ -117,7 +118,7 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const MapScreen()),
+                      MaterialPageRoute(builder: (_) => MapScreen()),
                     );
                   },
                 ),
