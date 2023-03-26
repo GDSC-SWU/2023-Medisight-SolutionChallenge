@@ -9,6 +9,9 @@ import 'package:provider/provider.dart';
 import 'home_screen.dart';
 import 'mypage_screen.dart';
 
+// google assistant
+import 'package:external_app_launcher/external_app_launcher.dart';
+
 /*
 void main() => runApp(const MyApp());
 
@@ -46,13 +49,16 @@ class BottomNaviState extends State<BottomNavi> {
   late List<GlobalKey<NavigatorState>> navigatorKeyList = [];
 
   void onItemTapped(int index) {
-    setState(() {
+    setState(() async {
       if (index == 0) {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => const BottomNavi(selectedIndex: 0)),
           (route) => false,
         );
+      } else if (index == 1) {
+        await LaunchApp.openApp(
+            androidPackageName: 'com.google.android.apps.googleassistant');
       } else if (index == 2) {
         Navigator.pushAndRemoveUntil(
           context,
