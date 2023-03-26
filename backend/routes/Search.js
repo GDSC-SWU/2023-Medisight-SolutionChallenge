@@ -492,7 +492,7 @@ router.get('/validity/:itemSeq', async (req, res) => {
             },
             take: 1
         });
-        res.send(result);
+        res.send(result[0]);
     } catch (err) {
         res.status(500).send('Internal Server Error');
         console.log(err);
@@ -523,7 +523,7 @@ router.get('/materials/:itemSeq', async (req, res) => {
             },
             take: 1
         });
-        res.send(result);
+        res.send(result[0]);
     } catch (err) {
         res.status(500).send('Internal Server Error');
         console.log(err);
