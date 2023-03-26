@@ -69,6 +69,9 @@ dependencies:
 
   # REST API
   http: ^0.13.5
+  youtube_player_flutter: ^8.1.2
+  smooth_page_indicator: ^1.0.1
+  external_app_launcher: ^3.1.0
 
   #Camera
   camera: ^0.9.4+1
@@ -101,6 +104,12 @@ flutter:
   assets:
     - assets/images/img_back_key.png
     - assets/images/img_background.png
+    - assets/images/img_info.png
+    - assets/images/medisight_logo.png
+    - assets/images/img_camera.png
+    - assets/images/img_map.png
+    - assets/images/img_search.png
+    - assets/images/img_alarm.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
