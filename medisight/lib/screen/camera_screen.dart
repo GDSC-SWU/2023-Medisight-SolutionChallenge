@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'shoot_medi.dart';
+import 'shoot_period.dart';
 import 'shoot_qr.dart';
 
 class CameraScreen extends StatelessWidget {
@@ -93,7 +93,7 @@ class CameraScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const ShootMedi()),
+                        MaterialPageRoute(builder: (_) => ShootPeriod()),
                       );
                     },
                   ),
