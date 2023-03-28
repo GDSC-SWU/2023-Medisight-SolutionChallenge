@@ -5,7 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:medisight/podo/route_map_info.dart';
 
 class RouteMapWidget extends StatefulWidget {
-  final Function() changeViewFlag;
   RouteMapInfo routeMapInfo;
   double userLat;
   double userLng;
@@ -14,7 +13,6 @@ class RouteMapWidget extends StatefulWidget {
 
   RouteMapWidget(
       {Key? key,
-      required this.changeViewFlag,
       required this.routeMapInfo,
       required this.userLat,
       required this.userLng,
@@ -84,7 +82,7 @@ class _RouteMapWidgetState extends State<RouteMapWidget> {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => widget.changeViewFlag(),
+        onPressed: () => Navigator.pop(context),
         label: Text('경로안내 보기', style: const TextStyle(fontSize: 20.0)),
         icon: Icon(Icons.route),
       ),
