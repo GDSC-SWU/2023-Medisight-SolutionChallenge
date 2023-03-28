@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:intl/intl.dart';
 
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:flutter/material.dart';
 import 'package:medisight/provider/alarm_state.dart';
 import 'package:medisight/service/alarm_scheduler.dart';
+import 'package:medisight/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
@@ -18,17 +20,18 @@ class AlarmScreen extends StatefulWidget {
 }
 
 class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
+  late FlutterTts tts = FlutterTts();
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    tts.speak(widget.alarm!['name'] + " 알람입니다.");
 
     if (widget.alarm!['beep']) {
       FlutterRingtonePlayer.play(
-          android: AndroidSounds.notification,
-          ios: IosSounds.glass,
+          fromAsset: "assets/audios/ringtone.mp3",
           looping: true,
           volume: 5,
           asAlarm: false);
@@ -94,6 +97,8 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     final now = DateTime.now();
     final format = DateFormat('Hm');
 
@@ -106,48 +111,70 @@ class _AlarmScreenState extends State<AlarmScreen> with WidgetsBindingObserver {
               child: Container(
                 width: 325,
                 height: 325,
-                decoration: const ShapeDecoration(
+                decoration: ShapeDecoration(
                     shape: CircleBorder(
                         side: BorderSide(
-                            color: Colors.deepOrange,
+                            color: themeMode == ThemeMode.light
+                                ? Color.fromARGB(255, 255, 206, 60)
+                                : Color.fromARGB(255, 255, 214, 0),
                             style: BorderStyle.solid,
                             width: 4))),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    const Icon(
+                    Icon(
                       Icons.alarm,
-                      color: Colors.deepOrange,
+                      color: themeMode == ThemeMode.light
+                          ? Color.fromARGB(255, 255, 206, 60)
+                          : Color.fromARGB(255, 255, 214, 0),
                       size: 32,
                     ),
                     Text(
                       format.format(now),
                       style: const TextStyle(
-                          fontSize: 52,
-                          fontWeight: FontWeight.w900,
-                          color: Color.fromARGB(255, 0, 0, 0)),
+                          fontSize: 52, fontWeight: FontWeight.w900),
                     ),
                     Text(
                       widget.alarm!['name'],
-                      style: const TextStyle(
-                          color: Color.fromARGB(255, 0, 0, 0), fontSize: 24),
+                      style: const TextStyle(fontSize: 24),
                     ),
                   ],
                 ),
               ),
             ),
             widget.alarm!['expire'] != ""
-                ? Text('사용기한: ${widget.alarm!['expire']}까지')
+                ? Text(
+                    '사용기한: ${widget.alarm!['expire']}까지',
+                    style: const TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )
                 : Container(),
             ElevatedButton(
                 onPressed: _dismissAlarm,
-                child: const Text('알람 해제'),
                 style: ElevatedButton.styleFrom(
-                    primary: Colors.deepOrange,
+                    backgroundColor: themeMode == ThemeMode.light
+                        ? Color.fromARGB(255, 255, 206, 60)
+                        : Theme.of(context).canvasColor,
+                    side: BorderSide(
+                        color: themeMode == ThemeMode.light
+                            ? Color.fromARGB(255, 255, 206, 60)
+                            : Color.fromARGB(255, 255, 214, 0),
+                        width: 2.5),
                     elevation: 3,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30)),
-                    padding: const EdgeInsets.all(20))),
+                    padding: const EdgeInsets.all(20)),
+                child: Text(
+                  widget.alarm!['name'] + ' 알람 해제',
+                  style: TextStyle(
+                    color: themeMode == ThemeMode.light
+                        ? Colors.black
+                        : Color.fromARGB(255, 255, 214, 0),
+                  ),
+                )),
           ],
         ),
       ),

@@ -24,10 +24,25 @@ class MyThemes {
 
   static final darkTheme = ThemeData(
     brightness: Brightness.dark,
+    canvasColor: Color.fromARGB(255, 22, 22, 22),
     appBarTheme: const AppBarTheme(
         foregroundColor: Color.fromARGB(255, 255, 255, 255),
-        backgroundColor: Color.fromARGB(255, 46, 46, 46),
+        backgroundColor: Color.fromARGB(255, 22, 22, 22),
         elevation: 0.5,
         centerTitle: true),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        side: BorderSide(color: Color.fromARGB(255, 255, 214, 0), width: 2.5),
+        foregroundColor: Color.fromARGB(255, 255, 214, 0),
+        backgroundColor: Color.fromARGB(255, 22, 22, 22),
+      ),
+    ),
+    // elevatedButtonTheme: ElevatedButtonThemeData(
+    //   style: ElevatedButton.styleFrom(
+    //     side: BorderSide(color: Color.fromARGB(255, 255, 72, 220), width: 2.5),
+    //     foregroundColor: Color.fromARGB(255, 255, 72, 220),
+    //     backgroundColor: Color.fromARGB(255, 22, 22, 22),
+    //   ),
+    // ),
   );
 }
