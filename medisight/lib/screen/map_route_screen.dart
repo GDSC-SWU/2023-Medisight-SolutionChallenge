@@ -88,8 +88,10 @@ class _MapRouteScreenState extends State<MapRouteScreen> {
   late FlutterTts tts = FlutterTts();
   final assetsAudioPlayer = AssetsAudioPlayer();
 
-  late Timer gpsTimer;
-  late Timer audioTimer;
+  late StreamSubscription<LocationData> locationSubscription;
+
+  Timer? gpsTimer;
+  Timer? audioTimer;
 
   RouteInfo prevRouteInfo = RouteInfo(
       totalDistance: 0,
@@ -117,77 +119,145 @@ class _MapRouteScreenState extends State<MapRouteScreen> {
     });
   }
 
-  // 5초마다 음성 안내
-  speakInstruction() {
-    // 인스트럭션에 변화가 없으면 안내하지 않음
-    if (prevRouteInfo.instNow.description != routeInfo.instNow.description) {
-      tts.speak(routeInfo.instNow.description);
-      prevRouteInfo = routeInfo;
+  // 일정 초 간격으로 음성 안내
+  speakInstruction(int remain, int turnType) async {
+    await tts.speak(routeInfo.instNow.description);
+    if (remain <= 10) {
+      await tts.speak("$remain 미터 앞, ${getDirection(turnType)}입니다.");
     }
   }
 
-  // 하나의 task가 끝나면 띵동소리
-  bool instructionChanged() {
-    return (prevRouteInfo.instNext.description !=
-            routeInfo.instNext.description) ||
-        (prevRouteInfo.instNextNext.description !=
-            routeInfo.instNextNext.description) ||
-        (prevRouteInfo.instNow.description == "");
+  String getDirection(int turnType) {
+    switch (turnType) {
+      case 12:
+      case 212:
+        return "좌회전";
+      case 13:
+      case 213:
+        return "우회전";
+      case 17:
+      case 215:
+        return "10시 방향 좌회전";
+      case 18:
+      case 216:
+        return "2시 방향 우회전";
+      case 16:
+      case 214:
+        return "8시 방향 좌회전";
+      case 19:
+      case 217:
+        return "4시 방향 우회전";
+      case 14:
+        return "유턴";
+      case 201:
+        return "목적지";
+      default:
+        return "직진";
+    }
   }
 
   @override
   void initState() {
     super.initState();
+    tts.awaitSpeakCompletion(true);
 
-    // gps location update interval
-    gpsTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
-      location.getLocation().then((res) {
-        setState(() {
-          widget.lat = res.latitude!;
-          widget.lng = res.longitude!;
-        });
+    locationSubscription =
+        location.onLocationChanged.listen((LocationData currentLocation) {
+      setState(() {
+        widget.lat = currentLocation.latitude!;
+        widget.lng = currentLocation.longitude!;
       });
-
-      RouteInfoService.getData(
-              widget.lat, widget.lng, widget.destLat, widget.destLng)
-          .then((response) {
-        setState(() {
-          routeInfo = response;
-        });
-      });
-      RouteMapInfoService.getData(
-              widget.lat, widget.lng, widget.destLat, widget.destLng)
-          .then((response) {
-        setState(() {
-          routeMapInfo = response;
-        });
-      });
-      print("${widget.lat} ${widget.lng}");
     });
 
-    // audio instruction interval
-    audioTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (instructionChanged()) {
-        assetsAudioPlayer
-            .open(
-          Audio("assets/audios/route_changed.mp3"),
-        )
-            .then((_) {
-          Future.delayed(const Duration(milliseconds: 1300), () {
-            speakInstruction();
+    // 최초 데이터 받아오기
+    RouteInfoService.getData(
+            widget.lat, widget.lng, widget.destLat, widget.destLng)
+        .then((response) {
+      setState(() {
+        routeInfo = response;
+      });
+    });
+    RouteMapInfoService.getData(
+            widget.lat, widget.lng, widget.destLat, widget.destLng)
+        .then((response) {
+      setState(() {
+        routeMapInfo = response;
+      });
+      tts.speak("경로 안내를 시작합니다.").then((_) {
+        speakInstruction(
+            routeInfo.instNext.remain, routeInfo.instNext.turnType);
+      });
+    });
+
+    if (gpsTimer != null) {
+      // gps location update interval
+      gpsTimer = Timer.periodic(const Duration(seconds: 31), (timer) {
+        RouteInfoService.getData(
+                widget.lat, widget.lng, widget.destLat, widget.destLng)
+            .then((response) {
+          setState(() {
+            routeInfo = response;
           });
         });
-      } else {
-        speakInstruction();
-      }
-    });
+        RouteMapInfoService.getData(
+                widget.lat, widget.lng, widget.destLat, widget.destLng)
+            .then((response) {
+          setState(() {
+            routeMapInfo = response;
+          });
+        });
+
+        // audio instruction
+        int remain = routeInfo.instNext.remain;
+        int turnType = routeInfo.instNext.turnType;
+        // 다음 task까지 10m 이하일 경우 띵동소리
+        if (remain <= 10) {
+          assetsAudioPlayer
+              .open(
+            Audio("assets/audios/route_changed.mp3"),
+          )
+              .then((_) {
+            Future.delayed(const Duration(milliseconds: 1300), () {
+              speakInstruction(remain, turnType);
+            });
+          });
+        } else {
+          speakInstruction(remain, turnType);
+        }
+        // print("${widget.lat} ${widget.lng}");
+      });
+    }
+
+    if (audioTimer != null) {
+      audioTimer = Timer.periodic(const Duration(seconds: 21), (timer) {
+        // audio instruction
+        int remain = routeInfo.instNext.remain;
+        int turnType = routeInfo.instNext.turnType;
+        // 다음 task까지 10m 이하일 경우 띵동소리
+        if (remain <= 10) {
+          assetsAudioPlayer
+              .open(
+            Audio("assets/audios/route_changed.mp3"),
+          )
+              .then((_) {
+            Future.delayed(const Duration(milliseconds: 1300), () {
+              speakInstruction(remain, turnType);
+            });
+          });
+        } else {
+          speakInstruction(remain, turnType);
+        }
+        // print("${widget.lat} ${widget.lng}");
+      });
+    }
   }
 
   @override
   void dispose() {
     super.dispose();
-    gpsTimer.cancel();
-    audioTimer.cancel();
+    gpsTimer?.cancel();
+    audioTimer?.cancel();
+    locationSubscription.cancel();
   }
 
   @override
@@ -196,15 +266,12 @@ class _MapRouteScreenState extends State<MapRouteScreen> {
         appBar: AppBar(
           title: Text("약국 경로안내"),
         ),
-        body: instructionView
-            ? RouteInstructionWidget(
-                changeViewFlag: changeViewFlag, routeInfo: routeInfo)
-            : RouteMapWidget(
-                changeViewFlag: changeViewFlag,
-                routeMapInfo: routeMapInfo,
-                userLat: widget.lat,
-                userLng: widget.lng,
-                destLat: widget.destLat,
-                destLng: widget.destLng));
+        body: RouteInstructionWidget(
+            routeInfo: routeInfo,
+            routeMapInfo: routeMapInfo,
+            lat: widget.lat,
+            lng: widget.lng,
+            destLat: widget.destLat,
+            destLng: widget.destLng));
   }
 }

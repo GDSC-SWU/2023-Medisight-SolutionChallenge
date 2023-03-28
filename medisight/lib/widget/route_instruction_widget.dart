@@ -2,13 +2,26 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:medisight/podo/route_info.dart';
+import 'package:medisight/podo/route_map_info.dart';
 import 'dart:math' as math;
 
+import 'package:medisight/widget/route_map_widget.dart';
+
 class RouteInstructionWidget extends StatefulWidget {
-  final Function() changeViewFlag;
   RouteInfo routeInfo;
+  RouteMapInfo routeMapInfo;
+  double lat;
+  double lng;
+  double destLat;
+  double destLng;
   RouteInstructionWidget(
-      {Key? key, required this.changeViewFlag, required this.routeInfo})
+      {Key? key,
+      required this.routeInfo,
+      required this.routeMapInfo,
+      required this.lat,
+      required this.lng,
+      required this.destLat,
+      required this.destLng})
       : super(key: key);
 
   @override
@@ -119,7 +132,17 @@ class _RouteInstructionWidgetState extends State<RouteInstructionWidget> {
               child: ElevatedButton.icon(
                 icon: Icon(Icons.room),
                 label: Text("지도 보기", style: const TextStyle(fontSize: 20.0)),
-                onPressed: () => widget.changeViewFlag(),
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => RouteMapWidget(
+                        routeMapInfo: widget.routeMapInfo,
+                        userLat: widget.lat,
+                        userLng: widget.lng,
+                        destLat: widget.destLat,
+                        destLng: widget.destLng),
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 20),
