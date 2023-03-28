@@ -34,7 +34,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
 
   void checkDisease() async {
     final response = await http.get(Uri.parse(
-        "http://192.168.123.102:5001/search/precautions/${widget.code}"));
+        "http://34.64.96.217:5001/search/precautions/${widget.code}"));
     final user = FirebaseAuth.instance.currentUser!;
     CollectionReference userProduct =
         FirebaseFirestore.instance.collection("user");
