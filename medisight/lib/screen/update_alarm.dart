@@ -275,36 +275,30 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
               child: TextField(
                 controller: timeController,
                 readOnly: true,
+                onTap: () async {
+                  var time = (await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                      initialEntryMode: TimePickerEntryMode.input,
+                      cancelText: "취소",
+                      confirmText: "확인",
+                      helpText: "알람 시간 설정",
+                      hourLabelText: "시간",
+                      minuteLabelText: "분"))!; //end of showTimePicker
+                  timeController.text = time.format(context);
+                },
                 style: const TextStyle(
                   fontFamily: 'Montserrat',
                   fontSize: 14,
                   color: Color(0xff000000),
                   fontWeight: FontWeight.w500,
                 ),
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    onPressed: () async {
-                      var time = await showTimePicker(
-                          context: context,
-                          initialTime: fromString(timeController.text),
-                          initialEntryMode: TimePickerEntryMode.input,
-                          cancelText: "취소",
-                          confirmText: "확인",
-                          helpText: "알람 시간 설정",
-                          hourLabelText: "시간",
-                          minuteLabelText: "분"); //end of showTimePicker
-                      timeController.text = time!.format(context);
-                    },
-                    icon: const Icon(
-                      Icons.add_alert,
-                      color: Color(0xffd4d411),
-                    ),
-                  ),
+                decoration: const InputDecoration(
                   contentPadding:
-                      const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+                      EdgeInsets.symmetric(vertical: 18, horizontal: 20),
                   border: InputBorder.none,
                   hintText: "복약시간을 선택하세요.",
-                  hintStyle: const TextStyle(
+                  hintStyle: TextStyle(
                     fontFamily: 'Montserrat',
                     fontSize: 14,
                     color: Color(0xffcbd0d6),
@@ -312,7 +306,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                 ),
                 onChanged: (text) {
                   value = text;
-                  print(value);
                 },
               ),
             ),
@@ -346,7 +339,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                 buttonValuesList: ["일", "월", "화", "수", "목", "금", "토"],
                 checkBoxButtonValues: (values) {
                   dateController.text = values.join(" ");
-                  print(values);
                 },
                 selectedColor: Theme.of(context).colorScheme.secondary,
               ),
@@ -416,86 +408,106 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                final String name = nameController.text.isEmpty
-                    ? widget.alarm['name']
-                    : nameController.text;
-                final String timestr = timeController.text;
-                final String expiration = expirationController.text;
-                final List<String> newdateList = dateController.text.split(' ');
-                final List<bool> weekday = [
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-                ];
-                AlarmScheduler scheduler = new AlarmScheduler();
+            Container(
+              padding: const EdgeInsets.only(
+                  left: 25, top: 0, right: 25, bottom: 13),
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  final String name = nameController.text.isEmpty
+                      ? widget.alarm['name']
+                      : nameController.text;
+                  final String timestr = timeController.text;
+                  final String expiration = expirationController.text;
+                  final List<String> newdateList =
+                      dateController.text.split(' ');
+                  final List<bool> weekday = [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ];
+                  AlarmScheduler scheduler = new AlarmScheduler();
 
-                if (dateController.text.isNotEmpty) {
-                  newdateList.contains('일')
-                      ? weekday[0] = true
-                      : weekday[0] = false;
-                  newdateList.contains('월')
-                      ? weekday[1] = true
-                      : weekday[1] = false;
-                  newdateList.contains('화')
-                      ? weekday[2] = true
-                      : weekday[2] = false;
-                  newdateList.contains('수')
-                      ? weekday[3] = true
-                      : weekday[3] = false;
-                  newdateList.contains('목')
-                      ? weekday[4] = true
-                      : weekday[4] = false;
-                  newdateList.contains('금')
-                      ? weekday[5] = true
-                      : weekday[5] = false;
-                  newdateList.contains('토')
-                      ? weekday[6] = true
-                      : weekday[6] = false;
+                  if (dateController.text.isNotEmpty) {
+                    newdateList.contains('일')
+                        ? weekday[0] = true
+                        : weekday[0] = false;
+                    newdateList.contains('월')
+                        ? weekday[1] = true
+                        : weekday[1] = false;
+                    newdateList.contains('화')
+                        ? weekday[2] = true
+                        : weekday[2] = false;
+                    newdateList.contains('수')
+                        ? weekday[3] = true
+                        : weekday[3] = false;
+                    newdateList.contains('목')
+                        ? weekday[4] = true
+                        : weekday[4] = false;
+                    newdateList.contains('금')
+                        ? weekday[5] = true
+                        : weekday[5] = false;
+                    newdateList.contains('토')
+                        ? weekday[6] = true
+                        : weekday[6] = false;
 
-                  final alarmRef = product?.doc(widget.alarm.id);
-                  await alarmRef?.update({
-                    'weekday': weekday,
-                    'expire': expiration,
-                    'name': name,
-                    'time': timestr,
-                    "beep": _beepIsChecked,
-                    "vibration": _vibIsChecked,
-                  });
-                  final alarmData = await alarmRef?.get();
+                    final alarmRef = product?.doc(widget.alarm.id);
+                    await alarmRef?.update({
+                      'weekday': weekday,
+                      'expire': expiration,
+                      'name': name,
+                      'time': timestr,
+                      "beep": _beepIsChecked,
+                      "vibration": _vibIsChecked,
+                    });
+                    final alarmData = await alarmRef?.get();
 
-                  if (widget.alarm['enabled']) {
-                    await scheduler.cancelRepeatable(widget.alarm);
-                    await scheduler.scheduleRepeatable(alarmData);
+                    if (widget.alarm['enabled']) {
+                      await scheduler.cancelRepeatable(widget.alarm);
+                      await scheduler.scheduleRepeatable(alarmData);
+                    }
+
+                    nameController.text = "";
+                    timeController.text = "";
+                    dateController.text = "";
+
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/', (_) => false);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => AlarmObserver(
+                              uid: widget.uid,
+                              child: MediScreen(uid: widget.uid))),
+                    );
+                  } else if (dateController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('요일을 선택하세요.'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
                   }
-
-                  nameController.text = "";
-                  timeController.text = "";
-                  dateController.text = "";
-
-                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => AlarmObserver(
-                            uid: widget.uid,
-                            child: MediScreen(uid: widget.uid))),
-                  );
-                } else if (dateController.text.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('요일을 선택하세요.'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                }
-              },
-              child: const Text('수정하기'),
+                },
+                style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    padding: const EdgeInsets.all(20)),
+                child: const Text(
+                  '수정하기',
+                  style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
