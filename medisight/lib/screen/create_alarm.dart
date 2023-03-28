@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:medisight/screen/shoot_period.dart';
 import '../provider/CustomCheckBoxGroup.dart';
 import 'package:medisight/service/alarm_scheduler.dart';
 import 'package:medisight/screen/medi_screen.dart';
 import 'package:medisight/screen/alarm_observer.dart';
 import 'package:intl/intl.dart';
-
 import 'dart:convert';
 
 class CreateAlarm extends StatefulWidget {
@@ -189,8 +189,13 @@ class _CreateAlarmState extends State<CreateAlarm> {
                 ),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    onPressed: () async {
-                      // 유효기간 촬영 페이지와 연동
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ShootPeriod(),
+                        ),
+                      );
                     },
                     icon: const Icon(
                       Icons.camera_alt,

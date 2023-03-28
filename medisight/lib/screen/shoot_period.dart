@@ -4,10 +4,12 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
-import 'package:medisight/screen/test_screen.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ShootPeriod extends StatefulWidget {
   @override
@@ -18,16 +20,21 @@ class ShootPeriodState extends State<ShootPeriod> {
   CameraController? _cameraController;
   Future<void>? _initCameraControllerFuture;
   int cameraIndex = 0;
-
   bool _canVibrate = true;
+  final FlutterTts tts = FlutterTts();
+  bool isAlert = false;
 
-  late File captureImage;
+  final user = FirebaseAuth.instance.currentUser!;
+  CollectionReference userProduct =
+      FirebaseFirestore.instance.collection('user');
 
   @override
   void initState() {
     super.initState();
     _initCamera();
     _initRecog();
+    tts.setLanguage('en');
+    tts.setSpeechRate(0.4);
   }
 
   Future<void> _initCamera() async {
@@ -74,14 +81,12 @@ class ShootPeriodState extends State<ShootPeriod> {
               future: _initCameraControllerFuture,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  Future.delayed(const Duration(seconds: 5), () {
-                    print(
-                        "================================start!================================");
-                    // 5초마다 snapshot을 찍어서, 결과 도출 or 서버로 보냄
-                    cameraSnapshot();
-                    print(
-                        "********************************capture!***************************************");
-                  });
+                  if (!isAlert) {
+                    Future.delayed(const Duration(seconds: 5), () {
+                      // 5초마다 snapshot을 찍어서, 결과 도출 or 서버로 보냄
+                      cameraSnapshot();
+                    });
+                  }
                   return SizedBox(
                     width: size.width,
                     height: size.width,
@@ -127,13 +132,32 @@ class ShootPeriodState extends State<ShootPeriod> {
       final response = await http.Response.fromStream(await request.send());
 
       if (response.statusCode == 200) {
-        print("===============Success connect============");
         final responseBody = json.decode(utf8.decode(response.bodyBytes));
         if (responseBody == null) {
-          print("카메라에 상자의 네 꼭짓점이 모두 나오게 스캔해 주세요.");
+          tts.speak("카메라에 상자의 네 꼭짓점이 모두 나오게 스캔해 주세요.");
         } else {
           FlutterBeep.beep(); // 비프음
           if (_canVibrate) Vibrate.feedback(FeedbackType.heavy); // 진동
+          isAlert = true;
+          showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('유효기간'),
+              content: Text(responseBody),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      isAlert = false;
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: const Text('닫기'),
+                ),
+              ],
+            ),
+          );
           print("responseBody : $responseBody");
         }
       } else {
@@ -158,3 +182,27 @@ class ShootPeriodState extends State<ShootPeriod> {
     }
   }
 }
+
+/*
+
+Future<void> _getRoute(User user) async {
+  final documentSnapshot =
+      await FirebaseFirestore.instance.collection('user').doc(user.uid).get();
+  bool subfield = documentSnapshot.data()?.containsKey('isAlarm') ?? false;
+
+  if (subfield) {
+    // 알람페이지에서 들어왔을 떄
+    await FirebaseFirestore.instance
+        .collection('user')
+        .doc(user.uid)
+        .set({'isAlarm': false});
+
+    return Navigator.pop(
+      context,
+      MaterialPageRoute(builder: (_) => CreateAlarm()),
+    );
+  } else {
+    // 촬영 페이지에서 들어왔을 때
+  }
+}
+*/
