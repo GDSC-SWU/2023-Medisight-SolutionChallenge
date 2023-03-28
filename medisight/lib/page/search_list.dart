@@ -25,6 +25,8 @@ class Services {
 
   static Future<List<Medicine>> getData(String keyword) async {
     try {
+      if (keyword.length < 2) return [];
+
       final response = await http.get(Uri.parse(url + keyword));
       if (response.statusCode == 200) {
         List<Medicine> list = parseData(response.body);
