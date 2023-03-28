@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medisight/screen/shoot_period.dart';
 import '../provider/CustomCheckBoxGroup.dart';
@@ -10,7 +11,9 @@ import 'dart:convert';
 
 class CreateAlarm extends StatefulWidget {
   final String uid;
-  const CreateAlarm({Key? key, required this.uid}) : super(key: key);
+  final responseBody;
+  const CreateAlarm({Key? key, required this.uid, required this.responseBody})
+      : super(key: key);
 
   @override
   State<CreateAlarm> createState() => _CreateAlarmState();
@@ -38,6 +41,22 @@ class _CreateAlarmState extends State<CreateAlarm> {
     });
   }
 
+  void _onCameraButtonPressed() async {
+    // navigate to camera screen
+    final expirationDate = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const ShootPeriod(
+          isFrom: 'create',
+          alarm: null,
+        ),
+      ),
+    );
+    setState(() {
+      expirationController.text = expirationDate;
+    });
+  }
+
   int getAvailableAlarmId() {
     int id = 14;
 
@@ -57,6 +76,10 @@ class _CreateAlarmState extends State<CreateAlarm> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.responseBody != '-1') {
+      expirationController.text = widget.responseBody;
+    }
+
     String value = "";
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -77,7 +100,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
               width: size.width,
               padding: const EdgeInsets.only(
                   left: 34, top: 30, right: 34, bottom: 13),
-              // padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 13),
               child: const Text(
                 '약품명',
                 style: TextStyle(
@@ -189,14 +211,18 @@ class _CreateAlarmState extends State<CreateAlarm> {
                 ),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ShootPeriod(),
-                        ),
-                      );
-                    },
+                    onPressed: _onCameraButtonPressed,
+                    // {
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (_) => const ShootPeriod(
+                    //         isFrom: 'create',
+                    //         alarm: null,
+                    //       ),
+                    //     ),
+                    //   );
+                    // },
                     icon: const Icon(
                       Icons.camera_alt,
                       color: Color(0xff000000),

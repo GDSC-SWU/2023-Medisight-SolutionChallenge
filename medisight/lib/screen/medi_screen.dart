@@ -40,7 +40,8 @@ class _MediScreenState extends State<MediScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => UpdateAlarm(uid: uid, alarm: alarm)));
+            builder: (context) =>
+                UpdateAlarm(uid: uid, alarm: alarm, responseBody: '-1')));
   }
 
   @override
@@ -90,7 +91,8 @@ class _MediScreenState extends State<MediScreen> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => CreateAlarm(uid: widget.uid)));
+                  builder: (context) =>
+                      CreateAlarm(uid: widget.uid, responseBody: '-1')));
         },
         child: Icon(Icons.add),
       ),

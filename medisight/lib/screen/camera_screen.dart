@@ -93,7 +93,11 @@ class CameraScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => ShootPeriod()),
+                        MaterialPageRoute(
+                            builder: (_) => ShootPeriod(
+                                  isFrom: 'camera',
+                                  alarm: null,
+                                )),
                       );
                     },
                   ),
