@@ -59,7 +59,7 @@ class ShootMediState extends State<ShootMedi> {
         Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => SearchResultPage(code),
+              builder: (_) => SearchResultPage(code!),
             ));
       }
       _camState = false;

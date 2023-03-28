@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
-import 'package:medisight/screen/test_screen.dart';
 import 'package:flutter_beep/flutter_beep.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:http_parser/http_parser.dart';
-
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:medisight/screen/create_alarm.dart';
 import '../page/search_result.dart';
 
 class ShootQr extends StatefulWidget {
@@ -20,10 +20,8 @@ class ShootQrState extends State<ShootQr> {
   CameraController? _cameraController;
   Future<void>? _initCameraControllerFuture;
   int cameraIndex = 0;
-
   bool _canVibrate = true;
-
-  late File captureImage;
+  final FlutterTts tts = FlutterTts();
 
   @override
   void initState() {
@@ -125,9 +123,10 @@ class ShootQrState extends State<ShootQr> {
       final response = await http.Response.fromStream(await request.send());
 
       if (response.statusCode == 200) {
-        print("===============Success connect============");
         final responseBody = json.decode(utf8.decode(response.bodyBytes));
-        print("responseBody : $responseBody");
+        String responseBodyCut = responseBody.toString().substring(9);
+        tts.speak(responseBodyCut.toString());
+        print(responseBodyCut.toString());
       } else {
         print(
             "===============Fail connect: ${response.statusCode}============");
@@ -195,12 +194,11 @@ class ShootQrState extends State<ShootQr> {
     } else {
       for (Barcode barcode in barcodes) {
         final BarcodeType type = barcode.type;
-        final String rowValue;
         final String? displayValue = barcode.displayValue;
         final bool isMedi;
 
         if (displayValue == null) {
-          print("올바른 바코드를 스캔해 주세요.");
+          tts.speak("올바른 바코드를 스캔해 주세요.");
         } else {
           switch (type) {
             case BarcodeType.product:
@@ -208,11 +206,11 @@ class ShootQrState extends State<ShootQr> {
               if (isMedi) {
                 qrCallback(displayValue);
               } else {
-                print("의약품의 바코드를 스캔해 주세요.2");
+                tts.speak("의약품의 바코드를 스캔해 주세요.");
               }
               break;
             default:
-              print("의약품의 바코드를 스캔해 주세요.1");
+              tts.speak("의약품의 바코드를 스캔해 주세요.");
               break;
           }
         }
