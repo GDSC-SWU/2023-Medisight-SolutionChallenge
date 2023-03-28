@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:medisight/screen/shoot_period.dart';
 import 'package:medisight/service/alarm_scheduler.dart';
 import '../provider/CustomCheckBoxGroup.dart';
 import 'package:medisight/screen/medi_screen.dart';
@@ -9,8 +10,13 @@ import 'package:intl/intl.dart';
 class UpdateAlarm extends StatefulWidget {
   final String uid;
   final alarm;
+  final responseBody;
 
-  const UpdateAlarm({Key? key, required this.uid, required this.alarm})
+  const UpdateAlarm(
+      {Key? key,
+      required this.uid,
+      required this.alarm,
+      required this.responseBody})
       : super(key: key);
 
   @override
@@ -70,7 +76,12 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
   @override
   Widget build(BuildContext context) {
     if (isFirst) {
-      expirationController.text = widget.alarm['expire'];
+      if (widget.responseBody != '-1') {
+        expirationController.text = widget.responseBody;
+      } else {
+        expirationController.text = widget.alarm['expire'];
+      }
+
       nameController.text = widget.alarm['name'];
       timeController.text = widget.alarm['time'];
       String date = '';
@@ -201,7 +212,13 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     onPressed: () async {
-                      // 유효기간 촬영 페이지와 연동
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => ShootPeriod(
+                              isFrom: 'update', alarm: widget.alarm),
+                        ),
+                      );
                     },
                     icon: const Icon(
                       Icons.camera_alt,

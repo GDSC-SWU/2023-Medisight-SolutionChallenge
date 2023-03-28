@@ -10,8 +10,15 @@ import 'package:http_parser/http_parser.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:medisight/screen/create_alarm.dart';
+import 'package:medisight/screen/update_alarm.dart';
 
 class ShootPeriod extends StatefulWidget {
+  final String isFrom;
+  final alarm;
+  const ShootPeriod({Key? key, required this.isFrom, required this.alarm})
+      : super(key: key);
+
   @override
   ShootPeriodState createState() => ShootPeriodState();
 }
@@ -135,29 +142,48 @@ class ShootPeriodState extends State<ShootPeriod> {
         final responseBody = json.decode(utf8.decode(response.bodyBytes));
         if (responseBody == null) {
           tts.speak("카메라에 상자의 네 꼭짓점이 모두 나오게 스캔해 주세요.");
-        } else {
+        }
+        // 스캔 완료
+        else {
           FlutterBeep.beep(); // 비프음
           if (_canVibrate) Vibrate.feedback(FeedbackType.heavy); // 진동
           isAlert = true;
-          showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-              title: const Text('유효기간'),
-              content: Text(responseBody),
-              actions: [
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      isAlert = false;
-                    });
-                    Navigator.pop(context);
-                  },
-                  child: const Text('닫기'),
-                ),
-              ],
-            ),
-          );
+
+          if (widget.isFrom == 'create') {
+            Navigator.pop(context, responseBody);
+          } else if (widget.isFrom == 'update') {
+            Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => UpdateAlarm(
+                        uid: user.uid,
+                        responseBody: responseBody,
+                        alarm: widget.alarm,
+                      )),
+            );
+          } else {
+            showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) => AlertDialog(
+                title: const Text('유효기간'),
+                content: Text(responseBody),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        isAlert = false;
+                      });
+                      Navigator.pop(context);
+                    },
+                    child: const Text('닫기'),
+                  ),
+                ],
+              ),
+            );
+          }
+
           print("responseBody : $responseBody");
         }
       } else {
@@ -182,27 +208,3 @@ class ShootPeriodState extends State<ShootPeriod> {
     }
   }
 }
-
-/*
-
-Future<void> _getRoute(User user) async {
-  final documentSnapshot =
-      await FirebaseFirestore.instance.collection('user').doc(user.uid).get();
-  bool subfield = documentSnapshot.data()?.containsKey('isAlarm') ?? false;
-
-  if (subfield) {
-    // 알람페이지에서 들어왔을 떄
-    await FirebaseFirestore.instance
-        .collection('user')
-        .doc(user.uid)
-        .set({'isAlarm': false});
-
-    return Navigator.pop(
-      context,
-      MaterialPageRoute(builder: (_) => CreateAlarm()),
-    );
-  } else {
-    // 촬영 페이지에서 들어왔을 때
-  }
-}
-*/
