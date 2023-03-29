@@ -6,47 +6,51 @@ import 'camera_screen.dart';
 import 'map_screen.dart';
 import 'medi_screen.dart';
 
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    late FlutterTts tts = FlutterTts();
+    tts.speak('메인 페이지');
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     final user = FirebaseAuth.instance.currentUser!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset('assets/images/medisight_logo.png',
-            width: 200, height: 200),
+        title: themeMode == ThemeMode.light
+            ? Image.asset('assets/images/logo-title-light.png',
+                width: 200, height: 200)
+            : Image.asset('assets/images/logo-title-dark.png',
+                width: 200, height: 200),
       ),
       body: Center(
         child: SingleChildScrollView(
+          padding:
+              const EdgeInsets.only(left: 10, top: 0, right: 10, bottom: 13),
           child: Column(
             children: <Widget>[
               Container(
                 width: 350,
                 alignment: Alignment.centerLeft,
-                padding: const EdgeInsets.only(
-                    left: 0, top: 30, right: 34, bottom: 13),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Text(
-                      'Main Page',
-                      style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2.0),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      '원하시는 기능을 선택해주세요.',
-                      style: TextStyle(fontSize: 20, letterSpacing: 2.0),
-                    ),
+                    // Text(
+                    //   '원하시는 기능을 선택해주세요.',
+                    //   style:
+                    //       TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                    // ),
                   ],
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               // 상식 버튼
               DecoratedBox(
                 decoration: BoxDecoration(
@@ -59,7 +63,7 @@ class HomeScreen extends StatelessWidget {
                     boxShadow: const <BoxShadow>[
                       BoxShadow(
                           color:
-                              Color.fromRGBO(0, 0, 0, 0.57), //shadow for button
+                              Color.fromRGBO(0, 0, 0, 0.4), //shadow for button
                           blurRadius: 5) //blur radius of shadow
                     ]),
                 child: SizedBox(
@@ -67,6 +71,8 @@ class HomeScreen extends StatelessWidget {
                   height: 110,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      side: const BorderSide(
+                          color: Color.fromRGBO(0, 0, 0, 0), width: 0),
                       backgroundColor: Colors.transparent,
                       disabledForegroundColor:
                           Colors.transparent.withOpacity(0.38),
@@ -84,18 +90,19 @@ class HomeScreen extends StatelessWidget {
                             Text(
                               '상식',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 2.0),
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             Text(
                               '의약품 보관법, 복용법, \n성분에 대한 상식',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  letterSpacing: 2.0),
+                                height: 1.25,
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
                             ),
                           ],
                         ),
@@ -125,7 +132,7 @@ class HomeScreen extends StatelessWidget {
                     boxShadow: const <BoxShadow>[
                       BoxShadow(
                           color:
-                              Color.fromRGBO(0, 0, 0, 0.57), //shadow for button
+                              Color.fromRGBO(0, 0, 0, 0.4), //shadow for button
                           blurRadius: 5) //blur radius of shadow
                     ]),
                 child: SizedBox(
@@ -133,6 +140,8 @@ class HomeScreen extends StatelessWidget {
                   height: 110,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      side: const BorderSide(
+                          color: Color.fromRGBO(0, 0, 0, 0), width: 0),
                       backgroundColor: Colors.transparent,
                       disabledForegroundColor:
                           Colors.transparent.withOpacity(0.38),
@@ -150,18 +159,19 @@ class HomeScreen extends StatelessWidget {
                             Text(
                               '촬영',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 2.0),
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             Text(
                               '소지한 의약품 정보와\n유효기간을 알 수 있는 촬영',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  letterSpacing: 2.0),
+                                height: 1.25,
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
                             ),
                           ],
                         ),
@@ -192,7 +202,7 @@ class HomeScreen extends StatelessWidget {
                     boxShadow: const <BoxShadow>[
                       BoxShadow(
                           color:
-                              Color.fromRGBO(0, 0, 0, 0.57), //shadow for button
+                              Color.fromRGBO(0, 0, 0, 0.4), //shadow for button
                           blurRadius: 5) //blur radius of shadow
                     ]),
                 child: SizedBox(
@@ -200,6 +210,8 @@ class HomeScreen extends StatelessWidget {
                   height: 110,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      side: const BorderSide(
+                          color: Color.fromRGBO(0, 0, 0, 0), width: 0),
                       backgroundColor: Colors.transparent,
                       disabledForegroundColor:
                           Colors.transparent.withOpacity(0.38),
@@ -217,18 +229,18 @@ class HomeScreen extends StatelessWidget {
                             Text(
                               '검색',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 2.0),
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             Text(
                               '텍스트로 직접 검색',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  letterSpacing: 2.0),
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
                             ),
                           ],
                         ),
@@ -259,7 +271,7 @@ class HomeScreen extends StatelessWidget {
                     boxShadow: const <BoxShadow>[
                       BoxShadow(
                           color:
-                              Color.fromRGBO(0, 0, 0, 0.57), //shadow for button
+                              Color.fromRGBO(0, 0, 0, 0.4), //shadow for button
                           blurRadius: 5) //blur radius of shadow
                     ]),
                 child: SizedBox(
@@ -267,6 +279,8 @@ class HomeScreen extends StatelessWidget {
                   height: 110,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      side: const BorderSide(
+                          color: Color.fromRGBO(0, 0, 0, 0), width: 0),
                       backgroundColor: Colors.transparent,
                       disabledForegroundColor:
                           Colors.transparent.withOpacity(0.38),
@@ -284,23 +298,24 @@ class HomeScreen extends StatelessWidget {
                             Text(
                               '지도',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 2.0),
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             Text(
                               '현재위치 기반의 약국 검색\n및 도보경로 안내',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  letterSpacing: 2.0),
+                                height: 1.25,
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
                             ),
                           ],
                         ),
                         Image.asset('assets/images/img_map.png',
-                            width: 115, height: 115),
+                            width: 130, height: 130),
                       ],
                     ),
                     onPressed: () {
@@ -326,7 +341,7 @@ class HomeScreen extends StatelessWidget {
                     boxShadow: const <BoxShadow>[
                       BoxShadow(
                           color:
-                              Color.fromRGBO(0, 0, 0, 0.57), //shadow for button
+                              Color.fromRGBO(0, 0, 0, 0.4), //shadow for button
                           blurRadius: 5) //blur radius of shadow
                     ]),
                 child: SizedBox(
@@ -334,6 +349,8 @@ class HomeScreen extends StatelessWidget {
                   height: 110,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      side: const BorderSide(
+                          color: Color.fromRGBO(0, 0, 0, 0), width: 0),
                       backgroundColor: Colors.transparent,
                       disabledForegroundColor:
                           Colors.transparent.withOpacity(0.38),
@@ -351,18 +368,18 @@ class HomeScreen extends StatelessWidget {
                             Text(
                               '알람',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 2.0),
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             Text(
                               '내 약품 알람 설정',
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 13,
-                                  letterSpacing: 2.0),
+                                color: Colors.white,
+                                fontSize: 13,
+                              ),
                             ),
                           ],
                         ),
