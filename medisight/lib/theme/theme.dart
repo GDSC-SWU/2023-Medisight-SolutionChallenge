@@ -20,7 +20,7 @@ class MyThemes {
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: Colors.blue.shade50,
+        backgroundColor: Color.fromARGB(255, 107, 134, 255),
       ));
 
   static final darkTheme = ThemeData(

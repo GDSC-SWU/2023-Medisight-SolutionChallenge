@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medisight/screen/bottom_navi.dart';
 import 'package:medisight/theme/animated_toggle_button.dart';
 import 'package:provider/provider.dart';
 
@@ -103,7 +104,19 @@ class _ThemeScreen extends State<ThemeScreen>
     isDarkMode = getSavedThemeMode();
 
     return Scaffold(
-      appBar: AppBar(title: Text("테마 설정")),
+      appBar: AppBar(
+        title: Text("테마 설정"),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (_) => const MypageScreen()),
+              (route) => false,
+            );
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
+      ),
       key: _scaffoldKey,
       backgroundColor:
           isDarkMode ? darkMode.backgroundColor : lightMode.backgroundColor,
