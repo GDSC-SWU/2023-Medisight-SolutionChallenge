@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Grain {
+  id                BigInt  @id @default(autoincrement())
+  itemSeq           String  @db.VarChar(300)
+  itemImage         String? @db.VarChar(300)
+  printFront        String? @db.VarChar(300)
+  printBack         String? @db.VarChar(300)
+  drugShape         String? @db.VarChar(300)
+  colorClass1       String? @db.VarChar(300)
+  colorClass2       String? @db.VarChar(300)
+  lineFront         String? @db.VarChar(300)
+  lineBack          String? @db.VarChar(300)
+  lengLong          String? @db.VarChar(300)
+  lengShort         String? @db.VarChar(300)
+  thick             String? @db.VarChar(300)
+  imgRegistTS       String? @db.VarChar(300)
+  className         String? @db.VarChar(300)
+  formCodeName      String? @db.VarChar(300)
+  markCodeFrontAnal String? @db.VarChar(300)
+  markCodeBackAnal  String? @db.VarChar(300)
+  markCodeFrontImg  String? @db.VarChar(300)
+  markCodeBackImg   String? @db.VarChar(300)
+  markCodeFront     String? @db.VarChar(300)
+  markCodeBack      String? @db.VarChar(300)
+}
+
+model Permission {
+  id               BigInt  @id @default(autoincrement())
+  itemSeq          String  @db.VarChar(300)
+  itemName         String? @db.Text
+  entpName         String? @db.Text
+  itemPermitDate   String? @db.Text
+  etcOtcCode       String? @db.Text
+  chart            String? @db.Text
+  barCode          String? @db.Text
+  materialName     String? @db.Text
+  storageMethod    String? @db.Text
+  validTerm        String? @db.Text
+  reexamTarget     String? @db.Text
+  reexamDate       String? @db.Text
+  ediCode          String? @db.Text
+  permitKindName   String? @db.Text
+  entpNo           String? @db.Text
+  makeMaterialFlag String? @db.Text
+  indutyType       String? @db.Text
+  cancelDate       String? @db.Text
+  cancelName       String? @db.Text
+  changeDate       String? @db.Text
+  gbnName          String? @db.Text
+  totalContent     String? @db.Text
+  eeDocData        String? @db.LongText
+  udDocData        String? @db.LongText
+  nbDocData        String? @db.LongText
+  pnDocData        String? @db.LongText
+  mainItemIngr     String? @db.Text
+  ingrName         String? @db.Text
+  itemEngName      String? @db.Text
+  entpEngName      String? @db.Text
+  mainIngrEng      String? @db.Text
+}
+
+model household {
+  id          BigInt  @id @default(autoincrement())
+  prdlstNm    String? @db.VarChar(300)
+  bsshNm      String? @db.VarChar(300)
+  vldPrdYmd   String? @db.VarChar(300)
+  strgMthCont String? @db.VarChar(300)
+}
