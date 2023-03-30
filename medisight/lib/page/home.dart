@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
       return PermissionRequestScreen(
         child: AlarmObserver(
           uid: user.uid,
-          child: const BottomNavi(selectedIndex: 0),
+          child: const BottomNavi(),
         ),
       );
     } else {
