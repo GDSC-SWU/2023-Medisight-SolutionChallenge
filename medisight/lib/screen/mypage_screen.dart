@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import 'disease_select.dart';
 import 'tuto_screen.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class MypageScreen extends StatefulWidget {
   const MypageScreen({super.key});
@@ -18,6 +19,7 @@ class MypageScreen extends StatefulWidget {
 
 class MypageScreenState extends State<MypageScreen> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final FlutterTts tts = FlutterTts();
 
   var mypageList = [
     '기저질환 설정',
@@ -29,6 +31,7 @@ class MypageScreenState extends State<MypageScreen> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
+    tts.speak("마이페이지");
 
     return Scaffold(
       appBar: AppBar(title: const Text("마이페이지")),
