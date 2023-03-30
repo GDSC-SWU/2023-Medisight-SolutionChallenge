@@ -126,6 +126,11 @@ flutter:
     - assets/images/marker_origin.png
     - assets/images/marker_destination.png
     - assets/images/img_pharmacy.png
+    - assets/images/google.png
+    - assets/images/info_1.jpg
+    - assets/images/info_2.jpg
+    - assets/images/info_3.jpg
+    - assets/images/info_4.jpg
     - assets/audios/
     - assets/mapstyle/
   #   - images/a_dot_burr.jpeg
