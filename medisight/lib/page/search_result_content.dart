@@ -79,8 +79,37 @@ class _SearchResultContentPageState extends State<SearchResultContentPage> {
                 } else {
                   searchResult = snapshot.data;
                   return SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: searchResult.prettyPrint(widget.idx));
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 10),
+                        searchResult.prettyPrint(widget.idx),
+                        const SizedBox(height: 30),
+                        Container(
+                            height: 1.0,
+                            width: 350,
+                            color: Color.fromARGB(255, 197, 196, 196)),
+                        const SizedBox(height: 30),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            minimumSize: Size(350, 60),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text(
+                            '검색결과 목록으로 돌아가기',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
                 }
               })));
 }
