@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:medisight/service/alarm_scheduler.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'create_alarm.dart';
 import 'update_alarm.dart';
 
@@ -60,6 +63,8 @@ class _MediScreenState extends State<MediScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return Scaffold(
       appBar: AppBar(title: const Text("알람")),
       body: StreamBuilder(
@@ -68,18 +73,25 @@ class _MediScreenState extends State<MediScreen> {
             AsyncSnapshot<QuerySnapshot> streamSnapshot) {
           if (streamSnapshot.hasData) {
             return ListView.builder(
+              padding: const EdgeInsets.only(
+                  left: 16, top: 16, right: 16, bottom: 16),
               itemCount: streamSnapshot.data!.docs.length,
               itemBuilder: (context, index) {
                 final DocumentSnapshot alarm = streamSnapshot.data!.docs[index];
-                return _AlarmCard(
-                    product: product,
-                    alarm: alarm,
-                    onTapSwitch: (enabled) {
-                      _switchAlarm(product, alarm, enabled);
-                    },
-                    onTapCard: () {
-                      _handleCardTap(widget.uid, alarm, context);
-                    });
+                return Column(
+                  children: [
+                    _AlarmCard(
+                        product: product,
+                        alarm: alarm,
+                        onTapSwitch: (enabled) {
+                          _switchAlarm(product, alarm, enabled);
+                        },
+                        onTapCard: () {
+                          _handleCardTap(widget.uid, alarm, context);
+                        }),
+                    const SizedBox(height: 16)
+                  ],
+                );
               },
             );
           }
@@ -94,7 +106,8 @@ class _MediScreenState extends State<MediScreen> {
                   builder: (context) =>
                       CreateAlarm(uid: widget.uid, responseBody: '-1')));
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add,
+            color: themeMode == ThemeMode.light ? Colors.white : Colors.black),
       ),
     );
   }
@@ -123,7 +136,8 @@ class _AlarmCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     String date = '';
 
     alarm['weekday'][0] ? date += '일 ' : null;
@@ -135,67 +149,80 @@ class _AlarmCard extends StatelessWidget {
     alarm['weekday'][6] ? date += '토 ' : null;
 
     return Card(
+        color: themeMode == ThemeMode.light
+            ? Colors.blue.shade50
+            : Theme.of(context).canvasColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            // border color
+            color: themeMode == ThemeMode.light
+                ? Color.fromARGB(0, 255, 213, 0)
+                : Color.fromARGB(255, 255, 214, 0),
+            // border thickness
+            width: 3,
+          ),
+        ),
         child: InkWell(
-      onTap: onTapCard,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(left: 12, top: 5, right: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
+          onTap: onTapCard,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.only(
+                    left: 22, top: 5, bottom: 0, right: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    const Icon(
-                      Icons.label,
-                      color: Colors.blue,
-                      size: 24,
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          Icons.label,
+                          color: Theme.of(context).primaryColor,
+                          size: 24,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          alarm['name']!,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      alarm['name']!,
-                      style:
-                          const TextStyle(fontSize: 20, fontFamily: 'avenir'),
-                    ),
+                    Switch(
+                        value: alarm['enabled'],
+                        onChanged: onTapSwitch,
+                        activeColor: Theme.of(context).primaryColor),
                   ],
                 ),
-                Switch(
-                  value: alarm['enabled'],
-                  onChanged: onTapSwitch,
+              ),
+              Container(
+                padding: const EdgeInsets.only(
+                    left: 22, top: 0, right: 16, bottom: 0),
+                child: Text(
+                  date,
+                  style: const TextStyle(fontSize: 16),
                 ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 12, right: 12),
-            child: Text(
-              date,
-              style: const TextStyle(fontFamily: 'avenir'),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 12, right: 12, bottom: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  alarm['time'],
-                  style: const TextStyle(
-                      fontFamily: 'avenir',
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700),
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 22, right: 16, bottom: 5),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      alarm['time'],
+                      style: const TextStyle(
+                          fontSize: 24, fontWeight: FontWeight.w700),
+                    ),
+                    IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () async {
+                          _delete(alarm.id);
+                        }),
+                  ],
                 ),
-                IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () async {
-                      _delete(alarm.id);
-                    }),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
 }

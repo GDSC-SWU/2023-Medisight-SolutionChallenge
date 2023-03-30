@@ -6,6 +6,8 @@ import '../provider/CustomCheckBoxGroup.dart';
 import 'package:medisight/service/alarm_scheduler.dart';
 import 'package:medisight/screen/medi_screen.dart';
 import 'package:medisight/screen/alarm_observer.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
 
@@ -76,6 +78,8 @@ class _CreateAlarmState extends State<CreateAlarm> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     if (widget.responseBody != '-1') {
       expirationController.text = widget.responseBody;
     }
@@ -97,7 +101,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
               child: const Text(
                 '약품명',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -109,8 +112,14 @@ class _CreateAlarmState extends State<CreateAlarm> {
               height: 52,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6.0),
-                color: const Color(0xffffffff),
-                border: Border.all(width: 1.0, color: const Color(0xffdbe2ea)),
+                color: themeMode == ThemeMode.light
+                    ? Color(0xffffffff)
+                    : Theme.of(context).canvasColor,
+                border: Border.all(
+                    width: 2.0,
+                    color: themeMode == ThemeMode.light
+                        ? Color(0xffdbe2ea)
+                        : Theme.of(context).primaryColor),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x0a2c2738),
@@ -121,10 +130,11 @@ class _CreateAlarmState extends State<CreateAlarm> {
               ),
               child: TextField(
                 controller: nameController,
-                style: const TextStyle(
-                  fontFamily: 'Montserrat',
+                style: TextStyle(
                   fontSize: 14,
-                  color: Color(0xff000000),
+                  color: themeMode == ThemeMode.light
+                      ? Color(0xff000000)
+                      : Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: const InputDecoration(
@@ -133,7 +143,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                   border: InputBorder.none,
                   hintText: "약품명을 입력하세요.",
                   hintStyle: TextStyle(
-                    fontFamily: 'Montserrat',
                     fontSize: 14,
                     color: Color(0xffcbd0d6),
                   ),
@@ -149,7 +158,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
               child: const Text(
                 '사용 기한',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -161,8 +169,14 @@ class _CreateAlarmState extends State<CreateAlarm> {
               height: 52,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6.0),
-                color: const Color(0xffffffff),
-                border: Border.all(width: 1.0, color: const Color(0xffdbe2ea)),
+                color: themeMode == ThemeMode.light
+                    ? Color(0xffffffff)
+                    : Theme.of(context).canvasColor,
+                border: Border.all(
+                    width: 2.0,
+                    color: themeMode == ThemeMode.light
+                        ? Color(0xffdbe2ea)
+                        : Theme.of(context).primaryColor),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x0a2c2738),
@@ -195,18 +209,21 @@ class _CreateAlarmState extends State<CreateAlarm> {
                     });
                   }
                 },
-                style: const TextStyle(
-                  fontFamily: 'Montserrat',
+                style: TextStyle(
                   fontSize: 14,
-                  color: Color(0xff000000),
+                  color: themeMode == ThemeMode.light
+                      ? Color(0xff000000)
+                      : Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     onPressed: _onCameraButtonPressed,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.camera_alt,
-                      color: Color(0xff000000),
+                      color: themeMode == ThemeMode.light
+                          ? Color(0xff000000)
+                          : Theme.of(context).primaryColor,
                     ),
                   ),
                   contentPadding:
@@ -214,7 +231,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                   border: InputBorder.none,
                   hintText: "사용기한을 입력하세요.",
                   hintStyle: const TextStyle(
-                    fontFamily: 'Montserrat',
                     fontSize: 14,
                     color: Color(0xffcbd0d6),
                   ),
@@ -234,7 +250,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
               child: const Text(
                 '알람 시간',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -246,8 +261,14 @@ class _CreateAlarmState extends State<CreateAlarm> {
               height: 52,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6.0),
-                color: const Color(0xffffffff),
-                border: Border.all(width: 1.0, color: const Color(0xffdbe2ea)),
+                color: themeMode == ThemeMode.light
+                    ? Color(0xffffffff)
+                    : Theme.of(context).canvasColor,
+                border: Border.all(
+                    width: 2.0,
+                    color: themeMode == ThemeMode.light
+                        ? Color(0xffdbe2ea)
+                        : Theme.of(context).primaryColor),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x0a2c2738),
@@ -271,10 +292,11 @@ class _CreateAlarmState extends State<CreateAlarm> {
                       minuteLabelText: "분"))!; //end of showTimePicker
                   timeController.text = time.format(context);
                 },
-                style: const TextStyle(
-                  fontFamily: 'Montserrat',
+                style: TextStyle(
                   fontSize: 14,
-                  color: Color(0xff000000),
+                  color: themeMode == ThemeMode.light
+                      ? Color(0xff000000)
+                      : Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: const InputDecoration(
@@ -283,7 +305,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                   border: InputBorder.none,
                   hintText: "복약시간을 선택하세요.",
                   hintStyle: TextStyle(
-                    fontFamily: 'Montserrat',
                     fontSize: 14,
                     color: Color(0xffcbd0d6),
                   ),
@@ -302,7 +323,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
               child: const Text(
                 '요일 선택',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -313,18 +333,20 @@ class _CreateAlarmState extends State<CreateAlarm> {
               width: size.width,
               padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
               child: CustomCheckBoxGroup(
-                controller: dateController,
-                enableShape: true,
-                elevation: 0,
-                autoWidth: true,
-                unSelectedColor: Theme.of(context).canvasColor,
-                buttonLables: ["일", "월", "화", "수", "목", "금", "토"],
-                buttonValuesList: ["일", "월", "화", "수", "목", "금", "토"],
-                checkBoxButtonValues: (values) {
-                  dateController.text = values.join(" ");
-                },
-                selectedColor: Theme.of(context).colorScheme.secondary,
-              ),
+                  controller: dateController,
+                  enableShape: true,
+                  elevation: 0,
+                  autoWidth: true,
+                  unSelectedColor: Theme.of(context).canvasColor,
+                  buttonLables: ["일", "월", "화", "수", "목", "금", "토"],
+                  buttonValuesList: ["일", "월", "화", "수", "목", "금", "토"],
+                  checkBoxButtonValues: (values) {
+                    dateController.text = values.join(" ");
+                  },
+                  selectedColor: Theme.of(context).primaryColor
+
+                  // colorScheme.secondary
+                  ),
             ),
 
             Container(
@@ -343,7 +365,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                   child: const Text(
                     '알람음',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -360,7 +381,7 @@ class _CreateAlarmState extends State<CreateAlarm> {
                         _beepIsChecked = value;
                       });
                     },
-                    activeColor: Colors.blue,
+                    activeColor: Theme.of(context).primaryColor,
                   ),
                 ),
               ],
@@ -377,7 +398,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                   child: const Text(
                     '진동',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -394,7 +414,7 @@ class _CreateAlarmState extends State<CreateAlarm> {
                         _vibIsChecked = value;
                       });
                     },
-                    activeColor: Colors.blue,
+                    activeColor: Theme.of(context).primaryColor,
                   ),
                 ),
               ],
@@ -501,7 +521,6 @@ class _CreateAlarmState extends State<CreateAlarm> {
                 child: const Text(
                   '추가하기',
                   style: TextStyle(
-                    fontFamily: 'Montserrat',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
