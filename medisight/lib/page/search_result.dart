@@ -127,7 +127,9 @@ class _SearchResultPageState extends State<SearchResultPage> {
     final themeMode =
         Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 245, 245, 255),
+        backgroundColor: themeMode == ThemeMode.light
+            ? Color.fromARGB(255, 245, 245, 255)
+            : Theme.of(context).canvasColor,
         appBar: AppBar(
           title: Text("검색 결과", style: TextStyle(fontWeight: FontWeight.w700)),
           centerTitle: true,
