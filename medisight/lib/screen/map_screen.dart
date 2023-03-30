@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:medisight/screen/map_route_screen.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class Pharmacy {
   String endPoiId;
@@ -109,30 +111,95 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return Scaffold(
       appBar: AppBar(
         title: Text("약국 검색결과"),
       ),
-      body: Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(8.0),
+      body: Center(
         child: Column(
-          children: [
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 10),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                  color: themeMode == ThemeMode.light
+                      ? Colors.white
+                      : Theme.of(context).canvasColor,
+                  border: Border.all(
+                    width: 3,
+                    color: themeMode == ThemeMode.light
+                        ? Color.fromARGB(0, 255, 213, 0)
+                        : Color.fromARGB(255, 255, 214, 0),
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const <BoxShadow>[
+                    BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.2), //shadow for button
+                        blurRadius: 5) //blur radius of shadow
+                  ]),
+              child: Container(
+                padding: const EdgeInsets.only(
+                    left: 45, top: 0, right: 30, bottom: 20),
+                width: 350,
+                height: 230,
+                child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '약국 검색결과',
+                          style: TextStyle(
+                              color: themeMode == ThemeMode.light
+                                  ? Colors.black
+                                  : Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20,
+                              height: 1.75),
+                        ),
+                        Image.asset('assets/images/img_pharmacy.png',
+                            width: 140, height: 120),
+                      ],
+                    ),
+                    Text(
+                      '아래의 검색결과는\n거리순으로 정렬되어있습니다.\n경로 안내를 받으실 약국을 선택하세요.',
+                      style: TextStyle(
+                          color: themeMode == ThemeMode.light
+                              ? Colors.black
+                              : Colors.white,
+                          fontSize: 16,
+                          height: 1.75),
+                    ),
+                  ],
+                ),
+              ),
+            ),
             Expanded(
-              child: // Center(
-                  //   child: Text("Lat: $lat, Lng: $lng"),
-                  // ),
-                  ListView.builder(
+              child: ListView.builder(
                 padding: EdgeInsets.all(10.0),
                 itemCount: listData.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Card(
+                    color: Theme.of(context).canvasColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      side: BorderSide(
+                        color: Theme.of(context).primaryColor,
+                        width: 1,
+                      ),
+                    ),
                     child: InkWell(
                       onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (_) => MapRouteScreen(
+                                  listData[index].name,
                                   lat,
                                   lng,
                                   double.parse(listData[index].lat),
@@ -140,7 +207,7 @@ class _MapScreenState extends State<MapScreen> {
                             ));
                       },
                       child: Padding(
-                        padding: EdgeInsets.all(10.0),
+                        padding: EdgeInsets.all(16.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,9 +215,11 @@ class _MapScreenState extends State<MapScreen> {
                             Text(
                               listData[index].name,
                               style: TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.black,
-                              ),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16.0,
+                                  color: themeMode == ThemeMode.light
+                                      ? Color.fromARGB(255, 0, 0, 0)
+                                      : Color.fromARGB(255, 255, 214, 0)),
                             ),
                             SizedBox(
                               height: 5.0,
@@ -158,9 +227,10 @@ class _MapScreenState extends State<MapScreen> {
                             Text(
                               listData[index].address,
                               style: TextStyle(
-                                fontSize: 14.0,
-                                color: Colors.grey,
-                              ),
+                                  fontSize: 14.0,
+                                  color: themeMode == ThemeMode.light
+                                      ? Colors.grey
+                                      : Colors.white),
                             ),
                           ],
                         ),
@@ -170,13 +240,6 @@ class _MapScreenState extends State<MapScreen> {
                 },
               ),
             ),
-            // Container(
-            //   width: double.infinity,
-            //   child: ElevatedButton(
-            //     child: Text("Locate Me"),
-            //     onPressed: () => _locateMe(),
-            //   ),
-            // ),
           ],
         ),
       ),
