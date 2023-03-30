@@ -8,6 +8,9 @@ import 'package:medisight/page/search_result_content.dart';
 import 'package:http/http.dart' as http;
 import 'package:medisight/podo/search_result_category.dart';
 import 'dart:convert';
+
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 // import 'package:medisight/page/search_result_content.dart';
 
 class SearchResultPage extends StatefulWidget {
@@ -66,19 +69,26 @@ class _SearchResultPageState extends State<SearchResultPage> {
   }
 
   Future<void> _showMyDialog() async {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Theme.of(context).canvasColor,
           title: const Text('기저질환 주의 알림',
               style: TextStyle(fontWeight: FontWeight.bold)),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text('해당 의약품은 설정하신 기저질환과 관련된 주의사항이 있습니다.'),
+                SizedBox(height: 5),
                 Text(targetDiseaseStr,
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromARGB(255, 255, 72, 220))),
+                SizedBox(height: 5),
                 Text('의약품 사용시 유의해주세요.'),
               ],
             ),
@@ -114,7 +124,10 @@ class _SearchResultPageState extends State<SearchResultPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return Scaffold(
+        backgroundColor: Color.fromARGB(255, 245, 245, 255),
         appBar: AppBar(
           title: Text("검색 결과", style: TextStyle(fontWeight: FontWeight.w700)),
           centerTitle: true,
@@ -125,26 +138,44 @@ class _SearchResultPageState extends State<SearchResultPage> {
             return Container(
               margin: const EdgeInsets.all(10),
               padding: const EdgeInsets.all(3),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  fixedSize: const Size(double.infinity, 70),
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                ),
-                onPressed: () {
-                  print('button $i clicked.');
+              child: DecoratedBox(
+                decoration: BoxDecoration(boxShadow: <BoxShadow>[
+                  BoxShadow(
+                      color: themeMode == ThemeMode.light
+                          ? Color.fromRGBO(107, 134, 255, 0.5)
+                          : Color.fromARGB(0, 255, 213, 0), //shadow for button
+                      blurRadius: 6) //blur radius of shadow
+                ]),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: themeMode == ThemeMode.light
+                        ? Color.fromARGB(255, 107, 134, 255)
+                        : Color.fromARGB(255, 255, 214, 0),
+                    backgroundColor: Theme.of(context).canvasColor,
+                    side: BorderSide(
+                        color: themeMode == ThemeMode.light
+                            ? Color.fromARGB(255, 107, 134, 255)
+                            : Color.fromARGB(255, 255, 214, 0),
+                        width: 1),
+                    fixedSize: const Size(double.infinity, 70),
+                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  ),
+                  onPressed: () {
+                    print('button $i clicked.');
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => SearchResultContentPage(
-                            title: selection, code: widget.code, idx: i)),
-                  );
-                },
-                child: Text(
-                  selection,
-                  style: const TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w600,
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => SearchResultContentPage(
+                              title: selection, code: widget.code, idx: i)),
+                    );
+                  },
+                  child: Text(
+                    selection,
+                    style: const TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),

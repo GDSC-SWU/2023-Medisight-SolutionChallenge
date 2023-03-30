@@ -61,7 +61,7 @@ class ShootQrState extends State<ShootQr> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Camera Example"),
+        title: Text("의약품 촬영"),
         centerTitle: true,
       ),
       backgroundColor: Colors.black,

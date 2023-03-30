@@ -13,13 +13,13 @@ class _TipSubPageState1 extends State<TipSubPage1> {
   Widget build(BuildContext context) => Scaffold(
           body: CustomScrollView(slivers: [
         SliverAppBar(
-          //title: Text("Tip Sub Page"),
           expandedHeight: 200,
           pinned: true,
           flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: const Text("의약품 보관 상식",
-                  style: TextStyle(fontWeight: FontWeight.w600)),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, color: Colors.white)),
               background: Image.network(
                   "https://img.freepik.com/free-vector/mobile-wallpaper-with-fluid-shapes_79603-599.jpg?w=2000",
                   fit: BoxFit.cover)),

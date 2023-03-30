@@ -18,7 +18,8 @@ class _TipSubPageState4 extends State<TipSubPage4> {
           flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
               title: const Text("의약품 성분 상식",
-                  style: TextStyle(fontWeight: FontWeight.w600)),
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600)),
               background: Image.network(
                   "https://img.freepik.com/free-vector/mobile-wallpaper-with-fluid-shapes_79603-599.jpg?w=2000",
                   fit: BoxFit.cover)),

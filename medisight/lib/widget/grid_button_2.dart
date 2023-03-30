@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medisight/page/tip_content.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class GridButton2 extends StatelessWidget {
   final List<Map<String, dynamic>> gridMap = [
@@ -7,11 +9,19 @@ class GridButton2 extends StatelessWidget {
     {"title": "복약시 음용수"},
     {"title": "병용금기 의약품"},
     {"title": "의약품별 상호작용 식품"},
-    {"title": "기저질환에 따른 복약시 유의사항"}
+    {"title": "기저질환별 복약시 유의사항"},
+    {"title": "외용약 복용법"},
+    {"title": "내복약 복용법"},
+    {"title": "알약 복용법"},
+    {"title": "어린이 약 먹이기"},
+    {"title": "임산부 약품 복용 주의사항"},
+    {"title": "영양제별 복용시간대"},
   ];
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return GridView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -34,7 +44,14 @@ class GridButton2 extends StatelessWidget {
               borderRadius: BorderRadius.circular(
                 24.0,
               ),
-              color: Colors.grey.shade300,
+              color: themeMode == ThemeMode.light
+                  ? Colors.blue.shade50
+                  : Theme.of(context).canvasColor,
+              border: Border.all(
+                  width: 3.0,
+                  color: themeMode == ThemeMode.light
+                      ? Colors.blue.shade50
+                      : Color.fromARGB(255, 255, 214, 0)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,8 +65,11 @@ class GridButton2 extends StatelessWidget {
                       Text(
                         "${gridMap.elementAt(index)['title']}",
                         style: Theme.of(context).textTheme.subtitle1!.merge(
-                              const TextStyle(
-                                fontSize: 20,
+                              TextStyle(
+                                color: themeMode == ThemeMode.light
+                                    ? Colors.black
+                                    : Colors.white,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),

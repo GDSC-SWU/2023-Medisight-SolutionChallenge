@@ -71,12 +71,13 @@ class RouteMapInfoService {
 }
 
 class MapRouteScreen extends StatefulWidget {
+  String name;
   double lat;
   double lng;
   double destLat;
   double destLng;
 
-  MapRouteScreen(this.lat, this.lng, this.destLat, this.destLng);
+  MapRouteScreen(this.name, this.lat, this.lng, this.destLat, this.destLng);
 
   @override
   _MapRouteScreenState createState() => _MapRouteScreenState();
@@ -267,6 +268,7 @@ class _MapRouteScreenState extends State<MapRouteScreen> {
           title: Text("약국 경로안내"),
         ),
         body: RouteInstructionWidget(
+            name: widget.name,
             routeInfo: routeInfo,
             routeMapInfo: routeMapInfo,
             lat: widget.lat,

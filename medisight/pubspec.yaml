@@ -123,7 +123,11 @@ flutter:
     - assets/images/img_alarm.png
     - assets/images/img_store.png
     - assets/images/img_question.png
+    - assets/images/marker_origin.png
+    - assets/images/marker_destination.png
+    - assets/images/img_pharmacy.png
     - assets/audios/
+    - assets/mapstyle/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
