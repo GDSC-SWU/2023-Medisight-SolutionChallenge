@@ -20,9 +20,9 @@ class CameraScreen extends StatelessWidget {
       appBar: AppBar(
         title: themeMode == ThemeMode.light
             ? Image.asset('assets/images/logo-title-light.png',
-                width: 200, height: 200)
+                width: 180, height: 200)
             : Image.asset('assets/images/logo-title-dark.png',
-                width: 200, height: 200),
+                width: 180, height: 200),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -67,7 +67,7 @@ class CameraScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold),
                           ),
                           Image.asset('assets/images/img_question.png',
-                              width: 120, height: 140)
+                              width: 107, height: 140)
                         ],
                       ),
                       Text(

@@ -74,7 +74,7 @@ class BottomNaviState extends State<BottomNavi> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     IconButton(
@@ -103,13 +103,14 @@ class BottomNaviState extends State<BottomNavi> {
                                     : Color.fromARGB(255, 255, 214, 0))
                                 : (themeMode == ThemeMode.light
                                     ? Colors.black
-                                    : Colors.white)),
+                                    : Colors.white),
+                            height: 0.7),
                       ),
                     ),
                   ],
                 ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     IconButton(
@@ -138,7 +139,8 @@ class BottomNaviState extends State<BottomNavi> {
                                     : Color.fromARGB(255, 255, 214, 0))
                                 : (themeMode == ThemeMode.light
                                     ? Colors.black
-                                    : Colors.white)),
+                                    : Colors.white),
+                            height: 0.7),
                       ),
                     ),
                   ],

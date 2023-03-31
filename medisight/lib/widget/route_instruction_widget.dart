@@ -116,7 +116,8 @@ class _RouteInstructionWidgetState extends State<RouteInstructionWidget> {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 5.0),
               decoration: BoxDecoration(
                   color: Theme.of(context).canvasColor,
                   boxShadow: const [

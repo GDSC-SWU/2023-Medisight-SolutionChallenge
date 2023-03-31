@@ -25,9 +25,9 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: themeMode == ThemeMode.light
             ? Image.asset('assets/images/logo-title-light.png',
-                width: 200, height: 200)
+                width: 180, height: 200)
             : Image.asset('assets/images/logo-title-dark.png',
-                width: 200, height: 200),
+                width: 180, height: 200),
       ),
       body: Center(
         child: SingleChildScrollView(
