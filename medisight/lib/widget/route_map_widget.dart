@@ -162,7 +162,7 @@ class _RouteMapWidgetState extends State<RouteMapWidget>
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Navigator.pop(context),
-        label: Text('경로안내보기', style: const TextStyle(fontSize: 20.0)),
+        label: Text('경로안내 보기', style: const TextStyle(fontSize: 20.0)),
         icon: Icon(Icons.route),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
