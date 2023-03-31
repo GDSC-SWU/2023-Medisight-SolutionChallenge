@@ -21,33 +21,32 @@ class _IntroPage1State extends State<IntroPage1> {
         Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return Scaffold(
       body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              DecoratedBox(
-                decoration: BoxDecoration(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            DecoratedBox(
+              decoration: BoxDecoration(
+                  color: themeMode == ThemeMode.light
+                      ? Colors.white
+                      : Theme.of(context).canvasColor,
+                  border: Border.all(
+                    width: 3,
                     color: themeMode == ThemeMode.light
-                        ? Colors.white
-                        : Theme.of(context).canvasColor,
-                    border: Border.all(
-                      width: 3,
-                      color: themeMode == ThemeMode.light
-                          ? Color.fromARGB(0, 255, 213, 0)
-                          : Color.fromARGB(255, 255, 214, 0),
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: const <BoxShadow>[
-                      BoxShadow(
-                          color:
-                              Color.fromRGBO(0, 0, 0, 0.2), //shadow for button
-                          blurRadius: 5) //blur radius of shadow
-                    ]),
-                child: Container(
-                  padding: const EdgeInsets.only(
-                      left: 30, top: 30, right: 30, bottom: 30),
-                  width: 350,
-                  height: 600,
+                        ? Color.fromARGB(0, 255, 213, 0)
+                        : Color.fromARGB(255, 255, 214, 0),
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const <BoxShadow>[
+                    BoxShadow(
+                        color: Color.fromRGBO(0, 0, 0, 0.2), //shadow for button
+                        blurRadius: 5) //blur radius of shadow
+                  ]),
+              child: Container(
+                padding: const EdgeInsets.only(
+                    left: 30, top: 30, right: 30, bottom: 30),
+                width: 350,
+                height: 600,
+                child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const [
@@ -89,8 +88,8 @@ class _IntroPage1State extends State<IntroPage1> {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

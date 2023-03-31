@@ -122,10 +122,16 @@ flutter:
     - assets/images/img_search.png
     - assets/images/img_alarm.png
     - assets/images/img_store.png
+    - assets/images/2.0x/img_store.png
+    - assets/images/3.0x/img_store.png
     - assets/images/img_question.png
+    - assets/images/2.0x/img_question.png
+    - assets/images/3.0x/img_question.png
     - assets/images/marker_origin.png
     - assets/images/marker_destination.png
     - assets/images/img_pharmacy.png
+    - assets/images/2.0x/img_pharmacy.png
+    - assets/images/3.0x/img_pharmacy.png
     - assets/images/google.png
     - assets/images/info_1.jpg
     - assets/images/info_2.jpg

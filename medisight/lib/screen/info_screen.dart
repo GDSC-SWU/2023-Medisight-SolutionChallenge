@@ -72,7 +72,7 @@ class InfoScreen extends StatelessWidget {
                     ],
                   ),
                   Image.asset('assets/images/img_store.png',
-                      width: 150, height: 160),
+                      width: 120, height: 160),
                 ],
               ),
             ),

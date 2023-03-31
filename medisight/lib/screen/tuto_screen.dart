@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medisight/screen/disease_select.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
@@ -33,6 +35,8 @@ class _TutoScreenState extends State<TutoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return Scaffold(
         body: Stack(
       children: [
@@ -69,9 +73,11 @@ class _TutoScreenState extends State<TutoScreen> {
                 SmoothPageIndicator(
                   controller: _controller,
                   count: 4,
-                  effect: const WormEffect(
+                  effect: WormEffect(
                       dotColor: Colors.grey,
-                      activeDotColor: Color.fromARGB(255, 255, 214, 0)),
+                      activeDotColor: themeMode == ThemeMode.light
+                          ? Color.fromARGB(255, 255, 200, 60)
+                          : Color.fromARGB(255, 255, 214, 0)),
                 ),
 
                 //next or done
