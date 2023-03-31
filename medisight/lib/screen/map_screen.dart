@@ -143,37 +143,40 @@ class _MapScreenState extends State<MapScreen> {
                 padding: const EdgeInsets.only(
                     left: 30, top: 0, right: 16, bottom: 20),
                 width: 350,
-                height: 230,
-                child: Column(
+                height: 190,
+                child: Stack(
                   // mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '약국 검색결과',
-                          style: TextStyle(
-                              color: themeMode == ThemeMode.light
-                                  ? Colors.black
-                                  : Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 20,
-                              height: 1.75),
-                        ),
-                        Image.asset('assets/images/img_pharmacy.png',
-                            width: 140, height: 120),
-                      ],
-                    ),
-                    Text(
-                      '아래의 검색결과는\n거리순으로 정렬되어있습니다.\n경로 안내를 받으실 약국을 선택하세요.',
-                      style: TextStyle(
-                          color: themeMode == ThemeMode.light
-                              ? Colors.black
-                              : Colors.white,
-                          fontSize: 16,
-                          height: 1.75),
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 20),
+                          Text(
+                            '약국 검색결과',
+                            style: TextStyle(
+                                color: themeMode == ThemeMode.light
+                                    ? Colors.black
+                                    : Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 20,
+                                height: 1.75),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            '아래의 검색결과는\n거리순으로 정렬되어 있습니다.\n경로 안내를 받으실 약국을 선택하세요.',
+                            style: TextStyle(
+                                color: themeMode == ThemeMode.light
+                                    ? Colors.black
+                                    : Colors.white,
+                                fontSize: 16,
+                                height: 1.75),
+                          ),
+                        ]),
+                    Positioned(
+                      right: 1.0,
+                      top: 5.0,
+                      child: Image.asset('assets/images/img_pharmacy.png',
+                          width: 130, height: 100),
                     ),
                   ],
                 ),
