@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:medisight/screen/camera_screen.dart';
 import 'home_screen.dart';
 import 'mypage_screen.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavi extends StatefulWidget {
   int selectedIndex;
@@ -53,6 +55,8 @@ class BottomNaviState extends State<BottomNavi> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return WillPopScope(
       onWillPop: () async {
         return !(await navigatorKeyList[widget.selectedIndex]
@@ -63,33 +67,82 @@ class BottomNaviState extends State<BottomNavi> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
           child: Container(
-            height: 100,
+            color: Theme.of(context).canvasColor,
+            height: 70,
             child: Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                IconButton(
-                  iconSize: 30.0,
-                  padding: EdgeInsets.only(left: 60.0),
-                  icon: Icon(Icons.home,
-                      color: widget.selectedIndex == 0
-                          ? Colors.blue
-                          : Colors.black),
-                  onPressed: () {
-                    onItemTapped(0);
-                  },
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      iconSize: 30.0,
+                      padding: EdgeInsets.only(left: 60.0),
+                      icon: Icon(Icons.home,
+                          color: widget.selectedIndex == 0
+                              ? (themeMode == ThemeMode.light
+                                  ? Color.fromARGB(255, 107, 134, 255)
+                                  : Color.fromARGB(255, 255, 214, 0))
+                              : (themeMode == ThemeMode.light
+                                  ? Colors.black
+                                  : Colors.white)),
+                      onPressed: () {
+                        onItemTapped(0);
+                      },
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 60.0),
+                      child: Text(
+                        '홈',
+                        style: TextStyle(
+                            color: widget.selectedIndex == 0
+                                ? (themeMode == ThemeMode.light
+                                    ? Color.fromARGB(255, 107, 134, 255)
+                                    : Color.fromARGB(255, 255, 214, 0))
+                                : (themeMode == ThemeMode.light
+                                    ? Colors.black
+                                    : Colors.white)),
+                      ),
+                    ),
+                  ],
                 ),
-                IconButton(
-                  iconSize: 30.0,
-                  padding: EdgeInsets.only(right: 60.0),
-                  icon: Icon(Icons.person,
-                      color: widget.selectedIndex == 2
-                          ? Colors.blue
-                          : Colors.black),
-                  onPressed: () {
-                    onItemTapped(2);
-                  },
-                )
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      iconSize: 30.0,
+                      padding: EdgeInsets.only(right: 50.0),
+                      icon: Icon(Icons.person,
+                          color: widget.selectedIndex == 2
+                              ? (themeMode == ThemeMode.light
+                                  ? Color.fromARGB(255, 107, 134, 255)
+                                  : Color.fromARGB(255, 255, 214, 0))
+                              : (themeMode == ThemeMode.light
+                                  ? Colors.black
+                                  : Colors.white)),
+                      onPressed: () {
+                        onItemTapped(2);
+                      },
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 50.0),
+                      child: Text(
+                        '마이페이지',
+                        style: TextStyle(
+                            color: widget.selectedIndex == 2
+                                ? (themeMode == ThemeMode.light
+                                    ? Color.fromARGB(255, 107, 134, 255)
+                                    : Color.fromARGB(255, 255, 214, 0))
+                                : (themeMode == ThemeMode.light
+                                    ? Colors.black
+                                    : Colors.white)),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -112,7 +165,9 @@ class BottomNaviState extends State<BottomNavi> {
                 },
                 child: Icon(
                   Icons.camera_alt_outlined,
-                  color: Colors.white,
+                  color: themeMode == ThemeMode.light
+                      ? Colors.white
+                      : Colors.black,
                 ),
                 elevation: 0,
               ),
