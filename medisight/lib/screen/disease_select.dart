@@ -284,7 +284,10 @@ class DiseaseSelectState extends State<DiseaseSelect> {
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const BottomNavi()),
+        MaterialPageRoute(
+            builder: (_) => BottomNavi(
+                  selectedIndex: 0,
+                )),
         (route) => false,
       );
     }
