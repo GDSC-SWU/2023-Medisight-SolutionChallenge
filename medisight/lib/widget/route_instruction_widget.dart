@@ -34,7 +34,9 @@ class RouteInstructionWidget extends StatefulWidget {
 
 class _RouteInstructionWidgetState extends State<RouteInstructionWidget> {
   Widget getIcon(themeMode) {
-    int turnType = widget.routeInfo.instNow.turnType;
+    int turnType = widget.routeInfo.instNext.remain <= 10
+        ? widget.routeInfo.instNext.turnType
+        : widget.routeInfo.instNow.turnType;
     switch (turnType) {
       case 12:
       case 212:
