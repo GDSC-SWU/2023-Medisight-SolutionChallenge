@@ -116,19 +116,19 @@ class _RouteInstructionWidgetState extends State<RouteInstructionWidget> {
         child: Column(
           children: [
             Container(
-                width: 320,
-                padding: const EdgeInsets.symmetric(
-                    vertical: 12.0, horizontal: 20.0),
-                decoration: BoxDecoration(
-                    color: Theme.of(context).canvasColor,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Color.fromARGB(60, 28, 28, 28),
-                        blurRadius: 5,
-                        offset: Offset(0, 3),
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(18)),
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).canvasColor,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color.fromARGB(60, 28, 28, 28),
+                      blurRadius: 5,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(18)),
+              child: FittedBox(
+                fit: BoxFit.fitWidth, // 가로 길이에 맞추도록 설정.
                 child: Column(
                   children: [
                     Text(widget.name,
@@ -136,61 +136,64 @@ class _RouteInstructionWidgetState extends State<RouteInstructionWidget> {
                             fontSize: 20, fontWeight: FontWeight.w700)),
                     const SizedBox(height: 10),
                     Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.center, // 주 축 기준 중앙
-                        children: <Widget>[
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12.0, horizontal: 20.0),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  width: 2,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                borderRadius: BorderRadius.circular(18)),
-                            child: SizedBox(
-                              child: Text(
-                                  "남은 거리 ${widget.routeInfo.totalDistance}m",
-                                  style: TextStyle(
-                                      fontSize: 16.0,
-                                      color: Theme.of(context).primaryColor)),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 12.0, horizontal: 20.0),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                  width: 2,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                borderRadius: BorderRadius.circular(18)),
-                            child: SizedBox(
-                              child: Text(
-                                "남은 시간 ${widget.routeInfo.totalTime}초",
+                      mainAxisAlignment: MainAxisAlignment.center, // 주 축 기준 중앙
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12.0, horizontal: 20.0),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 2,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                              borderRadius: BorderRadius.circular(18)),
+                          child: SizedBox(
+                            child: Text(
+                                "남은 거리 ${widget.routeInfo.totalDistance}m",
                                 style: TextStyle(
                                     fontSize: 16.0,
-                                    color: Theme.of(context).primaryColor),
+                                    color: Theme.of(context).primaryColor)),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 12.0, horizontal: 20.0),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                width: 2,
+                                color: Theme.of(context).primaryColor,
                               ),
+                              borderRadius: BorderRadius.circular(18)),
+                          child: SizedBox(
+                            child: Text(
+                              "남은 시간 ${widget.routeInfo.totalTime}초",
+                              style: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Theme.of(context).primaryColor),
                             ),
                           ),
-                        ]),
+                        ),
+                      ],
+                    ),
                   ],
-                )),
-            Expanded(
-                child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  getIcon(themeMode),
-                  Text("${widget.routeInfo.instNow.description}",
-                      style: const TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold))
-                ],
+                ),
               ),
-            )),
+            ),
+            Expanded(
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    getIcon(themeMode),
+                    Text("${widget.routeInfo.instNow.description}",
+                        style: const TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold))
+                  ],
+                ),
+              ),
+            ),
             Container(
               width: double.infinity,
               height: 60.0,

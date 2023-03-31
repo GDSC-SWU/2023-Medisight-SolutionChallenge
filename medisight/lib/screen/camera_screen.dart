@@ -49,7 +49,7 @@ class CameraScreen extends StatelessWidget {
                     ]),
                 child: Container(
                   padding: const EdgeInsets.only(
-                      left: 30, top: 10, right: 0, bottom: 10),
+                      left: 20, top: 10, right: 10, bottom: 10),
                   width: 350,
                   height: 400,
                   child: Column(
@@ -71,7 +71,7 @@ class CameraScreen extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        '카메라는 스마트폰의 후면 상단에 있으니,\n약품을 왼손으로 들고 오른손으로 스마트폰\n하단을 잡아주세요.',
+                        '카메라는 스마트폰의 후면 상단에 있으니,\n약품을 왼손으로 들고 오른손으로 스마트폰 하단을 잡아주세요.',
                         style: TextStyle(
                             color: themeMode == ThemeMode.light
                                 ? Colors.black
@@ -81,7 +81,7 @@ class CameraScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        '3초마다 자동으로 촬영되며 안내음에 따라\n의약품을 천천히 움직이며 정면, 후면, 측면을\n촬영해주세요.',
+                        '3초마다 자동으로 촬영되며 안내음에 따라 의약품을 천천히 움직이며 정면, 후면, 측면을 촬영해주세요.',
                         style: TextStyle(
                             color: themeMode == ThemeMode.light
                                 ? Colors.black

@@ -141,7 +141,7 @@ class _MapScreenState extends State<MapScreen> {
                   ]),
               child: Container(
                 padding: const EdgeInsets.only(
-                    left: 45, top: 0, right: 30, bottom: 20),
+                    left: 30, top: 0, right: 16, bottom: 20),
                 width: 350,
                 height: 230,
                 child: Column(
