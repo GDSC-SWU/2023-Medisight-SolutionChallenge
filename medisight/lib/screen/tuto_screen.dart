@@ -76,7 +76,7 @@ class _TutoScreenState extends State<TutoScreen> {
                   effect: WormEffect(
                       dotColor: Colors.grey,
                       activeDotColor: themeMode == ThemeMode.light
-                          ? Color.fromARGB(255, 255, 200, 60)
+                          ? Color.fromARGB(255, 107, 134, 255)
                           : Color.fromARGB(255, 255, 214, 0)),
                 ),
 
