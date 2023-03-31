@@ -67,7 +67,7 @@ class CameraScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold),
                           ),
                           Image.asset('assets/images/img_question.png',
-                              width: 120, height: 140)
+                              width: 107, height: 140)
                         ],
                       ),
                       Text(
