@@ -163,6 +163,7 @@ class BottomNaviState extends State<BottomNavi> {
             width: 70.0,
             child: FittedBox(
               child: FloatingActionButton(
+                heroTag: 'camera',
                 onPressed: () {
                   onItemTapped(1);
                 },
