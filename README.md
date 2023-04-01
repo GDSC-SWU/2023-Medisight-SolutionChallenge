@@ -13,7 +13,7 @@ People who are visually impaired obtain information about any kind of medicine, 
 
 
 ## 🎯 Our SDGs Goals
-<img width="411" alt="스크린샷 2023-04-02 오전 1 37 09" src="https://user-images.githubusercontent.com/51871061/229303390-7422a527-7f38-4860-ae17-fbec0b799a85.png">
+<img width="842" alt="sdgs" src="https://user-images.githubusercontent.com/51871061/229303909-ee0fefab-c634-4862-8acf-429923b52fb1.png">
 
 
 ## 🛠️ Tech Architecture
