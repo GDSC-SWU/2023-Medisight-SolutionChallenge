@@ -8,7 +8,7 @@ Since it is difficult for visually impairedpeople to obtain information about dr
 
 ## 💊 About Medisight
 
-Medisight will be your SIGHT.
+Medisight will be your SIGHT.\n
 People who are visually impaired obtain information about any kind of medicine, and can take those medicine through this application. This application will be their eyes when they take medicine. It recognizes images from the cover of a medicine, and informs people about the medicine, such as the time of taking the medicine and the expiration date of the medicine, through sound.
 
 
