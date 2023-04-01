@@ -30,10 +30,19 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
   bool _beepIsChecked = false;
   bool _vibIsChecked = false;
   bool isFirst = true;
+  late final TextEditingController nameController;
+  late final TextEditingController timeController;
+  late final TextEditingController dateController;
+  late final TextEditingController expirationController;
 
   @override
   void initState() {
     super.initState();
+    nameController = TextEditingController();
+    timeController = TextEditingController();
+    dateController = TextEditingController();
+    expirationController = TextEditingController();
+
     product = FirebaseFirestore.instance
         .collection('user')
         .doc(widget.uid)
@@ -69,14 +78,18 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
     });
   }
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController timeController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
-  final TextEditingController expirationController = TextEditingController();
-  late final List<String> dateList;
+  @override
+  void dispose() {
+    nameController.dispose();
+    timeController.dispose();
+    dateController.dispose();
+    expirationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    List<String> dateList = [];
     final themeMode =
         Provider.of<ThemeProvider>(context, listen: false).themeMode;
     if (isFirst) {
@@ -100,6 +113,7 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
 
       dateController.text = date;
       dateList = dateController.text.split(' ');
+      print(dateList);
     }
 
     String value = "";
