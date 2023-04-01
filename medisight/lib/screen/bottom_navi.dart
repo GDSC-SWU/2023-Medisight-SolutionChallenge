@@ -64,6 +64,7 @@ class BottomNaviState extends State<BottomNavi> {
             .maybePop());
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
           child: Container(
