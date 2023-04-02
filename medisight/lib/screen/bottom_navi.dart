@@ -22,7 +22,7 @@ class BottomNaviState extends State<BottomNavi> {
   ];
   late List<GlobalKey<NavigatorState>> navigatorKeyList = [];
 
-  void onItemTapped(int index) {
+  void onItemTabbed(int index) {
     setState(() {
       if (index == 0) {
         Navigator.pushAndRemoveUntil(
@@ -64,7 +64,7 @@ class BottomNaviState extends State<BottomNavi> {
             .maybePop());
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
           child: Container(
@@ -90,7 +90,7 @@ class BottomNaviState extends State<BottomNavi> {
                                   ? Colors.black
                                   : Colors.white)),
                       onPressed: () {
-                        onItemTapped(0);
+                        onItemTabbed(0);
                       },
                     ),
                     Container(
@@ -126,7 +126,7 @@ class BottomNaviState extends State<BottomNavi> {
                                   ? Colors.black
                                   : Colors.white)),
                       onPressed: () {
-                        onItemTapped(2);
+                        onItemTabbed(2);
                       },
                     ),
                     Container(
@@ -156,24 +156,27 @@ class BottomNaviState extends State<BottomNavi> {
               return MaterialPageRoute(
                   builder: (context) => pages[widget.selectedIndex]);
             }),
-        floatingActionButton: Padding(
-          padding: EdgeInsets.only(top: 100.0),
-          child: Container(
-            height: 70.0,
-            width: 70.0,
-            child: FittedBox(
-              child: FloatingActionButton(
-                heroTag: 'camera',
-                onPressed: () {
-                  onItemTapped(1);
-                },
-                child: Icon(
-                  Icons.camera_alt_outlined,
-                  color: themeMode == ThemeMode.light
-                      ? Colors.white
-                      : Colors.black,
+        floatingActionButton: Visibility(
+          visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+          child: Padding(
+            padding: EdgeInsets.only(top: 100.0),
+            child: Container(
+              height: 70.0,
+              width: 70.0,
+              child: FittedBox(
+                child: FloatingActionButton(
+                  heroTag: 'camera',
+                  onPressed: () {
+                    onItemTabbed(1);
+                  },
+                  child: Icon(
+                    Icons.camera_alt_outlined,
+                    color: themeMode == ThemeMode.light
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                  elevation: 0,
                 ),
-                elevation: 0,
               ),
             ),
           ),
