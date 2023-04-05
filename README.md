@@ -21,14 +21,14 @@ People who are visually impaired obtain information about any kind of medicine, 
 
 
 ## 📱 How to use
-<img width="700" src="https://user-images.githubusercontent.com/68267916/229969000-30f6c1f7-2b88-47db-b079-ba934a30cd8f.gif"/>
-<img width="700" src="https://user-images.githubusercontent.com/68267916/229969062-cb878bf1-d3e2-4723-831b-c50d58ac25e8.png"/>
+<img width="700" src="https://user-images.githubusercontent.com/68267916/229973330-dc343b4d-1d2a-40f8-9c1e-3caf371577c4.gif"/>
+<img width="700" src="https://user-images.githubusercontent.com/68267916/229975188-d1c73673-70a1-4de0-a9fe-39e21ea4aa3f.png"/>
 <img width="700" src="https://user-images.githubusercontent.com/68267916/229969005-6751a0f0-8950-4468-9a43-42749e31bf6a.gif"/>
 <img width="700" src="https://user-images.githubusercontent.com/68267916/229969080-c00a6301-6e53-4330-b568-bc7a1fdae260.png"/>
 <img width="700" src="https://user-images.githubusercontent.com/68267916/229969015-cf446596-0360-4c53-adc6-6b27895fb837.gif"/>
 <img width="700" src="https://user-images.githubusercontent.com/68267916/229969018-4f1bdfac-09b4-49da-8365-791720df5baa.gif"/>
 <img width="700" src="https://user-images.githubusercontent.com/68267916/229969024-13387c72-b180-487a-a7e6-3910de409ac5.gif"/>
-<img width="700" src="https://user-images.githubusercontent.com/68267916/229969029-0d3db98a-d267-4443-8537-e4e8a082c867.gif"/>
+<img width="700" src="https://user-images.githubusercontent.com/68267916/229973439-6cef8914-676d-4a65-a5c7-be1f20b1c361.gif"/>
 <img width="700" src="https://user-images.githubusercontent.com/68267916/229969039-9903dcec-2609-46fc-b914-8b0080fbb581.gif"/>
 <img width="700" src="https://user-images.githubusercontent.com/68267916/229969044-f302ddaa-65b9-4bb2-9187-d11885f07abb.gif"/>
 
