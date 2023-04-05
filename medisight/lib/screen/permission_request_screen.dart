@@ -28,7 +28,7 @@ class PermissionRequestScreen extends StatelessWidget {
                 const Text('앱 접근권한 안내', style: TextStyle(fontSize: 30)),
                 const SizedBox(height: 60),
                 const FaIcon(FontAwesomeIcons.bell,
-                    size: 200, color: Colors.lightBlue),
+                    size: 170, color: Colors.lightBlue),
                 Container(
                   padding: const EdgeInsets.only(
                       left: 34, top: 120, right: 34, bottom: 13),
@@ -55,6 +55,7 @@ class PermissionRequestScreen extends StatelessWidget {
                         onPressed: provider.requestSystemAlertWindow,
                         child: const Text('접근권한 허용',
                             style: TextStyle(
+                              color: Colors.white,
                               fontSize: 16,
                             )))),
               ],
