@@ -30,18 +30,10 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
   bool _beepIsChecked = false;
   bool _vibIsChecked = false;
   bool isFirst = true;
-  late final TextEditingController nameController;
-  late final TextEditingController timeController;
-  late final TextEditingController dateController;
-  late final TextEditingController expirationController;
 
   @override
   void initState() {
     super.initState();
-    nameController = TextEditingController();
-    timeController = TextEditingController();
-    dateController = TextEditingController();
-    expirationController = TextEditingController();
 
     product = FirebaseFirestore.instance
         .collection('user')
@@ -50,6 +42,22 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
 
     _beepIsChecked = widget.alarm['beep'];
     _vibIsChecked = widget.alarm['vibration'];
+  }
+
+  void _onCameraButtonPressed() async {
+    // navigate to camera screen
+    final expirationDate = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const ShootPeriod(
+          isFrom: 'update',
+          alarm: null,
+        ),
+      ),
+    );
+    setState(() {
+      expirationController.text = expirationDate;
+    });
   }
 
   TimeOfDay fromString(String time) {
@@ -78,20 +86,20 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
     });
   }
 
-  @override
-  void dispose() {
-    nameController.dispose();
-    timeController.dispose();
-    dateController.dispose();
-    expirationController.dispose();
-    super.dispose();
-  }
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController timeController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
+  final TextEditingController expirationController = TextEditingController();
+  List<String> dateList = [];
 
   @override
   Widget build(BuildContext context) {
-    List<String> dateList = [];
     final themeMode =
         Provider.of<ThemeProvider>(context, listen: false).themeMode;
+    if (widget.responseBody != '-1') {
+      debugPrint('업데이트: ' + widget.responseBody);
+      expirationController.text = widget.responseBody;
+    }
     if (isFirst) {
       if (widget.responseBody != '-1') {
         expirationController.text = widget.responseBody;
@@ -240,15 +248,16 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                 ),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ShootPeriod(
-                              isFrom: 'update', alarm: widget.alarm),
-                        ),
-                      );
-                    },
+                    onPressed: _onCameraButtonPressed,
+                    //() async {
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (_) => ShootPeriod(
+                    //           isFrom: 'update', alarm: widget.alarm),
+                    //     ),
+                    //   );
+                    // },
                     icon: Icon(
                       Icons.camera_alt,
                       color: themeMode == ThemeMode.light
