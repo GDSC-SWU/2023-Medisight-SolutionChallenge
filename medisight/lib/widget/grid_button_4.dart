@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:medisight/page/tip_content.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class GridButton4 extends StatelessWidget {
   final List<Map<String, dynamic>> gridMap = [
@@ -10,6 +12,8 @@ class GridButton4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return GridView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -32,7 +36,14 @@ class GridButton4 extends StatelessWidget {
               borderRadius: BorderRadius.circular(
                 24.0,
               ),
-              color: Colors.grey.shade300,
+              color: themeMode == ThemeMode.light
+                  ? Colors.blue.shade50
+                  : Theme.of(context).canvasColor,
+              border: Border.all(
+                  width: 3.0,
+                  color: themeMode == ThemeMode.light
+                      ? Colors.blue.shade50
+                      : Color.fromARGB(255, 255, 214, 0)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,8 +57,11 @@ class GridButton4 extends StatelessWidget {
                       Text(
                         "${gridMap.elementAt(index)['title']}",
                         style: Theme.of(context).textTheme.subtitle1!.merge(
-                              const TextStyle(
-                                fontSize: 20,
+                              TextStyle(
+                                color: themeMode == ThemeMode.light
+                                    ? Colors.black
+                                    : Colors.white,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),

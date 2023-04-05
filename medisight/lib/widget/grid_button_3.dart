@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:medisight/page/tip_content.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class GridButton3 extends StatelessWidget {
   final List<Map<String, dynamic>> gridMap = [
-    {"title": "두통/근육통/통증"},
-    {"title": "소화 불량/식체/속쓰림"},
-    {"title": "감기/기침/가래"}
+    {"title": "해열 진통제"},
+    {"title": "소염 진통제"},
+    {"title": "코감기약"},
+    {"title": "기침 감기약"},
+    {"title": "소화제"},
+    {"title": "위장약"},
+    {"title": "설사약"},
+    {"title": "소독약"},
+    {"title": "습윤밴드"},
+    {"title": "파스"},
+    {"title": "비염"}
   ];
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return GridView.builder(
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -32,7 +44,14 @@ class GridButton3 extends StatelessWidget {
               borderRadius: BorderRadius.circular(
                 24.0,
               ),
-              color: Colors.grey.shade300,
+              color: themeMode == ThemeMode.light
+                  ? Colors.blue.shade50
+                  : Theme.of(context).canvasColor,
+              border: Border.all(
+                  width: 3.0,
+                  color: themeMode == ThemeMode.light
+                      ? Colors.blue.shade50
+                      : Color.fromARGB(255, 255, 214, 0)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,8 +65,11 @@ class GridButton3 extends StatelessWidget {
                       Text(
                         "${gridMap.elementAt(index)['title']}",
                         style: Theme.of(context).textTheme.subtitle1!.merge(
-                              const TextStyle(
-                                fontSize: 20,
+                              TextStyle(
+                                color: themeMode == ThemeMode.light
+                                    ? Colors.black
+                                    : Colors.white,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),

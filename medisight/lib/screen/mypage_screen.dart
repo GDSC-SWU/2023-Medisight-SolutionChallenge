@@ -8,6 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import 'disease_select.dart';
 import 'tuto_screen.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class MypageScreen extends StatefulWidget {
   const MypageScreen({super.key});
@@ -18,6 +21,7 @@ class MypageScreen extends StatefulWidget {
 
 class MypageScreenState extends State<MypageScreen> {
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final FlutterTts tts = FlutterTts();
 
   var mypageList = [
     '기저질환 설정',
@@ -28,7 +32,10 @@ class MypageScreenState extends State<MypageScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     final user = FirebaseAuth.instance.currentUser!;
+    tts.speak("마이페이지");
 
     return Scaffold(
       appBar: AppBar(title: const Text("마이페이지")),
@@ -40,7 +47,10 @@ class MypageScreenState extends State<MypageScreen> {
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
-                    width: 0.5, color: Color.fromARGB(255, 216, 216, 216)),
+                    width: 0.5,
+                    color: themeMode == ThemeMode.light
+                        ? Color.fromARGB(255, 216, 216, 216)
+                        : Color.fromRGBO(33, 33, 33, 1)),
               ),
             ),
             child: Row(
@@ -69,7 +79,7 @@ class MypageScreenState extends State<MypageScreen> {
                         color: Colors.grey,
                       ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         Container(
@@ -77,7 +87,11 @@ class MypageScreenState extends State<MypageScreen> {
                           height: 25,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50), //모서리를 둥글게
-                            border: Border.all(color: Colors.black45, width: 3),
+                            border: Border.all(
+                                color: themeMode == ThemeMode.light
+                                    ? Colors.black45
+                                    : Color.fromARGB(255, 255, 214, 0),
+                                width: 1.5),
                           ),
                           child: const Center(
                             child: Text(
@@ -92,7 +106,11 @@ class MypageScreenState extends State<MypageScreen> {
                           height: 25,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25), //모서리를 둥글게
-                            border: Border.all(color: Colors.black45, width: 3),
+                            border: Border.all(
+                                color: themeMode == ThemeMode.light
+                                    ? Colors.black45
+                                    : Color.fromARGB(255, 255, 214, 0),
+                                width: 1.5),
                           ),
                           child: const Center(
                             child: Text(
@@ -108,10 +126,13 @@ class MypageScreenState extends State<MypageScreen> {
               ],
             ),
           ),
-          const SizedBox(
+          SizedBox(
             width: 500,
             height: 25,
-            child: ColoredBox(color: Color.fromARGB(255, 216, 216, 216)),
+            child: ColoredBox(
+                color: themeMode == ThemeMode.light
+                    ? Color.fromARGB(255, 216, 216, 216)
+                    : Color.fromRGBO(33, 33, 33, 1)),
           ),
           Expanded(
             child: ListView.builder(
@@ -147,11 +168,6 @@ class MypageScreenState extends State<MypageScreen> {
                               actions: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    final themeMode =
-                                        Provider.of<ThemeProvider>(context,
-                                                listen: false)
-                                            .themeMode;
-                                    debugPrint('테마: $themeMode');
                                     final provider =
                                         Provider.of<GoogleSignInProvider>(
                                             context,
@@ -182,7 +198,11 @@ class MypageScreenState extends State<MypageScreen> {
                         height: 100,
                         decoration: BoxDecoration(
                           border: Border(
-                            bottom: BorderSide(width: 0.5, color: Colors.grey),
+                            bottom: BorderSide(
+                                width: 0.5,
+                                color: themeMode == ThemeMode.light
+                                    ? Colors.grey
+                                    : Color.fromRGBO(71, 71, 71, 1)),
                           ),
                         ),
                         child: Row(

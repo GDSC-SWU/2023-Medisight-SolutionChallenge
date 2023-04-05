@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:medisight/screen/home_screen.dart';
 import 'package:medisight/screen/mypage_screen.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'bottom_navi.dart';
 
@@ -62,6 +64,8 @@ class DiseaseSelectState extends State<DiseaseSelect> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     // 질환 선택 버튼
     final List<Map> myProducts =
         List.generate(10, (index) => {"id": index, "name": diseaseList[index]})
@@ -117,6 +121,15 @@ class DiseaseSelectState extends State<DiseaseSelect> {
                 itemBuilder: (BuildContext ctx, index) {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: themeMode == ThemeMode.light
+                          ? Colors.blue.shade50
+                          : Theme.of(context).canvasColor,
+                      fixedSize: const Size(160, 50),
+                      side: BorderSide(
+                          width: 1,
+                          color: themeMode == ThemeMode.light
+                              ? Color.fromARGB(0, 1, 1, 1)
+                              : Theme.of(context).primaryColor),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                     ),
@@ -162,7 +175,8 @@ class DiseaseSelectState extends State<DiseaseSelect> {
               width: 400,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50), //모서리를 둥글게
-                border: Border.all(color: Colors.black45, width: 3),
+                border:
+                    Border.all(color: Theme.of(context).primaryColor, width: 2),
               ),
               child: Padding(
                 padding: const EdgeInsets.only(
@@ -184,7 +198,10 @@ class DiseaseSelectState extends State<DiseaseSelect> {
               // 초기화 버튼
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(20, 30),
+                  backgroundColor: Theme.of(context).canvasColor,
+                  fixedSize: const Size(160, 50),
+                  side: BorderSide(
+                      width: 1, color: Theme.of(context).primaryColor),
                 ),
                 child: const Text(
                   "초기화",
@@ -205,7 +222,10 @@ class DiseaseSelectState extends State<DiseaseSelect> {
               // 저장 버튼
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(20, 30),
+                  backgroundColor: Theme.of(context).canvasColor,
+                  fixedSize: const Size(160, 50),
+                  side: BorderSide(
+                      width: 1, color: Theme.of(context).primaryColor),
                 ),
                 child: const Text(
                   "저장",
@@ -232,10 +252,9 @@ class DiseaseSelectState extends State<DiseaseSelect> {
                   _getRoute(user);
                 },
               ),
-
-              //SizedBox(width: 30),
             ],
           ),
+          SizedBox(height: 10),
           Container(
               height: 1.0,
               width: size.width,
@@ -265,7 +284,10 @@ class DiseaseSelectState extends State<DiseaseSelect> {
 
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const BottomNavi(selectedIndex: 0)),
+        MaterialPageRoute(
+            builder: (_) => BottomNavi(
+                  selectedIndex: 0,
+                )),
         (route) => false,
       );
     }

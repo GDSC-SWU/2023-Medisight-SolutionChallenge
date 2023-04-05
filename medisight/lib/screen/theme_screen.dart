@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:medisight/screen/bottom_navi.dart';
 import 'package:medisight/theme/animated_toggle_button.dart';
 import 'package:provider/provider.dart';
 
@@ -60,7 +61,7 @@ class _ThemeScreen extends State<ThemeScreen>
       const Color(0xFF8983F7),
       const Color(0xFFA3DAFB),
     ],
-    backgroundColor: const Color(0xFF26242e),
+    backgroundColor: const Color.fromARGB(255, 22, 22, 22),
     textColor: const Color(0xFFFFFFFF),
     toggleButtonColor: const Color(0xFf34323d),
     toggleBackgroundColor: const Color(0xFF222029),
@@ -103,7 +104,20 @@ class _ThemeScreen extends State<ThemeScreen>
     isDarkMode = getSavedThemeMode();
 
     return Scaffold(
-      appBar: AppBar(title: Text("테마 설정")),
+      appBar: AppBar(
+        title: Text("테마 설정"),
+        leading: IconButton(
+          onPressed: () {
+            // bottom navi 생성 후 수정 예정
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (_) => const MypageScreen()),
+              (route) => false,
+            );
+          },
+          icon: Icon(Icons.arrow_back),
+        ),
+      ),
       key: _scaffoldKey,
       backgroundColor:
           isDarkMode ? darkMode.backgroundColor : lightMode.backgroundColor,

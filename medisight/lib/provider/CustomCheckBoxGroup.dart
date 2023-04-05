@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../theme/theme_provider.dart';
 
 class CustomCheckBoxGroup<T> extends StatefulWidget {
   final TextEditingController? controller;
@@ -204,6 +207,8 @@ class _CustomCheckBoxGroupState extends State<CustomCheckBoxGroup> {
   }
 
   List<Widget> _buildButtonsRow() {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return widget.buttonValuesList.map((e) {
       int index = widget.buttonValuesList.indexOf(e);
       return Card(
@@ -253,9 +258,11 @@ class _CustomCheckBoxGroupState extends State<CustomCheckBoxGroup> {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: widget.buttonTextStyle.textStyle.copyWith(
-                color: selectedLables.contains(e)
-                    ? widget.buttonTextStyle.selectedColor
-                    : widget.buttonTextStyle.unSelectedColor,
+                color: themeMode == ThemeMode.light
+                    ? (selectedLables.contains(e) ? Colors.white : Colors.black)
+                    : (selectedLables.contains(e)
+                        ? Colors.black
+                        : Colors.white),
               ),
             ),
           ),

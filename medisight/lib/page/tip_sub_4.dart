@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:medisight/theme/theme_provider.dart';
 import 'package:medisight/widget/grid_button_4.dart';
+import 'package:provider/provider.dart';
 
 class TipSubPage4 extends StatefulWidget {
   const TipSubPage4({super.key});
@@ -9,19 +11,58 @@ class TipSubPage4 extends StatefulWidget {
 }
 
 class _TipSubPageState4 extends State<TipSubPage4> {
+  late ScrollController _scrollController;
+
+  bool lastStatus = true;
+
+  _scrollListener() {
+    if (isShrink != lastStatus) {
+      setState(() {
+        lastStatus = isShrink;
+      });
+    }
+  }
+
+  bool get isShrink {
+    return _scrollController.hasClients &&
+        _scrollController.offset > (200 - kToolbarHeight);
+  }
+
   @override
-  Widget build(BuildContext context) => Scaffold(
-          body: CustomScrollView(slivers: [
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_scrollListener);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
+    return Scaffold(
+      body: CustomScrollView(controller: _scrollController, slivers: [
         SliverAppBar(
-          expandedHeight: 200,
+          expandedHeight: 200.0,
           pinned: true,
+          backgroundColor: Theme.of(context).canvasColor,
           flexibleSpace: FlexibleSpaceBar(
               centerTitle: true,
-              title: const Text("의약품 성분 상식",
-                  style: TextStyle(fontWeight: FontWeight.w600)),
-              background: Image.network(
-                  "https://img.freepik.com/free-vector/mobile-wallpaper-with-fluid-shapes_79603-599.jpg?w=2000",
-                  fit: BoxFit.cover)),
+              title: Text("의약품 성분 풀이",
+                  style: TextStyle(
+                      color: isShrink
+                          ? (themeMode == ThemeMode.light
+                              ? Colors.black
+                              : Colors.white)
+                          : Colors.white,
+                      fontWeight: FontWeight.w600)),
+              background:
+                  Image.asset("assets/images/info_4.jpg", fit: BoxFit.cover)),
         ),
         SliverPadding(
             padding: const EdgeInsets.only(left: 28, right: 28, bottom: 28),
@@ -42,5 +83,7 @@ class _TipSubPageState4 extends State<TipSubPage4> {
                       ),
                   childCount: 1),
             )),
-      ]));
+      ]),
+    );
+  }
 }

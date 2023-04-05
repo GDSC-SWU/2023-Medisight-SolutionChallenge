@@ -1,39 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:medisight/page/home.dart';
-// import 'package:medisight/page/search_result.dart';
-// import 'package:medisight/page/tip_sub.dart';
-import 'package:medisight/provider/google_sign_in.dart';
-import 'package:medisight/widget/logged_in_widget.dart';
-import 'package:provider/provider.dart';
+import 'package:medisight/screen/camera_screen.dart';
 import 'home_screen.dart';
 import 'mypage_screen.dart';
-
-// google assistant
-import 'package:external_app_launcher/external_app_launcher.dart';
-
-/*
-void main() => runApp(const MyApp());
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'Medisight',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        home: const MainPage(selectedIndex: 0));
-  }
-}
-*/
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavi extends StatefulWidget {
-  final int selectedIndex;
+  int selectedIndex;
 
-  const BottomNavi({super.key, required this.selectedIndex});
+  BottomNavi({super.key, required this.selectedIndex});
 
   @override
   BottomNaviState createState() => BottomNaviState();
@@ -42,27 +17,29 @@ class BottomNavi extends StatefulWidget {
 class BottomNaviState extends State<BottomNavi> {
   final List<Widget> pages = <Widget>[
     const HomeScreen(),
-    const HomeScreen(),
+    const CameraScreen(),
     const MypageScreen(),
   ];
-
   late List<GlobalKey<NavigatorState>> navigatorKeyList = [];
 
-  void onItemTapped(int index) {
+  void onItemTabbed(int index) {
     setState(() {
       if (index == 0) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (_) => const BottomNavi(selectedIndex: 0)),
+          MaterialPageRoute(builder: (_) => BottomNavi(selectedIndex: 0)),
           (route) => false,
         );
       } else if (index == 1) {
-        LaunchApp.openApp(
-            androidPackageName: 'com.google.android.apps.googleassistant');
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => BottomNavi(selectedIndex: 1)),
+          (route) => false,
+        );
       } else if (index == 2) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (_) => const BottomNavi(selectedIndex: 2)),
+          MaterialPageRoute(builder: (_) => BottomNavi(selectedIndex: 2)),
           (route) => false,
         );
       }
@@ -78,6 +55,8 @@ class BottomNaviState extends State<BottomNavi> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return WillPopScope(
       onWillPop: () async {
         return !(await navigatorKeyList[widget.selectedIndex]
@@ -85,35 +64,122 @@ class BottomNaviState extends State<BottomNavi> {
             .maybePop());
       },
       child: Scaffold(
-        body: IndexedStack(
-          index: widget.selectedIndex,
-          children: pages.map((page) {
-            int index = pages.indexOf(page);
-            return Navigator(
-              key: navigatorKeyList[index],
-              onGenerateRoute: (_) {
-                return MaterialPageRoute(builder: (context) => page);
-              },
-            );
-          }).toList(),
+        resizeToAvoidBottomInset: true,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: BottomAppBar(
+          child: Container(
+            color: Theme.of(context).canvasColor,
+            height: 70,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      iconSize: 30.0,
+                      padding: EdgeInsets.only(left: 60.0),
+                      icon: Icon(Icons.home,
+                          color: widget.selectedIndex == 0
+                              ? (themeMode == ThemeMode.light
+                                  ? Color.fromARGB(255, 107, 134, 255)
+                                  : Color.fromARGB(255, 255, 214, 0))
+                              : (themeMode == ThemeMode.light
+                                  ? Colors.black
+                                  : Colors.white)),
+                      onPressed: () {
+                        onItemTabbed(0);
+                      },
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(left: 60.0),
+                      child: Text(
+                        '홈',
+                        style: TextStyle(
+                            color: widget.selectedIndex == 0
+                                ? (themeMode == ThemeMode.light
+                                    ? Color.fromARGB(255, 107, 134, 255)
+                                    : Color.fromARGB(255, 255, 214, 0))
+                                : (themeMode == ThemeMode.light
+                                    ? Colors.black
+                                    : Colors.white),
+                            height: 0.7),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      iconSize: 30.0,
+                      padding: EdgeInsets.only(right: 50.0),
+                      icon: Icon(Icons.person,
+                          color: widget.selectedIndex == 2
+                              ? (themeMode == ThemeMode.light
+                                  ? Color.fromARGB(255, 107, 134, 255)
+                                  : Color.fromARGB(255, 255, 214, 0))
+                              : (themeMode == ThemeMode.light
+                                  ? Colors.black
+                                  : Colors.white)),
+                      onPressed: () {
+                        onItemTabbed(2);
+                      },
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 50.0),
+                      child: Text(
+                        '마이페이지',
+                        style: TextStyle(
+                            color: widget.selectedIndex == 2
+                                ? (themeMode == ThemeMode.light
+                                    ? Color.fromARGB(255, 107, 134, 255)
+                                    : Color.fromARGB(255, 255, 214, 0))
+                                : (themeMode == ThemeMode.light
+                                    ? Colors.black
+                                    : Colors.white),
+                            height: 0.7),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "홈",
+        body: Navigator(
+            key: navigatorKeyList[widget.selectedIndex],
+            onGenerateRoute: (_) {
+              return MaterialPageRoute(
+                  builder: (context) => pages[widget.selectedIndex]);
+            }),
+        floatingActionButton: Visibility(
+          visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+          child: Padding(
+            padding: EdgeInsets.only(top: 100.0),
+            child: Container(
+              height: 70.0,
+              width: 70.0,
+              child: FittedBox(
+                child: FloatingActionButton(
+                  heroTag: 'camera',
+                  onPressed: () {
+                    onItemTabbed(1);
+                  },
+                  child: Icon(
+                    Icons.camera_alt_outlined,
+                    color: themeMode == ThemeMode.light
+                        ? Colors.white
+                        : Colors.black,
+                  ),
+                  elevation: 0,
+                ),
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.music_note),
-              label: "음성",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "마이페이지",
-            ),
-          ],
-          currentIndex: widget.selectedIndex,
-          onTap: onItemTapped,
+          ),
         ),
       ),
     );

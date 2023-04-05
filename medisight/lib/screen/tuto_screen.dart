@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:medisight/screen/disease_select.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 import 'intro_page_1.dart';
 import 'intro_page_2.dart';
@@ -18,6 +21,13 @@ class TutoScreen extends StatefulWidget {
 }
 
 class _TutoScreenState extends State<TutoScreen> {
+  @override
+  void initState() {
+    super.initState();
+    late FlutterTts tts = FlutterTts();
+    tts.speak('튜토리얼 페이지');
+  }
+
   final PageController _controller = PageController();
   final user = FirebaseAuth.instance.currentUser!;
 
@@ -25,6 +35,8 @@ class _TutoScreenState extends State<TutoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return Scaffold(
         body: Stack(
       children: [
@@ -52,11 +64,21 @@ class _TutoScreenState extends State<TutoScreen> {
                   onTap: () {
                     _controller.jumpToPage(3);
                   },
-                  child: const Text('건너뛰기'),
+                  child: const Text('건너뛰기',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                 ),
 
                 // dot indicator
-                SmoothPageIndicator(controller: _controller, count: 4),
+                SmoothPageIndicator(
+                  controller: _controller,
+                  count: 4,
+                  effect: WormEffect(
+                      dotColor: Colors.grey,
+                      activeDotColor: themeMode == ThemeMode.light
+                          ? Color.fromARGB(255, 107, 134, 255)
+                          : Color.fromARGB(255, 255, 214, 0)),
+                ),
 
                 //next or done
                 onLastPage
@@ -64,7 +86,9 @@ class _TutoScreenState extends State<TutoScreen> {
                         onTap: () {
                           _getRoute(user);
                         },
-                        child: const Text('완료'),
+                        child: const Text('완료',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
                       )
                     : GestureDetector(
                         onTap: () {
@@ -73,7 +97,9 @@ class _TutoScreenState extends State<TutoScreen> {
                             curve: Curves.easeIn,
                           );
                         },
-                        child: const Text('다음'),
+                        child: const Text('다음',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
                       ),
               ],
             ))

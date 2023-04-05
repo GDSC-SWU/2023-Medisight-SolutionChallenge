@@ -5,6 +5,8 @@ import 'package:medisight/service/alarm_scheduler.dart';
 import '../provider/CustomCheckBoxGroup.dart';
 import 'package:medisight/screen/medi_screen.dart';
 import 'package:medisight/screen/alarm_observer.dart';
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 class UpdateAlarm extends StatefulWidget {
@@ -32,6 +34,7 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
   @override
   void initState() {
     super.initState();
+
     product = FirebaseFirestore.instance
         .collection('user')
         .doc(widget.uid)
@@ -39,6 +42,22 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
 
     _beepIsChecked = widget.alarm['beep'];
     _vibIsChecked = widget.alarm['vibration'];
+  }
+
+  void _onCameraButtonPressed() async {
+    // navigate to camera screen
+    final expirationDate = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const ShootPeriod(
+          isFrom: 'update',
+          alarm: null,
+        ),
+      ),
+    );
+    setState(() {
+      expirationController.text = expirationDate;
+    });
   }
 
   TimeOfDay fromString(String time) {
@@ -71,10 +90,16 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
   final TextEditingController timeController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController expirationController = TextEditingController();
-  late final List<String> dateList;
+  List<String> dateList = [];
 
   @override
   Widget build(BuildContext context) {
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
+    if (widget.responseBody != '-1') {
+      debugPrint('업데이트: ' + widget.responseBody);
+      expirationController.text = widget.responseBody;
+    }
     if (isFirst) {
       if (widget.responseBody != '-1') {
         expirationController.text = widget.responseBody;
@@ -96,6 +121,7 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
 
       dateController.text = date;
       dateList = dateController.text.split(' ');
+      print(dateList);
     }
 
     String value = "";
@@ -113,7 +139,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
               child: const Text(
                 '약품명',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -125,8 +150,14 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
               height: 52,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6.0),
-                color: const Color(0xffffffff),
-                border: Border.all(width: 1.0, color: const Color(0xffdbe2ea)),
+                color: themeMode == ThemeMode.light
+                    ? Color(0xffffffff)
+                    : Theme.of(context).canvasColor,
+                border: Border.all(
+                    width: 2.0,
+                    color: themeMode == ThemeMode.light
+                        ? Color(0xffdbe2ea)
+                        : Theme.of(context).primaryColor),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x0a2c2738),
@@ -137,10 +168,11 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
               ),
               child: TextField(
                 controller: nameController,
-                style: const TextStyle(
-                  fontFamily: 'Montserrat',
+                style: TextStyle(
                   fontSize: 14,
-                  color: Color(0xff000000),
+                  color: themeMode == ThemeMode.light
+                      ? Color(0xff000000)
+                      : Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: const InputDecoration(
@@ -149,7 +181,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                   border: InputBorder.none,
                   hintText: "약품명을 입력하세요.",
                   hintStyle: TextStyle(
-                    fontFamily: 'Montserrat',
                     fontSize: 14,
                     color: Color(0xffcbd0d6),
                   ),
@@ -165,7 +196,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
               child: const Text(
                 '사용 기한',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -177,8 +207,14 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
               height: 52,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6.0),
-                color: const Color(0xffffffff),
-                border: Border.all(width: 1.0, color: const Color(0xffdbe2ea)),
+                color: themeMode == ThemeMode.light
+                    ? Color(0xffffffff)
+                    : Theme.of(context).canvasColor,
+                border: Border.all(
+                    width: 2.0,
+                    color: themeMode == ThemeMode.light
+                        ? Color(0xffdbe2ea)
+                        : Theme.of(context).primaryColor),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x0a2c2738),
@@ -203,26 +239,30 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                       DateFormat('yyyy년 MM월 dd일').format(pickedDate!);
                   expirationController.text = formattedDate;
                 },
-                style: const TextStyle(
-                  fontFamily: 'Montserrat',
+                style: TextStyle(
                   fontSize: 14,
-                  color: Color(0xff000000),
+                  color: themeMode == ThemeMode.light
+                      ? Color(0xff000000)
+                      : Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
-                    onPressed: () async {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ShootPeriod(
-                              isFrom: 'update', alarm: widget.alarm),
-                        ),
-                      );
-                    },
-                    icon: const Icon(
+                    onPressed: _onCameraButtonPressed,
+                    //() async {
+                    //   Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //       builder: (_) => ShootPeriod(
+                    //           isFrom: 'update', alarm: widget.alarm),
+                    //     ),
+                    //   );
+                    // },
+                    icon: Icon(
                       Icons.camera_alt,
-                      color: Color(0xff000000),
+                      color: themeMode == ThemeMode.light
+                          ? Color(0xff000000)
+                          : Theme.of(context).primaryColor,
                     ),
                   ),
                   contentPadding:
@@ -230,7 +270,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                   border: InputBorder.none,
                   hintText: "사용기한을 입력하세요.",
                   hintStyle: const TextStyle(
-                    fontFamily: 'Montserrat',
                     fontSize: 14,
                     color: Color(0xffcbd0d6),
                   ),
@@ -250,7 +289,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
               child: const Text(
                 '알람 시간',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -262,8 +300,14 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
               height: 52,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(6.0),
-                color: const Color(0xffffffff),
-                border: Border.all(width: 1.0, color: const Color(0xffdbe2ea)),
+                color: themeMode == ThemeMode.light
+                    ? Color(0xffffffff)
+                    : Theme.of(context).canvasColor,
+                border: Border.all(
+                    width: 2.0,
+                    color: themeMode == ThemeMode.light
+                        ? Color(0xffdbe2ea)
+                        : Theme.of(context).primaryColor),
                 boxShadow: const [
                   BoxShadow(
                     color: Color(0x0a2c2738),
@@ -275,44 +319,37 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
               child: TextField(
                 controller: timeController,
                 readOnly: true,
-                style: const TextStyle(
-                  fontFamily: 'Montserrat',
+                onTap: () async {
+                  var time = (await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                      initialEntryMode: TimePickerEntryMode.input,
+                      cancelText: "취소",
+                      confirmText: "확인",
+                      helpText: "알람 시간 설정",
+                      hourLabelText: "시간",
+                      minuteLabelText: "분"))!; //end of showTimePicker
+                  timeController.text = time.format(context);
+                },
+                style: TextStyle(
                   fontSize: 14,
-                  color: Color(0xff000000),
+                  color: themeMode == ThemeMode.light
+                      ? Color(0xff000000)
+                      : Colors.white,
                   fontWeight: FontWeight.w500,
                 ),
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    onPressed: () async {
-                      var time = await showTimePicker(
-                          context: context,
-                          initialTime: fromString(timeController.text),
-                          initialEntryMode: TimePickerEntryMode.input,
-                          cancelText: "취소",
-                          confirmText: "확인",
-                          helpText: "알람 시간 설정",
-                          hourLabelText: "시간",
-                          minuteLabelText: "분"); //end of showTimePicker
-                      timeController.text = time!.format(context);
-                    },
-                    icon: const Icon(
-                      Icons.add_alert,
-                      color: Color(0xffd4d411),
-                    ),
-                  ),
+                decoration: const InputDecoration(
                   contentPadding:
-                      const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+                      EdgeInsets.symmetric(vertical: 18, horizontal: 20),
                   border: InputBorder.none,
                   hintText: "복약시간을 선택하세요.",
-                  hintStyle: const TextStyle(
-                    fontFamily: 'Montserrat',
+                  hintStyle: TextStyle(
                     fontSize: 14,
                     color: Color(0xffcbd0d6),
                   ),
                 ),
                 onChanged: (text) {
                   value = text;
-                  print(value);
                 },
               ),
             ),
@@ -325,7 +362,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
               child: const Text(
                 '요일 선택',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
@@ -346,9 +382,8 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                 buttonValuesList: ["일", "월", "화", "수", "목", "금", "토"],
                 checkBoxButtonValues: (values) {
                   dateController.text = values.join(" ");
-                  print(values);
                 },
-                selectedColor: Theme.of(context).colorScheme.secondary,
+                selectedColor: Theme.of(context).primaryColor,
               ),
             ),
 
@@ -368,7 +403,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                   child: const Text(
                     '알람음',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -379,6 +413,7 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                     padding: const EdgeInsets.only(
                         left: 34, top: 20, right: 25, bottom: 13),
                     child: Switch(
+                      activeColor: Theme.of(context).primaryColor,
                       value: _beepIsChecked,
                       onChanged: _switchBeep,
                     ))
@@ -396,7 +431,6 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                   child: const Text(
                     '진동',
                     style: TextStyle(
-                      fontFamily: 'Montserrat',
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -407,6 +441,7 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
                     padding: const EdgeInsets.only(
                         left: 34, top: 20, right: 25, bottom: 13),
                     child: Switch(
+                      activeColor: Theme.of(context).primaryColor,
                       value: _vibIsChecked,
                       onChanged: _switchVib,
                     ))
@@ -416,86 +451,105 @@ class _UpdateAlarmState extends State<UpdateAlarm> {
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(
-              onPressed: () async {
-                final String name = nameController.text.isEmpty
-                    ? widget.alarm['name']
-                    : nameController.text;
-                final String timestr = timeController.text;
-                final String expiration = expirationController.text;
-                final List<String> newdateList = dateController.text.split(' ');
-                final List<bool> weekday = [
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-                ];
-                AlarmScheduler scheduler = new AlarmScheduler();
+            Container(
+              padding: const EdgeInsets.only(
+                  left: 25, top: 0, right: 25, bottom: 13),
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  final String name = nameController.text.isEmpty
+                      ? widget.alarm['name']
+                      : nameController.text;
+                  final String timestr = timeController.text;
+                  final String expiration = expirationController.text;
+                  final List<String> newdateList =
+                      dateController.text.split(' ');
+                  final List<bool> weekday = [
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false,
+                    false
+                  ];
+                  AlarmScheduler scheduler = new AlarmScheduler();
 
-                if (dateController.text.isNotEmpty) {
-                  newdateList.contains('일')
-                      ? weekday[0] = true
-                      : weekday[0] = false;
-                  newdateList.contains('월')
-                      ? weekday[1] = true
-                      : weekday[1] = false;
-                  newdateList.contains('화')
-                      ? weekday[2] = true
-                      : weekday[2] = false;
-                  newdateList.contains('수')
-                      ? weekday[3] = true
-                      : weekday[3] = false;
-                  newdateList.contains('목')
-                      ? weekday[4] = true
-                      : weekday[4] = false;
-                  newdateList.contains('금')
-                      ? weekday[5] = true
-                      : weekday[5] = false;
-                  newdateList.contains('토')
-                      ? weekday[6] = true
-                      : weekday[6] = false;
+                  if (dateController.text.isNotEmpty) {
+                    newdateList.contains('일')
+                        ? weekday[0] = true
+                        : weekday[0] = false;
+                    newdateList.contains('월')
+                        ? weekday[1] = true
+                        : weekday[1] = false;
+                    newdateList.contains('화')
+                        ? weekday[2] = true
+                        : weekday[2] = false;
+                    newdateList.contains('수')
+                        ? weekday[3] = true
+                        : weekday[3] = false;
+                    newdateList.contains('목')
+                        ? weekday[4] = true
+                        : weekday[4] = false;
+                    newdateList.contains('금')
+                        ? weekday[5] = true
+                        : weekday[5] = false;
+                    newdateList.contains('토')
+                        ? weekday[6] = true
+                        : weekday[6] = false;
 
-                  final alarmRef = product?.doc(widget.alarm.id);
-                  await alarmRef?.update({
-                    'weekday': weekday,
-                    'expire': expiration,
-                    'name': name,
-                    'time': timestr,
-                    "beep": _beepIsChecked,
-                    "vibration": _vibIsChecked,
-                  });
-                  final alarmData = await alarmRef?.get();
+                    final alarmRef = product?.doc(widget.alarm.id);
+                    await alarmRef?.update({
+                      'weekday': weekday,
+                      'expire': expiration,
+                      'name': name,
+                      'time': timestr,
+                      "beep": _beepIsChecked,
+                      "vibration": _vibIsChecked,
+                    });
+                    final alarmData = await alarmRef?.get();
 
-                  if (widget.alarm['enabled']) {
-                    await scheduler.cancelRepeatable(widget.alarm);
-                    await scheduler.scheduleRepeatable(alarmData);
+                    if (widget.alarm['enabled']) {
+                      await scheduler.cancelRepeatable(widget.alarm);
+                      await scheduler.scheduleRepeatable(alarmData);
+                    }
+
+                    nameController.text = "";
+                    timeController.text = "";
+                    dateController.text = "";
+
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/', (_) => false);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => AlarmObserver(
+                              uid: widget.uid,
+                              child: MediScreen(uid: widget.uid))),
+                    );
+                  } else if (dateController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('요일을 선택하세요.'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
                   }
-
-                  nameController.text = "";
-                  timeController.text = "";
-                  dateController.text = "";
-
-                  Navigator.pushNamedAndRemoveUntil(context, '/', (_) => false);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => AlarmObserver(
-                            uid: widget.uid,
-                            child: MediScreen(uid: widget.uid))),
-                  );
-                } else if (dateController.text.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('요일을 선택하세요.'),
-                      duration: Duration(seconds: 2),
-                    ),
-                  );
-                }
-              },
-              child: const Text('수정하기'),
+                },
+                style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                    elevation: 3,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30)),
+                    padding: const EdgeInsets.all(20)),
+                child: const Text(
+                  '수정하기',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
             ),
           ],
         ),

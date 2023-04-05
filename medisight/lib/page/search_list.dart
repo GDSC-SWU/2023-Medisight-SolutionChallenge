@@ -4,6 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:medisight/page/search_result.dart';
 
+import 'package:medisight/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
+
 class Medicine {
   String itemSeq;
   String itemName;
@@ -91,6 +94,9 @@ class SearchListPageState extends State<SearchListPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    final themeMode =
+        Provider.of<ThemeProvider>(context, listen: false).themeMode;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -98,30 +104,92 @@ class SearchListPageState extends State<SearchListPage> {
       ),
       body: Column(
         children: <Widget>[
-          TextField(
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(15.0),
-              hintText: '이곳에 약품명을 입력해주세요',
+          SizedBox(height: 20),
+          Container(
+            width: size.width * 0.93,
+            height: 52,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              color: themeMode == ThemeMode.light
+                  ? Color(0xffffffff)
+                  : Theme.of(context).canvasColor,
+              border: Border.all(
+                  width: 2.0,
+                  color: themeMode == ThemeMode.light
+                      ? Color.fromARGB(0, 255, 213, 0)
+                      : Theme.of(context).primaryColor),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromARGB(80, 0, 0, 0),
+                  offset: Offset(0, 3),
+                  blurRadius: 5,
+                ),
+              ],
             ),
-            onChanged: (string) {
-              keyword = string;
-              if (keyword.length > 1) {
-                _debouncer.run(() {
-                  search();
-                });
-              } else {
-                setState(() {
-                  listData = [];
-                });
-              }
-            },
+            child: TextField(
+              style: TextStyle(
+                fontSize: 14,
+                color: themeMode == ThemeMode.light
+                    ? Color(0xff000000)
+                    : Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+              decoration: InputDecoration(
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(0, 0, 187, 212)),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromARGB(0, 0, 187, 212)),
+                ),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    Icons.search,
+                    color: themeMode == ThemeMode.light
+                        ? Color(0xff000000)
+                        : Theme.of(context).primaryColor,
+                  ),
+                  onPressed: () {},
+                ),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+                hintText: "약품명을 입력해주세요.",
+                hintStyle: TextStyle(
+                  fontSize: 14,
+                  color: Color(0xffcbd0d6),
+                ),
+              ),
+              onChanged: (string) {
+                keyword = string;
+                if (keyword.length > 1) {
+                  _debouncer.run(() {
+                    search();
+                  });
+                } else {
+                  setState(() {
+                    listData = [];
+                  });
+                }
+              },
+            ),
           ),
+          SizedBox(height: 20),
           Expanded(
             child: ListView.builder(
               padding: EdgeInsets.all(10.0),
               itemCount: listData.length,
               itemBuilder: (BuildContext context, int index) {
                 return Card(
+                  color: Theme.of(context).canvasColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    side: BorderSide(
+                      // border color
+                      color: Theme.of(context).primaryColor,
+
+                      // border thickness
+                      width: 1,
+                    ),
+                  ),
                   child: InkWell(
                     onTap: () {
                       Navigator.push(
@@ -132,7 +200,7 @@ class SearchListPageState extends State<SearchListPage> {
                           ));
                     },
                     child: Padding(
-                      padding: EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,9 +208,11 @@ class SearchListPageState extends State<SearchListPage> {
                           Text(
                             listData[index].itemName,
                             style: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.black,
-                            ),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16.0,
+                                color: themeMode == ThemeMode.light
+                                    ? Color.fromARGB(255, 0, 0, 0)
+                                    : Color.fromARGB(255, 255, 214, 0)),
                           ),
                           SizedBox(
                             height: 5.0,
@@ -150,9 +220,10 @@ class SearchListPageState extends State<SearchListPage> {
                           Text(
                             listData[index].entpName,
                             style: TextStyle(
-                              fontSize: 14.0,
-                              color: Colors.grey,
-                            ),
+                                fontSize: 14.0,
+                                color: themeMode == ThemeMode.light
+                                    ? Colors.grey
+                                    : Colors.white),
                           ),
                         ],
                       ),

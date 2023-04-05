@@ -75,7 +75,7 @@ class ShootPeriodState extends State<ShootPeriod> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Camera Example"),
+        title: Text("사용기한 촬영"),
         centerTitle: true,
       ),
       backgroundColor: Colors.black,
@@ -167,17 +167,27 @@ class ShootPeriodState extends State<ShootPeriod> {
               barrierDismissible: false,
               context: context,
               builder: (BuildContext context) => AlertDialog(
-                title: const Text('유효기간'),
+                backgroundColor: Theme.of(context).canvasColor,
+                title: const Text('사용기한'),
                 content: Text(responseBody),
-                actions: [
-                  ElevatedButton(
-                    onPressed: () {
-                      setState(() {
-                        isAlert = false;
-                      });
-                      Navigator.pop(context);
-                    },
-                    child: const Text('닫기'),
+                actions: <Widget>[
+                  Container(
+                    width: double.infinity,
+                    height: 50.0,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                      child: Text("닫기", style: const TextStyle(fontSize: 20.0)),
+                      onPressed: () {
+                        setState(() {
+                          isAlert = false;
+                        });
+                        Navigator.of(context).pop();
+                      },
+                    ),
                   ),
                 ],
               ),

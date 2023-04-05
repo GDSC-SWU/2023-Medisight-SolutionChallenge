@@ -71,12 +71,13 @@ class RouteMapInfoService {
 }
 
 class MapRouteScreen extends StatefulWidget {
+  String name;
   double lat;
   double lng;
   double destLat;
   double destLng;
 
-  MapRouteScreen(this.lat, this.lng, this.destLat, this.destLng);
+  MapRouteScreen(this.name, this.lat, this.lng, this.destLat, this.destLng);
 
   @override
   _MapRouteScreenState createState() => _MapRouteScreenState();
@@ -189,7 +190,7 @@ class _MapRouteScreenState extends State<MapRouteScreen> {
       });
     });
 
-    if (gpsTimer != null) {
+    if (gpsTimer == null) {
       // gps location update interval
       gpsTimer = Timer.periodic(const Duration(seconds: 31), (timer) {
         RouteInfoService.getData(
@@ -206,29 +207,30 @@ class _MapRouteScreenState extends State<MapRouteScreen> {
             routeMapInfo = response;
           });
         });
-
-        // audio instruction
-        int remain = routeInfo.instNext.remain;
-        int turnType = routeInfo.instNext.turnType;
-        // 다음 task까지 10m 이하일 경우 띵동소리
-        if (remain <= 10) {
-          assetsAudioPlayer
-              .open(
-            Audio("assets/audios/route_changed.mp3"),
-          )
-              .then((_) {
-            Future.delayed(const Duration(milliseconds: 1300), () {
-              speakInstruction(remain, turnType);
-            });
-          });
-        } else {
-          speakInstruction(remain, turnType);
-        }
-        // print("${widget.lat} ${widget.lng}");
       });
+
+      // audio instruction
+      int remain = routeInfo.instNext.remain;
+      int turnType = routeInfo.instNext.turnType;
+      // 다음 task까지 10m 이하일 경우 띵동소리
+      if (remain <= 10) {
+        assetsAudioPlayer
+            .open(
+          Audio("assets/audios/route_changed.mp3"),
+        )
+            .then((_) {
+          Future.delayed(const Duration(milliseconds: 1300), () {
+            speakInstruction(remain, turnType);
+          });
+        });
+      } else {
+        speakInstruction(remain, turnType);
+      }
+      // print("${widget.lat} ${widget.lng}");
+
     }
 
-    if (audioTimer != null) {
+    if (audioTimer == null) {
       audioTimer = Timer.periodic(const Duration(seconds: 21), (timer) {
         // audio instruction
         int remain = routeInfo.instNext.remain;
@@ -267,6 +269,7 @@ class _MapRouteScreenState extends State<MapRouteScreen> {
           title: Text("약국 경로안내"),
         ),
         body: RouteInstructionWidget(
+            name: widget.name,
             routeInfo: routeInfo,
             routeMapInfo: routeMapInfo,
             lat: widget.lat,

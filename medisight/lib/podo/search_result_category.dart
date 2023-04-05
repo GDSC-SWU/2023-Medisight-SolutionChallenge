@@ -40,52 +40,66 @@ class SearchResult {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           if (idx == 0) ...[
             const Text("제품명",
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-            Text(basicInfo!.itemName!, style: const TextStyle(fontSize: 18.0)),
+                style: TextStyle(
+                    fontSize: 20.0, fontWeight: FontWeight.bold, height: 1.75)),
+            Text(basicInfo!.itemName!,
+                style: const TextStyle(fontSize: 18.0, height: 1.75)),
             SizedBox(height: 20.0),
             const Text("제조사",
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-            Text(basicInfo!.entpName!, style: const TextStyle(fontSize: 18.0))
+                style: TextStyle(
+                    fontSize: 20.0, fontWeight: FontWeight.bold, height: 1.75)),
+            Text(basicInfo!.entpName!,
+                style: const TextStyle(fontSize: 18.0, height: 1.75))
           ] else if (idx == 1) ...[
-            Text(shape!.chart!, style: const TextStyle(fontSize: 18.0))
+            Text(shape!.chart!,
+                style: const TextStyle(fontSize: 18.0, height: 1.75))
           ] else if (idx == 2) ...[
-            Text(efficacy!.efcyQesitm!, style: const TextStyle(fontSize: 18.0))
+            Text(efficacy!.efcyQesitm!,
+                style: const TextStyle(fontSize: 18.0, height: 1.75))
           ] else if (idx == 3) ...[
-            Text(usage!.udDocData!, style: const TextStyle(fontSize: 18.0))
+            Text(usage!.udDocData!,
+                style: const TextStyle(fontSize: 18.0, height: 1.75))
           ] else if (idx == 4) ...[
             Text(precautions!.atpnQesitm!,
-                style: const TextStyle(fontSize: 18.0))
+                style: const TextStyle(fontSize: 18.0, height: 1.75))
           ] else if (idx == 5) ...[
             const Text("보관 방법",
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    fontSize: 20.0, fontWeight: FontWeight.bold, height: 1.75)),
             Text(storage!.storageMethod!,
-                style: const TextStyle(fontSize: 18.0)),
+                style: const TextStyle(fontSize: 18.0, height: 1.75)),
             SizedBox(height: 20.0),
             const Text("보관 주의사항",
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    fontSize: 20.0, fontWeight: FontWeight.bold, height: 1.75)),
             Text(storage!.depositMethodQesitm!,
-                style: const TextStyle(fontSize: 18.0))
+                style: const TextStyle(fontSize: 18.0, height: 1.75))
           ] else if (idx == 6) ...[
-            Text(validity!.validTerm!, style: const TextStyle(fontSize: 18.0))
+            Text(validity!.validTerm!,
+                style: const TextStyle(fontSize: 18.0, height: 1.75))
           ] else if (idx == 7) ...[
             SizedBox(height: 20.0),
             const Text("원료성분",
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    fontSize: 20.0, fontWeight: FontWeight.bold, height: 1.75)),
             Text(materials!.materialName!,
-                style: const TextStyle(fontSize: 18.0)),
+                style: const TextStyle(fontSize: 18.0, height: 1.75)),
             const Text("성분명",
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-            Text(materials!.ingrName!, style: const TextStyle(fontSize: 18.0)),
+            Text(materials!.ingrName!,
+                style: const TextStyle(fontSize: 18.0, height: 1.75)),
             SizedBox(height: 20.0),
             const Text("주원료성분",
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    fontSize: 20.0, fontWeight: FontWeight.bold, height: 1.75)),
             Text(materials!.mainItemIngr!,
-                style: const TextStyle(fontSize: 18.0)),
+                style: const TextStyle(fontSize: 18.0, height: 1.75)),
             SizedBox(height: 20.0),
             const Text("주원료성분 영문명",
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    fontSize: 20.0, fontWeight: FontWeight.bold, height: 1.75)),
             Text(materials!.mainIngrEng!,
-                style: const TextStyle(fontSize: 18.0))
+                style: const TextStyle(fontSize: 18.0, height: 1.75))
           ] else ...[
             const Text("의약품 정보의 인덱스가 유효하지 않습니다.")
           ]
