@@ -19,12 +19,14 @@ People who are visually impaired obtain information about any kind of medicine, 
 ## 🛠️ Tech Architecture
 <p align="center"><img width="600" alt="architecture" src="https://user-images.githubusercontent.com/68267916/229969468-50d07368-bf87-4a09-b6e6-c7e7fd316a60.png"></p>
 
-### - YOLO version we used
+## - What YOLO version we used
 <br>
 <p align="center"><img width="600" src="https://user-images.githubusercontent.com/68267916/229975945-423f6f25-1127-4981-ace4-73f73c4c28fa.png"/></p>
-<p align="center">Ultralytics YOLOv8, developed by Ultralytics, is a cutting-edge, state-of-the-art (SOTA) model that builds upon the success of previous YOLO versions and introduces new features and improvements to further boost performance and flexibility. YOLOv8 is designed to be fast, accurate, and easy to use, making it an excellent choice for a wide range of object detection, image segmentation and image classification tasks.
-</br></br>
-We used YOLOV8 to use better recognition rates and faster models.</p>
+
+> Ultralytics YOLOv8, developed by Ultralytics, is a cutting-edge, state-of-the-art (SOTA) model that builds upon the success of previous YOLO versions and introduces new features and improvements to further boost performance and flexibility. YOLOv8 is designed to be fast, accurate, and easy to use, making it an excellent choice for a wide range of object detection, image segmentation and image classification tasks.
+
+</br>
+<p align="center">We used YOLOv8 for better recognition rates and faster models.</p>
 <p align="center"><img width="700" src="https://user-images.githubusercontent.com/68267916/229975934-367b3f96-f1c7-43f9-817d-aeaa74635ac1.png"/></p>
 
 ## 📱 How to use
