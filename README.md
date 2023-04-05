@@ -19,7 +19,7 @@ People who are visually impaired obtain information about any kind of medicine, 
 ## 🛠️ Tech Architecture
 <p align="center"><img width="600" alt="architecture" src="https://user-images.githubusercontent.com/68267916/229969468-50d07368-bf87-4a09-b6e6-c7e7fd316a60.png"></p>
 
-## - What YOLO version we used
+## What YOLO version we used
 <br>
 <p align="center"><img width="600" src="https://user-images.githubusercontent.com/68267916/229975945-423f6f25-1127-4981-ace4-73f73c4c28fa.png"/></p>
 
