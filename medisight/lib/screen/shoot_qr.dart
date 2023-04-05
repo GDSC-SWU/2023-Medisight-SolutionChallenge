@@ -74,8 +74,8 @@ class ShootQrState extends State<ShootQr> {
               future: _initCameraControllerFuture,
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  Future.delayed(const Duration(seconds: 5), () {
-                    // 5초마다 snapshot을 찍어서, 결과 도출 or 서버로 보냄
+                  Future.delayed(const Duration(seconds: 3), () {
+                    // 3초마다 snapshot을 찍어서, 결과 도출 or 서버로 보냄
                     cameraSnapshot();
                   });
                   return SizedBox(
