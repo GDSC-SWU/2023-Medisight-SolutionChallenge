@@ -39,7 +39,6 @@ For Android User
 1. Download the apk file for your mobile version [here](https://www.dropbox.com/s/33dxs3n50bldql0/app-debug.apk?dl=0).
 2. Run the apk file on your phone.
 
-Flutter / Backend / AI/ML / Design
 ## 👩🏻‍💻 Contributors
 |Name|[Gyuri Ahn](https://github.com/Queue-ri)|[JeongEun Lee](https://github.com/jeong-1)|[Chaeeun Han](https://github.com/chaeeun-Han)|[Dahye Jeong](https://github.com/0dahye0)|
 |:---:|:---:|:---:|:---:|:---:|
