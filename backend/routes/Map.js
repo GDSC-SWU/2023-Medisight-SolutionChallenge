@@ -15,10 +15,20 @@ router.get('/place', async (req, res) => {
         url: endpoint
     },
     function(error, response, body){
-        const json = JSON.parse(body)
-        const result = cleanse_place(json.searchPoiInfo.pois.poi)
-        //console.log(result);
-        res.send({result});
+        if (error) {
+            console.log(error);
+            res.status(502).send({"error": 'Could not get response from external api'});
+            return;
+        }
+        try {
+            const json = JSON.parse(body)
+            const result = cleanse_place(json.searchPoiInfo.pois.poi)
+            //console.log(result);
+            res.send({result});
+        } catch (err) {
+            res.status(500).send({"error": 'Fail to parse POI info'});
+            console.log(err);
+        }
     });
 });
 
@@ -60,7 +70,7 @@ router.post('/route', async (req, res) => {
         "searchOption": "0",
         "resCoordType": "WGS84GEO",
         "sort": "index"
-      }
+    }
 
     request.post({
         headers: {'Accept' : 'application/json', 'appKey' : apiKey},
@@ -68,10 +78,20 @@ router.post('/route', async (req, res) => {
         body: JSON.stringify(payload)
     },
     function(error, response, body){
-        const json = JSON.parse(body)
-        const result = cleanse_route(json.features)
-        //console.log(result);
-        res.send(result);
+        if (error) {
+            console.log(error);
+            res.status(502).send({"error": 'Could not get response from external api'});
+            return;
+        }
+        try {
+            const json = JSON.parse(body)
+            const result = cleanse_route(json.features)
+            //console.log(result);
+            res.send(result);
+        } catch (err) {
+            res.status(500).send({"error": 'Fail to parse features'});
+            console.log(err);
+        }
     });
 });
 
@@ -138,12 +158,22 @@ router.post('/route/coords', async (req, res) => {
         body: JSON.stringify(payload)
     },
     function(error, response, body){
-        const json = JSON.parse(body)
-        const result = {}
-        result.points = get_route_points(json.features)
-        result.linestrings = get_route_lines(json.features)
-        //console.log(result);
-        res.send(result);
+        if (error) {
+            console.log(error);
+            res.status(502).send({"error": 'Could not get response from external api'});
+            return;
+        }
+        try {
+            const json = JSON.parse(body)
+            const result = {}
+            result.points = get_route_points(json.features)
+            result.linestrings = get_route_lines(json.features)
+            //console.log(result);
+            res.send(result);
+        } catch (err) {
+            res.status(500).send({"error": 'Fail to parse features'});
+            console.log(err);
+        }
     });
 });
 
