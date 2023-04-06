@@ -9,14 +9,14 @@ const { grainDB, permissionDB, householdDB } = require('../util/OpenAPI');
 const schedule = scheduler.scheduleJob("0 00 3 * * *", async function () {
     try {
         // 저장된 데이터 전체 삭제
-        await prisma.$queryRaw`TRUNCATE TABLE grain;`
-        await prisma.$queryRaw`TRUNCATE TABLE permission;`
-        await prisma.$queryRaw`TRUNCATE TABLE household;`
+        await prisma.$queryRaw`TRUNCATE TABLE Grain;`
+        await prisma.$queryRaw`TRUNCATE TABLE Permission;`
+        await prisma.$queryRaw`TRUNCATE TABLE Household;`
 
         grainDB();
         permissionDB();
         householdDB();
-    } catch(err) {
+    } catch (err) {
         console.log(err);
     }
 });
