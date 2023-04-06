@@ -206,7 +206,7 @@ async function grainDB() {
 async function permissionDB() {
     var numOfRows = 100;
     var pageNo = 1;
-    var url = "http://apis.data.go.kr/1471000/DrugPrdtPrmsnInfoService03/getDrugPrdtPrmsnDtlInq02";
+    var url = "http://apis.data.go.kr/1471000/DrugPrdtPrmsnInfoService04/getDrugPrdtPrmsnDtlInq03";
     var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
     queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(numOfRows);
     queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
