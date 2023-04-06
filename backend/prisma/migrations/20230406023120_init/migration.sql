@@ -65,7 +65,7 @@ CREATE TABLE `Permission` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `household` (
+CREATE TABLE `Household` (
     `id` BIGINT NOT NULL AUTO_INCREMENT,
     `prdlstNm` VARCHAR(300) NULL,
     `bsshNm` VARCHAR(300) NULL,

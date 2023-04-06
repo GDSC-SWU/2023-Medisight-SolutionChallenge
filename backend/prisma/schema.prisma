@@ -70,7 +70,7 @@ model Permission {
   mainIngrEng      String? @db.Text
 }
 
-model household {
+model Household {
   id          BigInt  @id @default(autoincrement())
   prdlstNm    String? @db.VarChar(300)
   bsshNm      String? @db.VarChar(300)
