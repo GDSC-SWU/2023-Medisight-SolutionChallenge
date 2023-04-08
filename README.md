@@ -1,6 +1,13 @@
 # 2023-Medisight-SolutionChallenge 💊
 <p align="center"><img width="500" alt="logo-title-light" src="https://user-images.githubusercontent.com/51871061/229301410-d6d41e7e-0310-4fc8-81a3-afd8905320cb.png"></p>
 
+<p align="center">
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square"></a>&nbsp;
+<a href="https://healthchecks.io/badge/d4684a84-8fd9-4863-b2f9-8d8037/KGd4uizo/mds-backend.svg"><img src="https://healthchecks.io/badge/d4684a84-8fd9-4863-b2f9-8d8037/KGd4uizo/mds-backend.svg"></a>&nbsp;
+<img src="https://img.shields.io/badge/backend-1.1.2-blue">&nbsp;
+<a href="https://github.com/GDSC-SWU/2023-Medisight-SolutionChallenge/releases"><img src="https://img.shields.io/github/v/release/GDSC-SWU/2023-Medisight-SolutionChallenge"></a>
+</p>
+
 ## 💭 Problem
 
 Since it is difficult for visually impaired people to obtain information about drugs visually, one out of four of them (25%) says they have suffered from drug misuse. Braille is written on the cover of the medicine, but only 15% or less of them can read the braille. Moreover, there are problems with braille notation for the following reasons; There is a risk of breakage of braille during transportation; It is difficult to label drugs with long product names; There are cases in which the learned braille and the marked braille are different. Even if they can read the braille on the medicine, it is difficult to know which medicine to take in which situation. There is also the burden of relying on others to obtain additional medical information.
