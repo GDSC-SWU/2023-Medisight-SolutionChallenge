@@ -183,112 +183,121 @@ function insertHousehold(url, queryParams) {
     });
 }
 
-async function grainDB() {
-    var url = "http://apis.data.go.kr/1471000/MdcinGrnIdntfcInfoService01/getMdcinGrnIdntfcInfoList01";
-    var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
-    queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(1);
-    queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(1);
-    let option = {
-        'method': 'GET',
-        'url': url + queryParams
-    };
-    let totalCount = await getTotalCount(option);
-
-    // 공공데이터 조회
-    var numOfRows = 300;
-    var loopCount = Math.ceil(totalCount / numOfRows, 0);
-    var endRows = totalCount % numOfRows;
-
-    for (var pageNo = 1; pageNo <= loopCount; ++pageNo) {
+function grainDB() {
+    return new Promise(async function (resolve, reject) {
+        var url = "http://apis.data.go.kr/1471000/MdcinGrnIdntfcInfoService01/getMdcinGrnIdntfcInfoList01";
         var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
-        queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount? endRows: numOfRows);
-        queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
-        queryParams += "&" + encodeURIComponent("type") + "=" + encodeURIComponent("json");
+        queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(1);
+        queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(1);
+        let option = {
+            'method': 'GET',
+            'url': url + queryParams
+        };
+        let totalCount = await getTotalCount(option);
 
-        await insertGrain(url, queryParams).then(() => {
-            process.stdout.clearLine();
-            process.stdout.cursorTo(0);
-            process.stdout.write(`* * * Grain: ${pageNo}/${loopCount} 적재 성공`);  // write text
-        }).catch(async () => {
-            console.log(`\n* * * Grain: 적재에 실패하여 재시도합니다. (pageNo: ${pageNo})\n`);
-            await insertGrain(url, queryParams).catch(() => {
-                console.log(`\n* * * Grain: 재시도에 실패하여 스킵합니다. (pageNo: ${pageNo})\n`);
+        // 공공데이터 조회
+        var numOfRows = 300;
+        var loopCount = Math.ceil(totalCount / numOfRows, 0);
+        var endRows = totalCount % numOfRows;
+
+        for (var pageNo = 1; pageNo <= loopCount; ++pageNo) {
+            var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
+            queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount? endRows: numOfRows);
+            queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
+            queryParams += "&" + encodeURIComponent("type") + "=" + encodeURIComponent("json");
+
+            await insertGrain(url, queryParams).then(() => {
+                process.stdout.clearLine();
+                process.stdout.cursorTo(0);
+                process.stdout.write(`* * * Grain: ${pageNo}/${loopCount} 적재 성공`);  // write text
+            }).catch(async () => {
+                console.log(`\n* * * Grain: 적재에 실패하여 재시도합니다. (pageNo: ${pageNo})\n`);
+                await insertGrain(url, queryParams).catch(() => {
+                    console.log(`\n* * * Grain: 재시도에 실패하여 스킵합니다. (pageNo: ${pageNo})\n`);
+                });
             });
-        });
-    }
-    return console.log("\n* * * Grain: 낱알데이터 저장 완료 " + Date());
+        }
+        console.log("\n* * * Grain: 낱알데이터 저장 완료 " + Date());
+        resolve();
+    });
 }
 
-async function permissionDB() {
-    var url = "http://apis.data.go.kr/1471000/DrugPrdtPrmsnInfoService04/getDrugPrdtPrmsnDtlInq03";
-    var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
-    queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(1);
-    queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(1);
-    let option = {
-        'method': 'GET',
-        'url': url + queryParams
-    };
-    let totalCount = await getTotalCount(option);
-
-    // 공공데이터 조회
-    var numOfRows = 100;
-    var loopCount = Math.ceil(totalCount / numOfRows); // numOfRows에 미치지 못하는 마지막 페이지까지 포함한 개수
-    var endRows = totalCount % numOfRows;
-
-    for (var pageNo = 1; pageNo <= loopCount; ++pageNo) {
+function permissionDB() {
+    return new Promise(async function (resolve, reject) {
+        var url = "http://apis.data.go.kr/1471000/DrugPrdtPrmsnInfoService04/getDrugPrdtPrmsnDtlInq03";
         var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
-        queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount? endRows: numOfRows);
-        queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
-        queryParams += "&" + encodeURIComponent("type") + "=" + encodeURIComponent("json");
-        
-        await insertPermission(url, queryParams).then(() => {
-            process.stdout.clearLine();
-            process.stdout.cursorTo(0);
-            process.stdout.write(`* * * Permission: ${pageNo}/${loopCount} 적재 성공`);  // write text
-        }).catch(async () => {
-            console.log(`\n* * * Permission: 적재에 실패하여 재시도합니다. (pageNo: ${pageNo})\n`);
-            await insertPermission(url, queryParams).catch(() => {
-                console.log(`\n* * * Permission: 재시도에 실패하여 스킵합니다. (pageNo: ${pageNo})\n`);
+        queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(1);
+        queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(1);
+        let option = {
+            'method': 'GET',
+            'url': url + queryParams
+        };
+        let totalCount = await getTotalCount(option);
+
+        // 공공데이터 조회
+        var numOfRows = 100;
+        var loopCount = Math.ceil(totalCount / numOfRows); // numOfRows에 미치지 못하는 마지막 페이지까지 포함한 개수
+        var endRows = totalCount % numOfRows;
+
+        for (var pageNo = 1; pageNo <= loopCount; ++pageNo) {
+            var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
+            queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount? endRows: numOfRows);
+            queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
+            queryParams += "&" + encodeURIComponent("type") + "=" + encodeURIComponent("json");
+            
+            await insertPermission(url, queryParams).then(() => {
+                process.stdout.clearLine();
+                process.stdout.cursorTo(0);
+                process.stdout.write(`* * * Permission: ${pageNo}/${loopCount} 적재 성공`);  // write text
+            }).catch(async () => {
+                console.log(`\n* * * Permission: 적재에 실패하여 재시도합니다. (pageNo: ${pageNo})\n`);
+                await insertPermission(url, queryParams).catch(() => {
+                    console.log(`\n* * * Permission: 재시도에 실패하여 스킵합니다. (pageNo: ${pageNo})\n`);
+                });
             });
-        });
-    }
-    return console.log("\n* * * Permission: 허가데이터 저장 완료 " + Date());
+        }
+        console.log("\n* * * Permission: 허가데이터 저장 완료 " + Date());
+        resolve();
+    });
 }
 
-async function householdDB() {
-    var url = "http://apis.data.go.kr/1471000/SafeStadDrugService/getSafeStadDrugInq";
-    var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
-    queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(1);
-    queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(1);
-    let option = {
-        'method': 'GET',
-        'url': url + queryParams
-    };
-    let totalCount = await getTotalCount(option);
-
-    // 공공데이터 조회
-    var numOfRows = 7;
-    var loopCount = Math.ceil(totalCount / numOfRows, 0);
-    var endRows = totalCount % numOfRows;
-
-    for (var pageNo = 1; pageNo <= loopCount; ++pageNo) {
+function householdDB() {
+    return new Promise(async function (resolve, reject) {
+        var url = "http://apis.data.go.kr/1471000/SafeStadDrugService/getSafeStadDrugInq";
         var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
-        queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount? endRows: numOfRows);
-        queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
-        queryParams += "&" + encodeURIComponent("type") + "=" + encodeURIComponent("json");
+        queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(1);
+        queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(1);
+        let option = {
+            'method': 'GET',
+            'url': url + queryParams
+        };
+        let totalCount = await getTotalCount(option);
 
-        await insertHousehold(url, queryParams).then(() => {
-            process.stdout.clearLine();
-            process.stdout.cursorTo(0);
-            process.stdout.write(`* * * Household: ${pageNo}/${loopCount} 적재 성공`);  // write text
-        }).catch(async () => {
-            console.log(`\n* * * Household: 적재에 실패하여 재시도합니다. (pageNo: ${pageNo})\n`);
-            await insertHousehold(url, queryParams).catch(() => {
-                console.log(`\n* * * Household: 재시도에 실패하여 스킵합니다. (pageNo: ${pageNo})\n`);
+        // 공공데이터 조회
+        var numOfRows = 7;
+        var loopCount = Math.ceil(totalCount / numOfRows, 0);
+        var endRows = totalCount % numOfRows;
+
+        for (var pageNo = 1; pageNo <= loopCount; ++pageNo) {
+            var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
+            queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount? endRows: numOfRows);
+            queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
+            queryParams += "&" + encodeURIComponent("type") + "=" + encodeURIComponent("json");
+
+            await insertHousehold(url, queryParams).then(() => {
+                process.stdout.clearLine();
+                process.stdout.cursorTo(0);
+                process.stdout.write(`* * * Household: ${pageNo}/${loopCount} 적재 성공`);  // write text
+            }).catch(async () => {
+                console.log(`\n* * * Household: 적재에 실패하여 재시도합니다. (pageNo: ${pageNo})\n`);
+                await insertHousehold(url, queryParams).catch(() => {
+                    console.log(`\n* * * Household: 재시도에 실패하여 스킵합니다. (pageNo: ${pageNo})\n`);
+                });
             });
-        });
-    }
-    return console.log("\n* * * Household: 안전상비약데이터 저장 완료 " + Date());
+        }
+        console.log("\n* * * Household: 안전상비약데이터 저장 완료 " + Date());
+        resolve();
+    });
 }
 
 module.exports = { grainDB, permissionDB, householdDB }
