@@ -1,4 +1,5 @@
 const scheduler = require("node-schedule");
+const request = require("request");
 
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
@@ -20,4 +21,19 @@ const schedule = scheduler.scheduleJob("0 00 3 * * *", async function () {
     } catch (err) {
         console.log(err);
     }
+});
+
+const health_check = scheduler.scheduleJob("0 */20 * * * *", function () {
+    const options = {
+        uri: "https://hc-ping.com/8a296db2-45af-4f48-96d5-ee17e8a7ae9d"
+    };
+    request.get(options, function (error, response, body) {
+        if (error) {
+            console.log("* * * Health Check: 실패 (" + Date() + ")");
+            console.log(response);
+        }
+        else {
+            console.log("* * * Health Check: OK (" + Date() + ")");
+        }
+    });
 });
