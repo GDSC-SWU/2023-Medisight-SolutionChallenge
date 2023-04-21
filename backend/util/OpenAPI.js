@@ -30,7 +30,11 @@ function insertGrain(url, queryParams) {
             async function (error, response, body) {
                 var data;
                 // 에러는 xml 또는 json으로 오고 statusCode로는 잡을 수 없음
-                if (body[0] == '<') {
+                if (body == undefined) {
+                    console.log(body);
+                    return reject();
+                }
+                else if (body[0] == '<') {
                     console.log(body);
                     return reject();
                 }
@@ -86,7 +90,11 @@ function insertPermission(url, queryParams) {
             function (error, response, body) {
                 var data;
                 // 에러는 xml 또는 json으로 오고 statusCode로는 잡을 수 없음
-                if (body[0] == '<') {
+                if (body == undefined) {
+                    console.log(body);
+                    return reject();
+                }
+                else if (body[0] == '<') {
                     console.log(body);
                     return reject();
                 }
@@ -100,7 +108,7 @@ function insertPermission(url, queryParams) {
 
                 // 정상 response
                 for (var i = 0; i < data.length; ++i) {
-                    (async() => {
+                    (async () => {
                         await prisma.permission.create({
                             data: {
                                 itemSeq: data[i].ITEM_SEQ,
@@ -154,7 +162,11 @@ function insertHousehold(url, queryParams) {
             async function (error, response, body) {
                 var data;
                 // 에러는 xml 또는 json으로 오고 statusCode로는 잡을 수 없음
-                if (body[0] == '<') {
+                if (body == undefined) {
+                    console.log(body);
+                    return reject();
+                }
+                else if (body[0] == '<') {
                     console.log(body);
                     return reject();
                 }
@@ -202,7 +214,7 @@ function grainDB() {
 
         for (var pageNo = 1; pageNo <= loopCount; ++pageNo) {
             var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
-            queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount? endRows: numOfRows);
+            queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount ? endRows : numOfRows);
             queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
             queryParams += "&" + encodeURIComponent("type") + "=" + encodeURIComponent("json");
 
@@ -241,10 +253,10 @@ function permissionDB() {
 
         for (var pageNo = 1; pageNo <= loopCount; ++pageNo) {
             var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
-            queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount? endRows: numOfRows);
+            queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount ? endRows : numOfRows);
             queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
             queryParams += "&" + encodeURIComponent("type") + "=" + encodeURIComponent("json");
-            
+
             await insertPermission(url, queryParams).then(() => {
                 process.stdout.clearLine();
                 process.stdout.cursorTo(0);
@@ -280,7 +292,7 @@ function householdDB() {
 
         for (var pageNo = 1; pageNo <= loopCount; ++pageNo) {
             var queryParams = "?" + encodeURIComponent("serviceKey") + "=" + process.env.SERVICE_KEY;
-            queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount? endRows: numOfRows);
+            queryParams += "&" + encodeURIComponent("numOfRows") + "=" + encodeURIComponent(pageNo == loopCount ? endRows : numOfRows);
             queryParams += "&" + encodeURIComponent("pageNo") + "=" + encodeURIComponent(pageNo);
             queryParams += "&" + encodeURIComponent("type") + "=" + encodeURIComponent("json");
 
